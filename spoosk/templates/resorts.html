@@ -1,0 +1,52 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+Resorts
+{% endblock title %}
+
+{% block content %}
+    <h1>Все курорты</h1>
+    <hr>
+    {% if resorts %} <!-- Если есть товары, то выводим таблицу с ними -->
+        <table>
+            <tr>
+                <td>
+                    Название
+                </td>
+                <td>
+                    Регион
+                </td>
+                <td>
+                    Начало сезона
+                </td>
+                <td>
+                    Конец сезона
+                </td>
+                <td>
+                    Фрирайд
+                </td>
+            </tr>
+        {% for resort in resorts %} <!-- Для каждого товара будете генерироваться новая строчка, т.е. новый html код. При этом сам цикл работает точно так же, как и в python. product — переменная цикла, т.е. наш товар, взятый из общего списка -->
+            <tr>
+                <td>
+                    {{ resort.name }} <!-- не забываем, что переменные в шаблоне ничем не отличаются от переменных в python. Здесь так же можно получать доступ к полям класса. Например, здесь мы выводим имя, в следующем столбце описание, и т.д.  -->
+                </td>
+                <td>
+                    {{ resort.region }}
+                </td>
+                <td>
+                    {{ resort.begin_season }}
+                </td>
+                <td>
+                    {{ resort.end_season }}
+                </td>
+                <td>
+                    {{ resort.freeride }}
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% else %}
+        <h2>Курортов нет!</h2>
+    {% endif %}
+{% endblock content %}
