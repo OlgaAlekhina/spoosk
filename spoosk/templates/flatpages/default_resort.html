@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap&subset=cyrillic-ext" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/resorts.css' %}">
+    <script defer src="{% static 'js/script_filter.js' %}"></script>
+    <script defer src="{% static 'js/script.js' %}"></script>
+    <script defer src="{% static 'js/script_overlay.js' %}"></script>
+
+    {% block title %}
+
+    {% endblock title %}
+    <title>Роза Хутор</title>
+</head>
+<body>
+    <div class="container">
+        <header class="header header-white">
+            <div class="header-wrapper wrapper">
+
+                <div class="logo">
+                    <a href="{% url 'resorts' %}">
+                        <img src="{% static 'image/header/logo_blue.svg' %}" alt="Logo" width="190" height="57">
+                    </a>
+                </div>
+
+                <nav class="header-menu">
+                    <ul class="menu-list">
+                        <li class="menu-item">
+                            <a href="#" class="menu-link menu-link-blue">
+                                <img src="{% static 'image/header/header_search_icon_blue.svg' %}" alt="Поиск" width="28" height="28">
+                                <div class="name">Поиск</div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="#" class="menu-link menu-link-blue" id="open-modal-comparison-btn">
+                                <img src="{% static 'image/header/header_comparison_icon_blue.svg' %}" alt="Поиск" width="28" height="28">
+                                <div class="name">Сравнить</div>
+                            </a>
+                        </li>
+                        <div class="modal-comparison menu-link-blue" id="my-modal-comparison">
+                            <div class="modal-comparison_box">
+                                <div class="modal-comparison-block">
+                                    <a href="#" class="modal-comparison-text">Пожалуйста, выберите курорты для сравнения</a>
+                                </div>
+                            </div>
+                        </div>
+                        <li class="menu-item">
+                            <a href="#" class="menu-link menu-link-blue" id="open-modal-profile-btn">
+                                <img src="{% static 'image/header/header_account_icon_blue.svg' %}" alt="Поиск" width="28" height="28">
+                                <div class="name">Профиль</div>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+            </div>
+        </header>
+
+                            {% block content %}
+                            {{ flatpage.content }}
+                            {% endblock content %}
+        <div class="button-block-up">
+            <div class="wrapper">
+                <a href="#"><button class="button-up">Вверх</button></a>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="wrapper">
+                <div class="cards-wrapper">
+                    <a href="#">
+                        <img src="{% static 'image/footer/logo_footer.svg' %}" alt="Logo">
+                    </a>
+                    <!-- <a class="pp" href="http://pnpl.tech/">Проект разработан в рамках Pineapple Practice</a> -->
+                </div>
+            </div>
+        </footer>
+
+    </div>
+</body>
+</html>

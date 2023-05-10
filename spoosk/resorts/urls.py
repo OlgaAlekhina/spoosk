@@ -1,8 +1,8 @@
 from django.urls import path
-from .views import SkiResortList  # импортируем наше представление
+from .views import SkiResortList, FilterResortsView, SkiResortDetailView
 
 urlpatterns = [
-    # path — означает путь. В данном случае путь ко всем товарам у нас останется пустым, позже станет ясно почему
-    path('', SkiResortList.as_view()),
-    # т.к. сам по себе это класс, то нам надо представить этот класс в виде view. Для этого вызываем метод as_view
+    path('', SkiResortList.as_view(), name='resorts'),
+    path('base_searching_results/', FilterResortsView.as_view(), name='base_searching_results'),
+    path('<str:slug>/', SkiResortDetailView.as_view(), name='resort_detail'),
 ]

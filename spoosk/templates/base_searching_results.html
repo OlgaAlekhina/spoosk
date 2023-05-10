@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+{% load static %}
+{% load custom_filters %}
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap&subset=cyrillic-ext" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <script defer src="{% static 'js/script_filter.js' %}"></script>
+        <script defer src="{% static 'js/script.js' %}"></script>
+        <script defer src="{% static 'js/script_overlay.js' %}"></script>
+        <title>Результаты поиска</title>
+    </head>
+    <body>
+        <div class="container">
+            <header class="header header-white">
+                <div class="header-wrapper wrapper">
+                    <div class="logo">
+                        <a href="{% url 'resorts' %}">
+                            <img src="{% static 'image/header/logo_blue.svg' %}" alt="Logo" width="190" height="57">
+                        </a>
+                    </div>
+                    <nav class="header-menu">
+
+                        <ul class="menu-list">
+                            <li class="menu-item">
+                                <a href="#" class="menu-link menu-link-blue">
+                                    <img src="{% static 'image/header/header_search_icon_blue.svg' %}" alt="Поиск" width="28" height="28">
+                                    <div class="name">Поиск</div>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="#" class="menu-link menu-link-blue" id="open-modal-comparison-btn">
+                                    <img src="{% static 'image/header/header_comparison_icon_blue.svg' %}" alt="Поиск" width="28" height="28">
+                                    <div class="name">Сравнить</div>
+                                </a>
+                            </li>
+                                <div class="modal-comparison" id="my-modal-comparison">
+                                    <div class="modal-comparison_box">
+                                        <div class="modal-comparison-block">
+                                            <a href="#" class="modal-comparison-text">Пожалуйста, выберите курорты для сравнения</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            <li class="menu-item">
+                                <a href="#" class="menu-link menu-link-blue" id="open-modal-profile-btn">
+                                    <img src="{% static 'image/header/header_account_icon_blue.svg' %}" alt="Поиск" width="28" height="28">
+                                    <div class="name">Профиль</div>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+
+            <main class="page">
+                <section class="page-banner page_filters-banner">
+
+                    <div class="banner-image _img">
+                        <img src="{% static 'image/header/_sport_.png' %}" alt="Горы" class="img-filters-banner">
+                    </div>
+                </section>
+
+                <section class="page-form">
+                    <div class="wrapper">
+                        <div class="form">
+                            <form action="{% url 'base_searching_results' %}" method="get">
+                                <div class="form-content">
+                                    <div class="form-group">
+                                        <div class="form-group-title">Куда</div>
+                                        <div class="form-group-content">
+                                            {% if where %}
+                                                <button class="dropdown-button where" type="button">{{ where }}</button>
+                                            {% else %}
+                                                <button class="dropdown-button where" type="button">Все регионы</button>
+                                            {% endif %}
+
+                                                <ul class="dropdown-list">
+                                            {% for region in view.get_regions %}
+                                                <li class="dropdown-list-item" data-value="{{ region.region }}">{{ region.region }}</li>
+                                            {% endfor %}
+                                                </ul>
+                                                <input type="text" name="where" value="{{ where }}" class="dropdown-input-hidden">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="form-group-title">Когда</div>
+                                        <div class="form-group-content">
+                                            {% if when %}
+                                                <button class="dropdown-button when" type="button">{{ when }}</button>
+                                            {% else %}
+                                                <button class="dropdown-button when" type="button">Не важно</button>
+                                            {% endif %}
+                                                <ul class="dropdown-list">
+                                            {% for month in view.get_months %}
+                                                <li class="dropdown-list-item" data-value="{{ month.name }}">{{ month.name }}</li>
+                                            {% endfor %}
+                                                </ul>
+                                                <input type="text" name="when" value="{{ when }}" class="dropdown-input-hidden">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="form-group-title">Уровень катания</div>
+                                        <div class="form-group-content">
+                                        {% if riding_level %}
+                                            <button class="dropdown-button riding_level" type="button" name="riding_level">{{ riding_level }}</button>
+                                        {% else %}
+                                            <button class="dropdown-button riding_level" type="button" name="riding_level">Не важно</button>
+                                        {% endif %}
+                                            <ul class="dropdown-list">
+                                        {% for level in view.get_riding_level %}
+                                            <li class="dropdown-list-item" data-value="{{ level.name }}">{{ level.name }}</li>
+                                        {% endfor %}
+                                            </ul>
+                                            <input type="text" name="riding_level" value="{{ riding_level }}" class="dropdown-input-hidden">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button class="btn btn-blue2">
+                                            <img src="{% static 'image/filter/btn_map_icon.svg' %}" width="24" height="24"  alt="Карта">
+                                        </button>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button class="btn btn-result2">Подобрать</button>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="page-cards">
+                    <div class="wrapper">
+                        <div class="cards-wrapper">
+                            <h2 class="section-title2">{{ '' |string_formatting:resorts_length }}</h2>
+                            <div class="cards-content">
+                                {% if resorts %}
+
+        {% for resort in resorts %}
+<!--        {% for resort in filter.qs %-->
+                            <div class="card-column">
+                                <div class="card-item">
+
+                                    <div class="card-image">
+                                        <a href="{{ resort.get_absolute_url }}">
+                                            <img src={{ resort.image.url }} alt="Роза Хутор" class="image" width="348" height="240">
+                                            <div class="card-title">
+                                                <div class="card-title-name"><span>{{ resort.name }}</span></div>
+                                                <div class="card-title-additionally">
+                                                    <span class="card-title-country">Россия,</span>
+                                                    <span class="card-title-region">{{ resort.region }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-rating">
+                                                <div class="rating-content">
+                                                    <img src="{% static 'image/card/rating_icon.svg' %}" alt="Рейтинг">
+                                                    <div class="rating-value">4.9</div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+
+
+                                    <div class="card-body">
+                                        <div class="property">
+                                            <div class="property-name">Протяженность трасс:</div>
+                                            <div class="property-value">{{ resort.total_length_calculation }} км</div>
+                                        </div>
+
+                                        <div class="property">
+                                            <div class="property-name">Перепад высот:</div>
+                                            <div class="property-value">{{ resort.max_height_difference }} м</div>
+                                        </div>
+
+                                        <div class="count-trails">
+                                            <ul class="count-trails-list">
+                                                {% for i in resort.count_trail.items %}
+                                                    <li class="{{ i.0 }}">{{ i.1 }}</li>
+                                                {% endfor %}
+<!--                                                <li class="green">{{ resort.count_trail }}</li>-->
+<!--                                                <li class="blue">{{ resort.count_trail }}</li>-->
+<!--                                                <li class="red">{{ resort.count_trail }}</li>-->
+<!--                                                <li class="black">{{ resort.count_trail }}</li>-->
+                                            </ul>
+                                        </div>
+
+                                        <div class="property">
+                                            <div class="property-name">Однодневный ски-пасс:</div>
+                                            <div class="property-value">{{ resort.ski_pass_one.price }} ₽</div>
+                                        </div>
+
+                                        <div class="form-button">
+                                            <button class="cards-btn btn-white">
+                                                <svg viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M18 20.5V10.5" stroke="#D9D9D9" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M12 20.5V4.5" stroke="#D9D9D9" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M6 20.5V14.5" stroke="#D9D9D9" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </button>
+
+                                            <button class="cards-btn btn-white">
+                                                <svg viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12.0119 6.07196L10.9249 4.98496C10.4155 4.46862 9.80891 4.05816
+                                                    9.14015 3.7772C8.4714 3.49625 7.75368 3.35036 7.02831 3.34793C6.30295 3.3455 5.58426 3.48658 4.91364 3.76304C4.24302
+                                                    4.03951 3.63372 4.4459 3.1208 4.95881C2.60789 5.47173 2.2015 6.08104 1.92503 6.75166C1.64857 7.42228 1.50749 8.14096
+                                                    1.50992 8.86633C1.51235 9.59169 1.65824 10.3094 1.93919 10.9782C2.22014 11.6469 2.63061 12.2535 3.14695 12.763L11.9859
+                                                    21.602L11.9879 21.6L12.0139 21.626L20.8529 12.787C21.3693 12.2775 21.7797 11.6709 22.0607 11.0022C22.3417 10.3334 22.4875
+                                                    9.61569 22.49 8.89033C22.4924 8.16496 22.3513 7.44628 22.0749 6.77566C21.7984 6.10504 21.392 5.49573 20.8791 4.98281C20.3662
+                                                    4.4699 19.7569 4.06351 19.0862 3.78704C18.4156 3.51058 17.6969 3.3695 16.9716 3.37193C16.2462 3.37436 15.5285 3.52025 14.8597
+                                                    3.8012C14.191 4.08216 13.5844 4.49262 13.0749 5.00896L12.0119 6.07196ZM11.9879 18.772L16.9239 13.835L18.3739 12.435H18.3759L19.4389
+                                                    11.373C20.0954 10.7165 20.4641 9.82626 20.4641 8.89796C20.4641 7.96965 20.0954 7.07937 19.4389 6.42296C18.7825 5.76655 17.8923
+                                                    5.39778 16.9639 5.39778C16.0356 5.39778 15.1454 5.76655 14.4889 6.42296L12.0129 8.89996L12.0059 8.89296L9.51095 6.39996C8.85453
+                                                    5.74355 7.96425 5.37478 7.03594 5.37478C6.10764 5.37478 5.21736 5.74355 4.56095 6.39996C3.90453 7.05637 3.53577 7.94665 3.53577
+                                                    8.87496C3.53577 9.80326 3.90453 10.6935 4.56095 11.35L7.10094 13.89L7.10195 13.887L11.9879 18.773V18.772Z"
+                                                    fill="#D9D9D9" fill-opacity="1"/>
+                                                </svg>
+                                            </button>
+
+                                            <!-- <button class="cards-btn cards-btn-blue"><a href="pages/resorts.html">Подробнее</a></button> -->
+                                            <a href="{{ resort.get_absolute_url }}"><button class="cards-btn cards-btn-blue">Подробнее</button></a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+        {% endfor %}
+
+    {% else %}
+        <h2>Курорты не найдены</h2>
+    {% endif %}
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+
+            </main>
+            <div class="button-block-up">
+                <div class="wrapper">
+                    <a href="#"><button class="button-up">Вверх</button></a>
+                </div>
+            </div>
+            <footer class="footer">
+                <div class="logo">
+                    <a href="#">
+                        <img src="{% static 'image/footer/logo_footer.svg' %}" alt="Logo">
+                    </a>
+                </div>
+            </footer>
+
+        </div>
+    </body>
+</html>
