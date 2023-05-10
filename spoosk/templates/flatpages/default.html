@@ -135,6 +135,9 @@
                                         <ul class="dropdown-list">
                                         {% for level in view.get_riding_level %}
                                             <li class="dropdown-list-item" data-value="{{ level.name }}">{{ level.name }}</li>
+                                            <hr align="center" width="500" size="10" color="red" />
+                                            <div class="create-line"></div>
+
                                         {% endfor %}
                                         </ul>
                                         <input type="text" name="riding_level" value="{{ riding_level }}" class="dropdown-input-hidden">
