@@ -1,2 +1,5 @@
 venv
 .idea
+.env
+notes
+.env.template
