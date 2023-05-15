@@ -15,6 +15,7 @@ variables:
   SKAFFOLD_BUILD_ARTIFACTS: "tags.json"
   SKAFFOLD_FILENAME: ".ci/skaffold.yaml"
   DOCKER_TLS_CERTDIR: "/certs"
+  GIT_STRATEGY: clone
 
 build: &build_definition
   stage: build
