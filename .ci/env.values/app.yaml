@@ -83,7 +83,7 @@ initContainers:
       - -c
       - |
         set -ex;
-        cp -r /app/staticfiles/* /static;
+        cp -r /app/static/* /static;
         ls -la /static;
 
 ingress:
