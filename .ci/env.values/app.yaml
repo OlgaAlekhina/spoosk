@@ -1,0 +1,101 @@
+# nameOverride: "{{ .Values.GIT_REPO }}"
+nameOverride: "noted-django-app"
+
+livenessProbe:
+  tcpSocket:
+    port: http
+readinessProbe:
+  tcpSocket:
+    port: http
+
+ports:
+  - name: http
+    containerPort: 8080
+    protocol: TCP
+
+service:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: http
+    - port: 8081
+      targetPort: 8081
+      name: static
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 100Mi
+
+  # limits:
+  #   cpu: 200m
+  #   memory: 500Mi
+
+securityContext:
+  runAsUser: 1000
+  runAsGroup: 1000
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+
+volumeMounts:
+  - name: static-content
+    mountPath: /app/staticfiles
+  - name: media-content
+    mountPath: /app/media
+  - name: tmp-dir
+    mountPath: /tmp
+
+volumes:
+  - name: nginx-config
+    configMap:
+      name: "noted-django-app-nginx-config"
+      items:
+        - key: default.conf
+          path: default.conf
+  - name: static-content
+    emptyDir: {}
+  - name: media-content
+    persistentVolumeClaim:
+      claimName: noted-media-content
+  - name: tmp-dir
+    emptyDir: {}
+
+sidecars:
+  - name: nginx-static-sidecar
+    image: nginx:1.23.4
+    ports:
+      - name: static
+        containerPort: 8081
+        protocol: TCP
+    volumeMounts:
+      - name: static-content
+        mountPath: /app/staticfiles
+      - name: nginx-config
+        mountPath: /etc/nginx/conf.d/default.conf
+        subPath: default.conf
+      - name: media-content
+        mountPath: /app/media
+
+initContainers:
+  - name: static-content-copy
+    volumeMounts:
+      - name: static-content
+        mountPath: /static
+    command: ['bash']
+    args:
+      - -c
+      - |
+        set -ex;
+        cp -r /app/staticfiles/* /static;
+        ls -la /static;
+
+ingress:
+  enabled: true
+  tlsEnabled: true
+  servicePort: 8081
+  tlsSecretName: noted-django-app-tls
+  ingressClassName: nginx

@@ -1,0 +1,17 @@
+hooks:
+  jobs:
+    migrations:
+      enabled: true
+      env:
+        DB_HOST: spoosk-postgresql
+        DB_USER: spoosk-user
+        DB_NAME: spoosk
+        DB_PASSWORD:
+          valueFrom:
+            secretKeyRef:
+              name: spoosk-postgresql
+              key: password
+        DB_PORT: 5432
+        ALLOWED_HOSTS: "*"
+        DJANGO_DEBUG: "False"
+        PYTHONUNBUFFERED: "1"
