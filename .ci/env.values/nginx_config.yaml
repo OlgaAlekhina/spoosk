@@ -39,9 +39,4 @@ configMaps:
               alias /app/staticfiles/;
               autoindex off;
             }
-
-            location /media/ {
-              alias /app/media/;
-              autoindex off;
-            }
         }
