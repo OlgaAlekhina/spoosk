@@ -44,8 +44,6 @@ securityContext:
 volumeMounts:
   - name: static-content
     mountPath: /app/staticfiles
-  - name: media-content
-    mountPath: /app/media
   - name: tmp-dir
     mountPath: /tmp
 
@@ -58,9 +56,6 @@ volumes:
           path: default.conf
   - name: static-content
     emptyDir: {}
-  - name: media-content
-    persistentVolumeClaim:
-      claimName: noted-media-content
   - name: tmp-dir
     emptyDir: {}
 
@@ -77,8 +72,6 @@ sidecars:
       - name: nginx-config
         mountPath: /etc/nginx/conf.d/default.conf
         subPath: default.conf
-      - name: media-content
-        mountPath: /app/media
 
 initContainers:
   - name: static-content-copy
