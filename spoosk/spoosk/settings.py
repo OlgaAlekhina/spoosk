@@ -123,9 +123,9 @@ USE_TZ = True
 #     BASE_DIR / "static"
 # ]
 
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
-STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static')]
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 STATIC_IMAGE_URL = 'static/image'
 STATIC_IMAGE_ROOT = os.path.join(BASE_DIR, 'image')
