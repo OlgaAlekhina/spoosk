@@ -36,7 +36,7 @@ configMaps:
             }
 
             location /static/ {
-              alias /app/staticfiles/;
+              alias /app/static/;
               autoindex off;
             }
         }
