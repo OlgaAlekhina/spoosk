@@ -43,7 +43,7 @@ securityContext:
 
 volumeMounts:
   - name: static-content
-    mountPath: /app/staticfiles
+    mountPath: /app/static
   - name: tmp-dir
     mountPath: /tmp
 
