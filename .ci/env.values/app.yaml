@@ -1,5 +1,5 @@
 # nameOverride: "{{ .Values.GIT_REPO }}"
-nameOverride: "noted-django-app"
+nameOverride: "spoosk-django-app"
 
 livenessProbe:
   tcpSocket:
@@ -50,7 +50,7 @@ volumeMounts:
 volumes:
   - name: nginx-config
     configMap:
-      name: "noted-django-app-nginx-config"
+      name: "spoosk-django-app-nginx-config"
       items:
         - key: default.conf
           path: default.conf
