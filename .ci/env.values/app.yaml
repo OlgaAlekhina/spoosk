@@ -90,5 +90,5 @@ ingress:
   enabled: true
   tlsEnabled: true
   servicePort: 8081
-  tlsSecretName: noted-django-app-tls
+  tlsSecretName: spoosk-django-app-tls
   ingressClassName: nginx
