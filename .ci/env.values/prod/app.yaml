@@ -1,0 +1,28 @@
+env:
+  SECRET_KEY: "{{.Values.djangoSecretKey}}"
+  DB_HOST: spoosk-postgresql
+  DB_USER: spoosk-user
+  DB_NAME: spoosk
+  DB_PASSWORD:
+    valueFrom:
+      secretKeyRef:
+        name: spoosk-postgresql
+        key: password
+  DB_PORT: 5432
+  ALLOWED_HOSTS: "*"
+  DJANGO_DEBUG: "False"
+  PYTHONUNBUFFERED: "1"
+
+imagePullSecrets:
+  - name: gitlab-cr
+
+replicaCount: 1
+
+ingress:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-body-size: 16m
+  hosts:
+    - host: "{{ .Values.CI_FQDN }}"
+      paths:
+        - "/"

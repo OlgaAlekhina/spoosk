@@ -1,0 +1,17 @@
+image:
+  tag: 15.1.0-debian-11-r20
+
+global:
+  postgresql:
+    auth:
+      database: spoosk
+      username: spoosk-user
+
+primary:
+  pgHbaConfiguration: |
+    # TYPE  DATABASE        USER              ADDRESS                 METHOD
+    local   all             all                                       trust
+    host    all             all               127.0.0.1/32            trust
+    host    all             all               0.0.0.0/0               md5
+serviceAccount:
+  enabled: false

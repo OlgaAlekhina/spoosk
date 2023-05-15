@@ -1,0 +1,8 @@
+global:
+  postgresql:
+    auth:
+      password: nevermind
+
+persistence:
+  enabled: true
+  size: 5Gi
