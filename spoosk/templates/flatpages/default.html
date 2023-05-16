@@ -18,7 +18,7 @@
         <header class="header">
             <div class="header-wrapper wrapper">
                 <div class="logo">
-                    <a href="{% url 'resorts' %}">
+                    <a href="index.html">
                         <img src="{% static 'image/header/logo_white.svg' %}" alt="Logo" width="190" height="57">
                     </a>
                 </div>
@@ -135,8 +135,8 @@
                                         <ul class="dropdown-list">
                                         {% for level in view.get_riding_level %}
                                             <li class="dropdown-list-item" data-value="{{ level.name }}">{{ level.name }}</li>
-<!--                                            <hr align="center" width="500" size="10" color="red" />-->
-<!--                                            <div class="create-line"></div>-->
+                                            <hr align="center" width="500" size="10" color="red" />
+                                            <div class="create-line"></div>
 
                                         {% endfor %}
                                         </ul>

@@ -18,14 +18,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 ROOT_URLCONF = 'spoosk.urls'
 
-# SECRET_KEY = os.getenv('SECRET_KEY')
-SECRET_KEY = 'django-insecure-1f(irs+z-&_w@j!^a6#q_xweqv3g)dlw&jmcwvg2v#t8&k6$k!'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
-# DEBUG = os.getenv('DEBUG')
-DEBUG = True
+DEBUG = os.getenv('DEBUG')
 
-# ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS')]
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS')]
 
 # Application definition
 INSTALLED_APPS = [
@@ -96,26 +93,14 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': os.getenv('DB_NAME'),
-#         'USER': os.getenv('DB_USER'),
-#         'PASSWORD': os.getenv('DB_PASSWORD'),
-#         'HOST': os.getenv('DB_HOST'),
-#         'PORT': os.getenv('DB_PORT')
-#     }
-# }
-
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'spoosk',
-        'USER': 'adminkate',
-        'PASSWORD': 'adminkate',
-        'HOST': 'localhost',
-        'PORT': '5432'
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT')
     }
 }
 
@@ -134,14 +119,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATICFILES_DIRS = [
-
-    BASE_DIR / "static"
-]
+# STATICFILES_DIRS = [
+#     BASE_DIR / "static"
+# ]
 
 # STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static')]
 STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 STATIC_IMAGE_URL = 'static/image'
 STATIC_IMAGE_ROOT = os.path.join(BASE_DIR, 'image')
