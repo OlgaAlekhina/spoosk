@@ -6,17 +6,34 @@ const main = document.querySelector('main')
 
 searchBth.addEventListener('click', function (e) {
     e.stopPropagation();
-    searchBox.classList.add('active');
     searchInput.classList.add('active');
     cancelBth.classList.add('active');
+    searchBth.classList.add('active');
 });
 
 
-document.addEventListener('click', function (e) {
+cancelBth.addEventListener('click', function (e) {
     if (e.target !== searchBox) {
-        searchBox.classList.remove('active');
         searchInput.classList.remove('active');
         cancelBth.classList.remove('active');
+        searchBth.classList.remove('active');
+        searchInput.value = "";
+    }
+});
+
+
+main.addEventListener('click', function (e) {
+    if (e.target !== searchBox) {
+        searchInput.classList.remove('active');
+        cancelBth.classList.remove('active');
+        searchBth.classList.remove('active');
+        searchInput.value = "";
+    }
+});
+
+main.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+        searchInput.innerHTML = "";
     }
 });
 
