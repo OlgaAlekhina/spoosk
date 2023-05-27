@@ -1,9 +1,14 @@
+import json
+
 from django.shortcuts import render
+from django.urls import reverse
 from django.views import View
+from django.views.decorators.http import require_POST
 from django.views.generic import ListView
 
 from .filters import ResortFilter
 from .models import SkiResort, Month, RidingLevel
+from django.http import JsonResponse
 
 
 class Region:
@@ -128,34 +133,8 @@ class FilterResortsView(Region, ListView):
 
         return self.filterset
 
-
-
-        # if where == 'Все регионы' and when == 'Не важно' and riding_level == 'Не важно':
-        #     self.filterset = SkiResort.objects.all()
-        # if where != 'Все регионы' and when == 'Не важно' and riding_level == 'Не важно':
-        #     self.filterset = qs1
-        # if where == 'Все регионы' and when != 'Не важно' and riding_level == 'Не важно':
-        #     self.filterset = qs2
-        # if where == 'Все регионы' and when == 'Не важно' and riding_level != 'Не важно':
-        #     self.filterset = qs3
-        # if where != 'Все регионы' and when != 'Не важно' and riding_level == 'Не важно':
-        #     self.filterset = qs1 & qs2
-        # if where != 'Все регионы' and when == 'Не важно' and riding_level != 'Не важно':
-        #     self.filterset = qs1 & qs3
-        # if where == 'Все регионы' and when != 'Не важно' and riding_level != 'Не важно':
-        #     self.filterset = qs2 & qs3
-        # if where != 'Все регионы' and when != 'Не важно' and riding_level != 'Не важно':
-        #     self.filterset = qs2 & qs3 & qs1
-        # return self.filterset
-
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        # where = self.request.GET.get('where')
-        # when = self.request.GET.get('when')
-        # context['where'] = where
-        # context['when'] = when
 
         where = self.request.GET.get('where')
         context['where'] = where
@@ -172,41 +151,108 @@ class FilterResortsView(Region, ListView):
         return context
 
 
-# class FilterResortsView1(Region, ListView):
-#     queryset = SkiResort.objects.all()
-#     template_name = 'base_searching_results.html'
-#     context_object_name = 'resorts'
+# def autocomplete(request):
+#     query = request.GET.get('search')
+#     results = list()
+#     if query:
+#         # resorts = SkiResort.objects.filter(name__startswish=query)
+#         resorts = SkiResort.objects.filter(name__icontains=query)
+#         for resort in resorts:
+#             results.append({
+#                 'name': resort.name
+#             })
 #
-# def get_queryset(self): queryset = SkiResort.objects.filter(region__in=self.request.GET.getlist("region"),
-# begin_season__in=self.request.GET.getlist("month")) return queryset
+#     return JsonResponse({
+#         'status': True,
+#         'results': results
+#     }, json_dumps_params={'ensure_ascii': False})
 
-# def get_context_data(self, **kwargs):
-#     context = super().get_context_data(**kwargs)
-#     # context['form'] = self.filterset.form
-#     # where = ResortFilter(self.request.GET.get('where'))
-#     # context['where'] = where
-#     region = self.request.GET.get('region')
-#     context['region'] = region
-#     begin_season = self.request.GET.get('begin_season')
-#     context['begin_season'] = begin_season
-#     context['resorts_length'] = len(self.filterset.qs)
-#     return context
+# def autocomplete(request):
+#     if 'term' in request.GET:
+#         qs = SkiResort.objects.filter(name__icontains=request.GET.get('term'))
+#         results = []
+#         for resort in qs:
+#             resort_json = {}
+#             resort_json['name'] = resort.name
+#             resort_json['url'] = resort.get_absolute_url()
+#             results.append(resort_json)
+#
+#         return JsonResponse(results, safe=False, json_dumps_params={'ensure_ascii': False})
 
-# class SearchingResultsList(Region, ListView):
-#     model = SkiResort
-#     template_name = 'searching_results.html'
-#     context_object_name = 'resorts'
+def autocomplete(request):
+    if 'term' in request.GET:
+        qs = SkiResort.objects.filter(name__istartswith=request.GET.get('term'))
+        names = list()
+        for resort in qs:
+            names.append(resort.name)
+        # titles = [product.title for product in qs]
+        return JsonResponse(names, safe=False, json_dumps_params={'ensure_ascii': False})
+#     # return render(request, 'default.html')
+
+# def productListAjax(request):
+#     if 'term' in request.GET:
+#         qs = SkiResort.objects.filter(name__icontains=request.GET.get('term'))
+#         names = list()
+#         for resort in qs:
+#             names.append(resort.name)
 #
-#     def get_queryset(self):
-#         # queryset = SkiResort.objects.filter('region__in' == self.request.GET.getlist("region"))
-#         queryset = SkiResort.objects.filter('region__in' == self.request.GET.get('where', ''))
-#         return queryset
+#         return JsonResponse(names, safe=False, json_dumps_params={'ensure_ascii': False})
+    # return render(request, 'default.html')
+
+# def search(request):
+#     query = request.GET.get('search')
+#     resorts = SkiResort.objects.filter(name__icontains=query)
 #
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['total_length_calculation'] = SkiResort.total_length_calculation
-#         context['max_height_difference'] = SkiResort.max_height_difference
-#         context['count_trail'] = SkiResort.count_trail
-#         context['ski_pass_one'] = SkiResort.ski_pass_one
+#     context = {
+#         'resorts': resorts
+#     }
 #
-#         return context
+#     return render(request, 'search.html', context)
+
+
+# def autosuggest(request):
+#     query_original = request.GET.get('search')
+#     queryset = SkiResort.objects.filter(name__icontains=query_original)
+#     mylist = []
+#     mylist += [x.name for x in queryset]
+#     return JsonResponse(mylist, safe=False)
+
+class Search(ListView):
+    """Поиск курортов"""
+    model = SkiResort
+    queryset = SkiResort.objects.all()
+    template_name = 'search.html'
+    context_object_name = 'resorts'
+
+    def get_queryset(self):
+        query = self.request.GET.get('search')
+        queryset = SkiResort.objects.filter(name__istartswith=query)
+        return queryset
+
+
+    # def get(self, request, slug):
+    #     query = self.request.GET.get('search')
+    #     queryset = SkiResort.objects.filter(name__icontains=query)
+    #     return render(request, 'resort_detail.html', {"resorts": queryset})
+
+
+    # def get_context_data(self, *args, **kwargs):
+    #     context = super().get_context_data(*args, **kwargs)
+    #     context['s'] = self.request.GET('search')
+    #     return context
+
+    # def get(self, request, slug):
+    #     resort = SkiResort.objects.get(name=slug)
+    #     return render(request, 'resort_detail.html', {"resort": resort})
+
+
+
+
+    # model = SkiResort
+    # template_name = 'resort_detail.html'
+    # context_object_name = 'resort'
+    # slug_field = "name"
+
+    # def get(self, request, slug):
+    #     resort = SkiResort.objects.get(name=slug)
+    #     return render(request, 'resort_detail.html', {"resort": resort})
