@@ -26,10 +26,10 @@ class SkiPass(models.Model):
     id_resort = models.ForeignKey('SkiResort', models.DO_NOTHING, db_column='ID_resort')  # Field name made lowercase.
     type = models.CharField(max_length=200, blank=True, null=True)
     name = models.CharField(max_length=200, blank=True, null=True)
-    adult = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
-    childlike = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
-    price = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
-    unified = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+    adult = models.IntegerField(blank=True, null=True)
+    childlike = models.IntegerField(blank=True, null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    unified = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = True
