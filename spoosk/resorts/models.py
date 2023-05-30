@@ -126,8 +126,8 @@ class SkyTrail(models.Model):
     id_resort = models.ForeignKey(SkiResort, models.DO_NOTHING, db_column='ID_resort')  # Field name made lowercase.
     name = models.CharField(max_length=200, blank=True, null=True)
     complexity = models.CharField(max_length=5, blank=True, null=True)
-    extent = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
-    height_difference = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+    extent = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    height_difference = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
     class Meta:
         managed = True
