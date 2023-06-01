@@ -159,6 +159,17 @@ class RidingLevel(models.Model):
         managed = True
         db_table = 'riding_level'
 
+
+class Review(models.Model):
+    text_review = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'review'
+
+    def __str__(self):
+        return {self.text_review}
+
 # python manage.py shell_plus --print-sql
 #  from django.db.models import *
 
