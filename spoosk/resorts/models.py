@@ -167,9 +167,6 @@ class Review(models.Model):
         managed = True
         db_table = 'review'
 
-    def __str__(self):
-        return {self.text_review}
-
 # python manage.py shell_plus --print-sql
 #  from django.db.models import *
 
