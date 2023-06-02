@@ -539,8 +539,11 @@ body {
     padding-bottom: 16px;
     padding-left: 24px;
     padding-right: 24px;
-}
 
+    cursor: default;
+    opacity: 0.3;
+}
+ /*
 .btn:hover {
     opacity: 0.7;
     cursor: pointer;
@@ -550,6 +553,7 @@ body {
     opacity: 0.7;
     outline: none;
 }
+*/
 
 .btn-result {
     min-width: 244px;
