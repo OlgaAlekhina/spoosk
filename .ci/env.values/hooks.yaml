@@ -13,6 +13,5 @@ hooks:
         - |
           set -ex;
           python manage.py makemigrations --no-input -v 3 --force-color;
-          ls -l resorts/migrations/*;
           python manage.py makemigrations --merge --no-input -v 3 --force-color;
           python manage.py migrate --force-color -v 3;
