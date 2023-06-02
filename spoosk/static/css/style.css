@@ -1326,9 +1326,10 @@ body {
 }
 
 .btn-white:hover {
-    cursor: pointer;
+    /*cursor: pointer;*/
+    cursor: default;
 }
-
+/*
 .btn-white:hover svg path {
     stroke-opacity: 1;
     fill-rule: nonzero;
@@ -1340,12 +1341,9 @@ body {
 
 .btn-white:hover {
     border: 2px solid #005FF9;
-    /* transition: .5s; */
-}
 
-/* .btn-white svg path {
-    transition: fill .5s, stroke .5s;
-} */
+}
+*/
 
 .cards-btn-blue {
     padding: 12px 33px;
