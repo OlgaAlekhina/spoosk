@@ -46,7 +46,7 @@
 
 .basic-info-left {
     padding: 0px 10px 10px 10px;
-    margin: 0px 153px 0px 83px;
+    margin: 0px 100px 0px 80px;
 }
 
 .basic-info-item {
@@ -63,7 +63,8 @@
   }
 
 .basic-info-right {
-    padding: 0px 0px 10px 53px;
+    padding: 20px 40px 20px 20px;
+    margin-left: 50px;
 }
 
 .basic-info-description {
@@ -120,6 +121,7 @@
 
 .resort-button {
     display: flex;
+    justify-content: center;
 }
 
 .resort-button-box {
@@ -132,7 +134,7 @@
 
 .resort-btn {
     border-radius: 8px;
-    user-select: none; 
+    user-select: none;
     cursor: pointer;
     padding: 17px 43px;
     border: 2px solid #FAA800;
@@ -164,8 +166,8 @@
 }
 
 .resort-description {
-    max-width: 604px;
-
+    max-width: 570px;
+    text-align: justify;
     font-size: 20px;
     line-height: 28px;
     font-weight: 400;
