@@ -157,9 +157,13 @@ body {
     margin: 0 31px 8px 31px;
 }
 
-.comparison-box, profile-box {
-    focus: none;
+.comparison-box, .profile-box {
+    opacity: 0.3;
 }
+
+.comparison-box a, .profile-box a {
+    cursor: default;
+    pointer-events: none;
 
 .search-box {
     position: relative;
