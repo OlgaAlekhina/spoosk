@@ -350,13 +350,16 @@
 
     color: #fff;
 
-    cursor: pointer;
-}
+    /*cursor: pointer;*/
 
+    cursor: default;
+    opacity: 0.3;
+}
+/*
 .resort-map:hover {
     opacity: 0.6;
 }
-
+*/
 /*-------------Prise-skipass-------------*/
 
 .table-title {
