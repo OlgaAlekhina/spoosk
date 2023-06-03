@@ -164,6 +164,87 @@ body {
 .comparison-box a, .profile-box a {
     cursor: default;
     pointer-events: none;
+}
+
+/* --------PAGE-------------------------------------------------- */
+.page {
+    flex: 1 1 auto;
+}
+
+.page-banner {
+    position: relative;
+}
+
+.page-form {
+    margin: -81px 0px 0px 0px;
+}
+
+.page-cards {
+    padding-top: 86px;
+}
+
+.page-cards-search {
+    margin-top: -81px;
+}
+
+.page-reviews {
+    padding-top: 86px;
+    padding-bottom: 192px;
+}
+
+.section-title {
+    margin-bottom: 40px;
+
+    color: #0042AD;
+    font-size: 37px;
+    line-height: 42px;
+    font-weight: 600;
+}
+
+/* --------BANNER-------------------------------------------------- */
+
+
+.banner-image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+
+}
+
+/* @media (max-width: 1300px) {
+    .banner-image img {
+        object-position: right;
+    }
+} */
+
+
+.banner-content {
+    position: relative;
+    margin-left: 57px;
+    /* top: 235px; */
+    /* right: 106px; */
+    max-width: 593px;
+    padding: 238px 0px 221px 0px;
+
+    z-index: 2;
+}
+
+.banner-content-title {
+    margin-bottom: 15px;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 70px;
+    color: #fff;
+}
+
+.banner-content-text {
+    font-weight: 500;
+    font-size: 28px;
+    line-height: 33px;
+    color: #fff;
+}
 
 .search-box {
     position: relative;
@@ -263,89 +344,6 @@ body {
     cursor: pointer;
     z-index: 25;
 }
-
-
-
-/* --------PAGE-------------------------------------------------- */
-.page {
-    flex: 1 1 auto;
-}
-
-.page-banner {
-    position: relative;
-}
-
-.page-form {
-    margin: -81px 0px 0px 0px;
-}
-
-.page-cards {
-    padding-top: 86px;
-}
-
-.page-cards-search {
-    margin-top: -81px;
-}
-
-.page-reviews {
-    padding-top: 86px;
-    padding-bottom: 192px;
-}
-
-.section-title {
-    margin-bottom: 40px;
-
-    color: #0042AD;
-    font-size: 37px;
-    line-height: 42px;
-    font-weight: 600;
-}
-
-/* --------BANNER-------------------------------------------------- */
-
-
-.banner-image {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-
-}
-
-/* @media (max-width: 1300px) {
-    .banner-image img {
-        object-position: right;
-    }
-} */
-
-
-.banner-content {
-    position: relative;
-    margin-left: 57px;
-    /* top: 235px; */
-    /* right: 106px; */
-    max-width: 593px;
-    padding: 238px 0px 221px 0px;
-
-    z-index: 2;
-}
-
-.banner-content-title {
-    margin-bottom: 15px;
-    font-weight: 700;
-    font-size: 48px;
-    line-height: 70px;
-    color: #fff;
-}
-
-.banner-content-text {
-    font-weight: 500;
-    font-size: 28px;
-    line-height: 33px;
-    color: #fff;
-}
-
 
 
 /*-----form------------------------------------------ */
@@ -497,7 +495,7 @@ body {
     width: 100%;
 
     z-index: 4;
-} 
+}
 
 .dropdown-list--visible {
     display: block;
@@ -543,7 +541,7 @@ body {
     cursor: default;
     opacity: 0.3;
 }
- /*
+/*
 .btn:hover {
     opacity: 0.7;
     cursor: pointer;
@@ -576,7 +574,7 @@ body {
         padding-top: 14px;
         padding-bottom: 14px;
         padding-left: 10px;
-        padding-right: 10px;   
+        padding-right: 10px;
     }
 } */
 
@@ -835,7 +833,7 @@ body {
     display: block;
     width: 42.3px;
     border-radius: 25px;
-    border-bottom: 6px solid #000000; 
+    border-bottom: 6px solid #000000;
 }
 
 .line-none {
@@ -865,7 +863,7 @@ body {
     padding-left: 60px;
     margin-top: 9px;
 }
- 
+
 .lift-block-name2 {
      padding-left: 53px;
      margin-top: 9px;
@@ -897,7 +895,7 @@ body {
     padding-left: 60px;
     margin-top: 14px;
 }
- 
+
 .school-block-name2 {
      padding-left: 39px;
      margin-top: 14px;
@@ -926,7 +924,7 @@ body {
     width: 100%;
     margin-left: 90px;
     margin-top: 25px;
-} 
+}
 
 .slider {
     appearance: none;
@@ -1074,7 +1072,7 @@ body {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    margin-top: 75px; 
+    margin-top: 75px;
 }
 
 .button-block1 {
@@ -1195,7 +1193,7 @@ body {
 	top: 0px;
 	left: 275px;
     padding: 5px 10px;
-    
+
     background-color: #fff;
     border: none;
     border-radius: 0px 0px 5px 5px;
@@ -1247,7 +1245,7 @@ body {
 .count-trails {
     width: 100%;
     margin-bottom: 12px;
-    
+
     font-size: 14px;
     line-height: 16px;
     font-weight: 500;
@@ -1300,7 +1298,7 @@ body {
 
 .cards-btn {
     border-radius: 8px;
-    user-select: none; 
+    user-select: none;
     cursor: pointer;
 
     line-height: 19px;
@@ -1344,7 +1342,6 @@ body {
 
 }
 */
-
 .cards-btn-blue {
     padding: 12px 33px;
     background-color: #005FF9;
@@ -1446,7 +1443,7 @@ body {
 .review-content-text {
     display: inline-block;
     margin-left: 22px;
-} 
+}
 
 .review-author-name {
     font-size: 20px;
@@ -1525,7 +1522,7 @@ body {
 .btn-reviews {
     display: none;
     margin-left: 350px;
-    margin-right: 24px;  
+    margin-right: 24px;
     font-size: 16px;
     line-height: 19px;
     font-weight: 500;
@@ -1548,7 +1545,7 @@ body {
     cursor: pointer;
 }
 
-.up { 
+.up {
     position: absolute;
     bottom: -94px;
     right: 10px;
@@ -1574,7 +1571,7 @@ body {
     font-weight: 400;
 }
 
-.pp { 
+.pp {
     position: absolute;
     bottom: 0px;
     right: 10px;
@@ -1651,3 +1648,4 @@ body {
     color: #005FF9;
     cursor: pointer;
 }
+
