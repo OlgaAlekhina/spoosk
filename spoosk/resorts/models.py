@@ -161,7 +161,11 @@ class RidingLevel(models.Model):
 
 
 class Review(models.Model):
-    text_review = models.TextField(blank=True, null=True)
+    author = models.CharField(max_length=20, blank=True, null=True, verbose_name='Ваше имя')
+    riding_level = models.ForeignKey(RidingLevel, models.DO_NOTHING, verbose_name='Ваш уровень катания', blank=True, null=True, )
+    resort = models.ForeignKey(SkiResort,  models.DO_NOTHING, db_column='ID_resort')
+    text_review = models.TextField(blank=True, null=True, verbose_name='Ваш отзыв')
+    # image_review = models.ImageField(upload_to="images/", null=True, blank=True)
 
     class Meta:
         managed = True
