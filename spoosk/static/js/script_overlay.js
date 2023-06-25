@@ -1,3 +1,28 @@
+// Открыть модальное окно добавления отзывов
+document.getElementById("open-modal-review").addEventListener("click", function() {
+    document.getElementById("modal-add-review").classList.add("open")
+})
+// Закрыть модальное окно добавления отзывов
+document.getElementById("close-modal-add-review").addEventListener("click", function() {
+    document.getElementById("modal-add-review").classList.remove("open")
+})
+// Закрыть модальное окно при нажатии на Esc
+window.addEventListener('keydown', (e) => {
+    if (e.key === "Escape") {
+        document.getElementById("modal-add-review").classList.remove("open")
+    }
+});
+// Закрыть модальное окно при клике вне его
+document.querySelector("#modal-add-review .modal-add-review__box").addEventListener('click', event => {
+    event._isClickWithInModal = true;
+});
+document.getElementById("modal-add-review").addEventListener('click', event => {
+    if (event._isClickWithInModal) return;
+    event.currentTarget.classList.remove('open');
+});
+
+
+
 
 // Открыть модальное окно сравнения
 document.getElementById("open-modal-comparison-btn").addEventListener("click", function() {
