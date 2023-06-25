@@ -491,3 +491,169 @@
 }
 
 
+/*-------------Reviews-------------*/
+
+.section-title-reviews {
+    text-align: center;
+}
+
+.btn-container {
+    text-align: center;
+}
+
+.resort-add-review {
+    margin-top: 28px;
+    padding: 14px 40px;
+    background-color: #005FF9;
+
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 28px;
+
+    color: #fff;
+
+    cursor: pointer;
+
+}
+
+.resort-add-review:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+/*
+.btn:focus {
+    opacity: 0.7;
+    outline: none;
+}
+*/
+.form__group {
+    margin-bottom: 24px;
+}
+
+.form__input {
+    margin-top: 8px;
+    padding: 10px 160px 10px 20px;
+    border-radius: 12px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    font-family: 'Raleway', 'Helvetica', 'Arial', sans-serif;
+    color: #B1B2B7;
+}
+
+.form__label {
+    margin-top: 8px;
+
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 19px;
+    color: #000000;
+}
+
+.form__text {
+    margin-top: 8px;
+    padding: 10px 20px 10px 20px;
+    border-radius: 12px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    font-family: 'Raleway', 'Helvetica', 'Arial', sans-serif;
+    color: #B1B2B7;
+}
+
+.form__category {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  font-size: 16px;
+  color: #333;
+}
+
+.form__button {
+    padding: 12px 48px 12px 48px;
+    background-color: #B1B2B7;
+    border-radius: 8px;
+
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+
+}
+
+
+
+
+/* свойства модального окна по умолчанию */
+
+.modal-add-review {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9998;
+    background-color: rgba(0, 0, 0, .3);
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility .4s, opacity .4s;
+
+}
+
+.modal-add-review__box {
+    position: relative;
+    max-width: 900px;
+    padding: 15px;
+    margin: 30px 15px;
+    z-index: 1;
+    background-color: white;
+    border-radius: 11px;
+}
+
+.modal-add-review.open {
+    visibility: visible;
+    opacity: 1;
+}
+
+.resort-name-review {
+    font-size: 37px;
+    line-height: 42px;
+    font-weight: 700;
+
+    color: #005FF9;
+}
+
+.resort-region-review {
+    margin-bottom: 24px;
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 500;
+
+    color: #B1B2B7;
+}
+
+.modal-add-review__close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    border: none;
+    background-color: transparent;
+    padding: 5px;
+    z-index: 5;
+    cursor: pointer;
+}
+
+.modal-add-review__close svg path {
+    transition: fill 4.s;
+}
+.modal-add-review__close:hover svg path {
+    fill: blue;
+}
