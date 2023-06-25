@@ -7,6 +7,7 @@ from django.views.decorators.http import require_POST
 from django.views.generic import ListView
 
 from .filters import ResortFilter
+from .forms import ReviewForm
 from .models import SkiResort, Month, RidingLevel, Review
 from django.http import JsonResponse
 
@@ -70,24 +71,24 @@ class SkiResortDetailView(View):
 
     def get(self, request, slug):
         resort = SkiResort.objects.get(name=slug)
-        return render(request, 'resort_detail.html', {"resort": resort})
-        # reviews_list = Review.objects.filter(resort=resort).order_by('-id')
-        # reviews = reviews_list
-        #
-        # form = Review()
-        # return render(request, 'resort_detail.html', {"resort": resort, "reviews": reviews, "form": form})
+        # return render(request, 'resort_detail.html', {"resort": resort})
+        reviews_list = Review.objects.filter(resort=resort).order_by('-id')
+        reviews = reviews_list
 
-    # def post(self, request, slug):
-    #     resort = SkiResort.objects.get(name=slug)
-    #     form = Review(request.POST)
-    #     if form.is_valid():
-    #         review = form.save(commit=False)
-    #         review.resort = resort
-    #         review.save()
-    #         return redirect('resort_detail', slug=slug)
-    #     else:
-    #         reviews = Review.objects.filter(resort=resort)
-    #         return render(request, 'resort_detail.html', {"resort": resort, "reviews": reviews, "form": form})
+        form = ReviewForm()
+        return render(request, 'resort_detail.html', {"resort": resort, "reviews": reviews, "form": form})
+
+    def post(self, request, slug):
+        resort = SkiResort.objects.get(name=slug)
+        form = Review(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.resort = resort
+            review.save()
+            return redirect('resort_detail', slug=slug)
+        else:
+            reviews = Review.objects.filter(resort=resort)
+            return render(request, 'resort_detail.html', {"resort": resort, "reviews": reviews, "form": form})
 
 
 class FilterResortsView(Region, ListView):
