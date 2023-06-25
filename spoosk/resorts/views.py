@@ -70,23 +70,24 @@ class SkiResortDetailView(View):
 
     def get(self, request, slug):
         resort = SkiResort.objects.get(name=slug)
-        reviews_list = Review.objects.filter(resort=resort).order_by('-id')
-        reviews = reviews_list
+        return render(request, 'resort_detail.html', {"resort": resort})
+        # reviews_list = Review.objects.filter(resort=resort).order_by('-id')
+        # reviews = reviews_list
+        #
+        # form = Review()
+        # return render(request, 'resort_detail.html', {"resort": resort, "reviews": reviews, "form": form})
 
-        form = Review()
-        return render(request, 'resort_detail.html', {"resort": resort, "reviews": reviews, "form": form})
-
-    def post(self, request, slug):
-        resort = SkiResort.objects.get(name=slug)
-        form = Review(request.POST)
-        if form.is_valid():
-            review = form.save(commit=False)
-            review.resort = resort
-            review.save()
-            return redirect('resort_detail', slug=slug)
-        else:
-            reviews = Review.objects.filter(resort=resort)
-            return render(request, 'resort_detail.html', {"resort": resort, "reviews": reviews, "form": form})
+    # def post(self, request, slug):
+    #     resort = SkiResort.objects.get(name=slug)
+    #     form = Review(request.POST)
+    #     if form.is_valid():
+    #         review = form.save(commit=False)
+    #         review.resort = resort
+    #         review.save()
+    #         return redirect('resort_detail', slug=slug)
+    #     else:
+    #         reviews = Review.objects.filter(resort=resort)
+    #         return render(request, 'resort_detail.html', {"resort": resort, "reviews": reviews, "form": form})
 
 
 class FilterResortsView(Region, ListView):
