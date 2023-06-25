@@ -159,6 +159,9 @@ class RidingLevel(models.Model):
         managed = True
         db_table = 'riding_level'
 
+    def __str__(self):
+        return f'{self.name}'
+
 
 class Review(models.Model):
     author = models.CharField(max_length=20, blank=True, null=True, verbose_name='Ваше имя')
