@@ -40,14 +40,14 @@ profiles:
       helm:
         flags: *helm-flags
         releases:
-          - <<: *postgres-release
-            name: &postgres-release-name "spoosk-postgresql"
-            namespace: default
-            setValueTemplates:
-              global.postgresql.auth.password: "{{.CI_POSTGRES_USER_PASSWORD}}"
-            valuesFiles:
-              - ".ci/env.values/postgresql.yaml"
-              - ".ci/env.values/prod/postgresql.yaml"
+          # - <<: *postgres-release
+          #   name: &postgres-release-name "spoosk-postgresql"
+          #   namespace: default
+          #   setValueTemplates:
+          #     global.postgresql.auth.password: "{{.CI_POSTGRES_USER_PASSWORD}}"
+          #   valuesFiles:
+          #     - ".ci/env.values/postgresql.yaml"
+          #     - ".ci/env.values/prod/postgresql.yaml"
           - <<: *app-release
             name: &app-release-name "spoosk-django-app"
             namespace: default
