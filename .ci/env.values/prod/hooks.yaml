@@ -3,15 +3,23 @@ hooks:
     migrations:
       enabled: true
       env:
-        DB_HOST: spoosk-postgresql
-        DB_USER: spoosk-user
-        DB_NAME: spoosk
+        DB_HOST: main-postgres.default.svc.cluster.local
+        DB_USER:
+          valueFrom:
+            secretKeyRef:
+              name: spoosk-pgsql-creds
+              key: user
+        DB_NAME:
+          valueFrom:
+            secretKeyRef:
+              name: spoosk-pgsql-creds
+              key: database
         DB_PASSWORD:
           valueFrom:
             secretKeyRef:
-              name: spoosk-postgresql
+              name: spoosk-pgsql-creds
               key: password
-        DB_PORT: 5432
+        DB_PORT: 6432
         ALLOWED_HOSTS: "*"
         DJANGO_DEBUG: "False"
         PYTHONUNBUFFERED: "1"
