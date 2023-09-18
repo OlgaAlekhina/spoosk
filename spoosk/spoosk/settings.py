@@ -18,12 +18,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 ROOT_URLCONF = 'spoosk.urls'
 
-SECRET_KEY = os.getenv('SECRET_KEY')
+# SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = 'django-insecure-1f(irs+z-&_w@j!^a6#q_xweqv3g)dlw&jmcwvg2v#t8&k6$k!'
 
+# DEBUG = os.getenv('DEBUG')
 DEBUG = os.getenv('DEBUG')
 
+# ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS')]
 ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS')]
-
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
