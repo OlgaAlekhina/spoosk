@@ -32,11 +32,11 @@ loginBtn.onclick = (()=>{
 // Открыть модальное регистрации/авторизации
 document.getElementById("open-modal-profile-btn").addEventListener("click", function() {
     document.getElementById("modal-signup-signin").classList.add("open")
-})
+});
 // Закрыть модальное окно добавления регистрации/авторизации
 document.getElementById("close-modal-profile-btn").addEventListener("click", function() {
     document.getElementById("modal-signup-signin").classList.remove("open")
-})
+});
 // Закрыть модальное окно при нажатии на Esc
 window.addEventListener('keydown', (e) => {
     if (e.key === "Escape") {
@@ -48,6 +48,12 @@ document.querySelector("#modal-signup-signin .form-register__box").addEventListe
     event._isClickWithInModal = true;
 });
 document.getElementById("modal-signup-signin").addEventListener('click', event => {
-    if (event._isClickWithInModal) return;
+    if (event._isClickWithInModal) return
     event.currentTarget.classList.remove('open');
+});
+
+
+document.getElementById("forgot-password-btn").addEventListener("click", function() {
+    document.getElementById("modal-signup-signin").classList.remove("open")
+    document.getElementById("modal-account-recovery").classList.add("open")
 });
