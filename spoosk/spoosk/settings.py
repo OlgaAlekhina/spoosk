@@ -13,19 +13,20 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 
+from dotenv import load_dotenv
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 ROOT_URLCONF = 'spoosk.urls'
 
-# SECRET_KEY = os.getenv('SECRET_KEY')
-SECRET_KEY = 'django-insecure-1f(irs+z-&_w@j!^a6#q_xweqv3g)dlw&jmcwvg2v#t8&k6$k!'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
-# DEBUG = os.getenv('DEBUG')
 DEBUG = os.getenv('DEBUG')
 
-# ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS')]
 ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS')]
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -125,9 +126,9 @@ USE_TZ = True
 #     BASE_DIR / "static"
 # ]
 
-# STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static')]
+STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static')]
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 STATIC_IMAGE_URL = 'static/image'
 STATIC_IMAGE_ROOT = os.path.join(BASE_DIR, 'image')
