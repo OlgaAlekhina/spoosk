@@ -1650,6 +1650,44 @@ body {
     cursor: pointer;
 }
 
+/*------------Modal account-recovery--------------------------------------------*/
+
+.modal-account-recovery {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 99998;
+    background-color: rgba(0,0,0, .3);
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .4s, visibility .4s;
+}
+
+.modal-account-recovery.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.form-register__box-rec {
+  position: relative;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  z-index: 1;
+  text-align: center;
+  width: 610px;
+  background: #fff;
+  padding: 36px 74px;
+  border-radius: 20px;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+}
+
+
 /*------------Modal signup/signin--------------------------------------------*/
 
 .modal-signup-signin {
@@ -1703,6 +1741,7 @@ body {
 .form-register__icon {
   margin-bottom: 46px;
 }
+
 
 /* .form-register__box  .title-text {
   display: flex;
@@ -1801,6 +1840,13 @@ input[type="radio"]{
   width: 100%;
   overflow: hidden;
 }
+
+.form-title {
+    font-family: Raleway;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 30.5px;
+}
 .form-container .form-inner{
   display: flex;
   width: 200%;
@@ -1811,8 +1857,6 @@ input[type="radio"]{
 }
 
 .input-field, .submint-btn {
-  /* padding-top: 15px;
-  padding-bottom: 15px; */
   height: 60px;
   outline: none;
   border-radius: 11px;
@@ -1890,7 +1934,7 @@ input[type="radio"]{
   background-image: url(./eye.png);
 }
 
-.form-register__input-group input::placeholder {
+.input-wrapper input::placeholder {
   font-size: 24px;
   color: #B1B2B7;
 }
