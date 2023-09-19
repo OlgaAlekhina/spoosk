@@ -14,6 +14,7 @@
     <script defer src="{% static 'js/script.js' %}"></script>
     <script defer src="{% static 'js/script_filter.js' %}"></script>
     <script defer src="{% static 'js/script_overlay.js' %}"></script>
+    <script defer src="{% static 'js/signup_signin.js' %}"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
@@ -82,7 +83,7 @@
                         </div>
 
                         <li class="menu-item profile-box">
-                            <a href="#" class="menu-link">
+                            <a href="#" class="menu-link" id="open-modal-profile-btn">
                                 <img src="{% static 'image/header/header_account_icon_white.svg' %}" alt="Поиск" width="28" height="28">
                                 <!-- <div class="icon control-btn_profile"></div> -->
                                 <div class="name">Профиль</div>
@@ -92,6 +93,61 @@
                 </nav>
             </div>
         </header>
+
+        <div class="modal-signup-signin" id="modal-signup-signin">
+          <div class="form-register__box">
+            <button class="modal-profile__close" id="close-modal-profile-btn">
+                <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M2.70659 0.292919C2.51799 0.110761 2.26539 0.00996641 2.00319 0.0122448C1.74099 0.0145233 1.49018 0.119692 1.30477 0.305101C1.11937 0.490509 1.0142 0.741321 1.01192 1.00352C1.00964 1.26571 1.11044 1.51832 1.29259 1.70692L6.58559 6.99992L1.29259 12.2929C1.19708 12.3852 1.1209 12.4955 1.06849 12.6175C1.01608 12.7395 0.988496 12.8707 0.987342 13.0035C0.986189 13.1363 1.01149 13.268 1.06177 13.3909C1.11205 13.5138 1.18631 13.6254 1.2802 13.7193C1.37409 13.8132 1.48574 13.8875 1.60864 13.9377C1.73154 13.988 1.86321 14.0133 1.99599 14.0122C2.12877 14.011 2.25999 13.9834 2.382 13.931C2.504 13.8786 2.61435 13.8024 2.70659 13.7069L7.99959 8.41392L13.2926 13.7069C13.4812 13.8891 13.7338 13.9899 13.996 13.9876C14.2582 13.9853 14.509 13.8801 14.6944 13.6947C14.8798 13.5093 14.985 13.2585 14.9873 12.9963C14.9895 12.7341 14.8888 12.4815 14.7066 12.2929L9.41359 6.99992L14.7066 1.70692C14.8888 1.51832 14.9895 1.26571 14.9873 1.00352C14.985 0.741321 14.8798 0.490509 14.6944 0.305101C14.509 0.119692 14.2582 0.0145233 13.996 0.0122448C13.7338 0.00996641 13.4812 0.110761 13.2926 0.292919L7.99959 5.58592L2.70659 0.292919Z" fill="#2C2D2E"/>
+                </svg>
+            </button>
+
+            <img src="{% static 'image/signup_signin/logo.svg' %}" alt="logo" class="form-register__icon">
+
+            <div class="form-container">
+
+              <div class="slide-controls">
+                <input type="radio" name="slide" id="login" checked>
+                <input type="radio" name="slide" id="signup">
+                <label for="login" class="slide login">регистрация</label>
+                <label for="signup" class="slide signup">вход</label>
+              </div>
+
+              <hr class="line">
+
+
+              <div class="form-inner">
+
+                <form action="#" class="login">
+                  <div class="input-wrapper">
+                    <input type="email" class="input-field" placeholder="Адрес электронной почты" required>
+                  </div>
+                  <div class="input-wrapper">
+                    <input type="password" id="login-password" class="input-field input-field-password" placeholder="Пароль" required>
+                    <div class="btn-pass js-btn-password" data-target="#login-password"></div>
+                  </div>
+                  <button type="submit" class="submint-btn">Продолжить</button>
+                </form>
+
+
+                <form action="#" class="signup">
+                  <div class="input-wrapper">
+                    <input type="email" class="input-field" placeholder="Адрес электронной почты" required>
+                  </div>
+                  <div class="input-wrapper">
+                    <input type="password" id="signup-password" class="input-field input-field-password" placeholder="Пароль" required>
+                    <div class="btn-pass js-btn-password" data-target="#signup-password"></div>
+                  </div>
+                  <button type="submit" class="submint-btn">Войти</button>
+                  <a class="forgot" href="./account_recovery.html">Забыли пароль?</a>
+                </form>
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
 
         <main class="page">
             <section class="page-banner">

@@ -157,11 +157,11 @@ body {
     margin: 0 31px 8px 31px;
 }
 
-.comparison-box, .profile-box {
+.comparison-box {
     opacity: 0.3;
 }
 
-.comparison-box a, .profile-box a {
+.comparison-box a {
     cursor: default;
     pointer-events: none;
 }
@@ -1649,4 +1649,250 @@ body {
     color: #005FF9;
     cursor: pointer;
 }
+
+/*------------Modal signup/signin--------------------------------------------*/
+
+.modal-signup-signin {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 99998;
+    background-color: rgba(0,0,0, .3);
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .4s, visibility .4s;
+}
+
+.modal-signup-signin.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-profile__close {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    top: 28px;
+    right: 28px;
+    border: none;
+    background-color: transparent;
+    z-index: 5;
+    cursor: pointer;
+}
+
+.form-register__box {
+  position: relative;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  z-index: 1;
+  overflow: hidden;
+  text-align: center;
+  max-width: 610px;
+  background: #fff;
+  padding: 36px 74px;
+  border-radius: 20px;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+}
+
+.form-register__icon {
+  margin-bottom: 46px;
+}
+
+/* .form-register__box  .title-text {
+  display: flex;
+  width: 200%;
+}
+
+.form-register__box  .title{
+  width: 50%;
+  font-size: 35px;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
+} */
+
+.form-register__box  .slide-controls{
+  position: relative;
+  overflow: hidden;
+}
+
+.slide-controls .slide{
+  height: 100%;
+  width: 100%;
+  color: #000;
+  font-size: 20px;
+  font-weight: 500;
+  text-align: center;
+  line-height: 31px;
+  cursor: pointer;
+  z-index: 1;
+  transition: all 0.6s ease;
+  text-transform: uppercase;
+  position: relative;
+}
+
+.slide-controls .login {
+  margin-right: 29px;
+}
+
+.slide-controls .login::before {
+  content: '';
+  position: absolute;
+  height: 4px;
+  width: 164px;
+  bottom: -2px;
+  left: -9.5px;
+  background: #005FF9;
+  transition: 0.5s;
+}
+
+.line {
+  border-width: 1px;
+}
+
+.slide-controls label.signup{
+  color: #B1B2B7;
+}
+
+input[type="radio"]{
+  display: none;
+}
+
+#signup:checked ~ label.signup{
+  color: #000;
+  cursor: default;
+  user-select: none;
+}
+
+#signup:checked ~ label.signup::before{
+  content: '';
+  position: absolute;
+  height: 4px;
+  width: 74px;
+  bottom: -2px;
+  left: -9.5px;
+  background: #005FF9;
+  transition: 0.5s;
+}
+
+#signup:checked ~ label.login{
+  color: #B1B2B7;
+}
+
+#signup:checked ~ label.login::before{
+  content: '';
+ display: none;
+}
+
+#login:checked ~ label.signup{
+  color: #B1B2B7;
+}
+#login:checked ~ label.login{
+  cursor: default;
+  user-select: none;
+}
+.form-register__box  .form-container{
+  width: 100%;
+  overflow: hidden;
+}
+.form-container .form-inner{
+  display: flex;
+  width: 200%;
+}
+.form-container .form-inner form{
+  width: 50%;
+  transition: all 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
+}
+
+.input-field, .submint-btn {
+  /* padding-top: 15px;
+  padding-bottom: 15px; */
+  height: 60px;
+  outline: none;
+  border-radius: 11px;
+  font-size: 24px;
+}
+
+.input-field {
+  width: 100%;
+  border: 2px solid #B1B2B7;
+
+  text-indent: 30px;
+  color: #2C2D2E;
+}
+
+.submint-btn {
+  width: 100%;
+  display: block;
+  background-color: #F5F5F7;
+  border: none;
+  color: #B1B2B7;
+  cursor: pointer;
+}
+
+.submint-btn:hover {
+  background-color: #005FF9;
+  color: #fff;
+}
+
+.forgot {
+  font-size: 16px;
+  text-decoration: none;
+  color: #B1B2B7;
+}
+
+.input-wrapper, .submint-btn  {
+  margin-bottom: 26px;
+}
+.form-inner form .input-wrapper:first-child {
+  margin-top: 50px;
+}
+.form-inner form .input-wrapper:last-of-type {
+  margin-bottom: 50px;
+}
+
+/* .input-field-password {
+  background-image: url(./eyeslash.png);
+  background-repeat: no-repeat;
+  background-size: 40px 35px;
+  background-position: 392px;
+  cursor: pointer;
+} */
+
+.input-wrapper {
+  position: relative;
+}
+.btn-pass {
+  position: absolute;
+  width: 40px;
+  height: 35px;
+  top: 13px;
+  right: 30px;
+  cursor: pointer;
+  background: url(../image/signup_signin/eyeslash.png);
+}
+
+.btn-pass.active {
+  background: url(../image/signup_signin/eye.png);
+}
+
+
+.password-control.view {
+	background: url(/no-view.svg) 0 0 no-repeat;
+}
+.input-field-password.active {
+  background-image: url(./eye.png);
+}
+
+.form-register__input-group input::placeholder {
+  font-size: 24px;
+  color: #B1B2B7;
+}
+
 
