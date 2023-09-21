@@ -1650,6 +1650,78 @@ body {
     cursor: pointer;
 }
 
+.modal-password-changed {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 99998;
+    background-color: rgba(0,0,0, .3);
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .4s, visibility .4s;
+}
+
+.modal-password-changed.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/*------------Modal new-password--------------------------------------------*/
+.modal-new-password {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 99998;
+    background-color: rgba(0,0,0, .3);
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .4s, visibility .4s;
+}
+
+.modal-new-password.open {
+    opacity: 1;
+    visibility: visible;
+}
+.new-password {
+  margin-top: 36px;
+}
+
+/*------------Modal account-recovery--------------------------------------------*/
+.modal-account-recovery__send-message {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 99998;
+    background-color: rgba(0,0,0, .3);
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .4s, visibility .4s;
+}
+
+.modal-account-recovery__send-message.open {
+    opacity: 1;
+    visibility: visible;
+}
+
 /*------------Modal account-recovery--------------------------------------------*/
 
 .modal-account-recovery {
@@ -1686,7 +1758,9 @@ body {
   border-radius: 20px;
   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 }
-
+.account-recovery {
+  margin-top: 32px;
+}
 
 /*------------Modal signup/signin--------------------------------------------*/
 
@@ -1737,24 +1811,6 @@ body {
   border-radius: 20px;
   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 }
-
-.form-register__icon {
-  margin-bottom: 46px;
-}
-
-
-/* .form-register__box  .title-text {
-  display: flex;
-  width: 200%;
-}
-
-.form-register__box  .title{
-  width: 50%;
-  font-size: 35px;
-  font-weight: 600;
-  text-align: center;
-  transition: all 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
-} */
 
 .form-register__box  .slide-controls{
   position: relative;
@@ -1839,79 +1895,59 @@ input[type="radio"]{
 .form-register__box  .form-container{
   width: 100%;
   overflow: hidden;
+  margin-top: 46px;
 }
 
 .form-title {
-    font-family: Raleway;
-    font-weight: 600;
-    font-size: 24px;
-    line-height: 30.5px;
+  margin-top: 32px;
+
+  font-family: Raleway;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 30.5px;
 }
+
+.form-title-message {
+  margin-bottom: 12px;
+}
+
+.message-title, .message-text {
+  font-family: Raleway;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 30.5px;
+}
+.message-title {
+  margin-bottom: 8px;
+}
+.message-text {
+  width: 289px;
+  color: #B1B2B7;
+  margin: 8px auto 40px auto;
+}
+
+
 .form-container .form-inner{
   display: flex;
   width: 200%;
 }
 .form-container .form-inner form{
+  text-align: center;
   width: 50%;
   transition: all 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
 }
 
-.input-field, .submint-btn {
-  height: 60px;
-  outline: none;
-  border-radius: 11px;
+
+.input-wrapper input::placeholder {
+  font-family: Raleway;
   font-size: 24px;
-}
-
-.input-field {
-  width: 100%;
-  border: 2px solid #B1B2B7;
-
-  text-indent: 30px;
-  color: #2C2D2E;
-}
-
-.submint-btn {
-  width: 100%;
-  display: block;
-  background-color: #F5F5F7;
-  border: none;
-  color: #B1B2B7;
-  cursor: pointer;
-}
-
-.submint-btn:hover {
-  background-color: #005FF9;
-  color: #fff;
-}
-
-.forgot {
-  font-size: 16px;
-  text-decoration: none;
   color: #B1B2B7;
 }
-
-.input-wrapper, .submint-btn  {
-  margin-bottom: 26px;
-}
-.form-inner form .input-wrapper:first-child {
-  margin-top: 50px;
-}
-.form-inner form .input-wrapper:last-of-type {
-  margin-bottom: 50px;
-}
-
-/* .input-field-password {
-  background-image: url(./eyeslash.png);
-  background-repeat: no-repeat;
-  background-size: 40px 35px;
-  background-position: 392px;
-  cursor: pointer;
-} */
 
 .input-wrapper {
   position: relative;
 }
+
 .btn-pass {
   position: absolute;
   width: 40px;
@@ -1926,17 +1962,84 @@ input[type="radio"]{
   background: url(../image/signup_signin/eye.png);
 }
 
-
-.password-control.view {
-	background: url(/no-view.svg) 0 0 no-repeat;
+.input-field, .submit-btn {
+  height: 60px;
+  outline: none;
+  border-radius: 11px;
+  font-family: Raleway;
+  font-size: 24px;
+  font-weight: 600;
 }
+
+.input-field {
+  width: 100%;
+  border: 2px solid #B1B2B7;
+
+  text-indent: 30px;
+  color: #2C2D2E;
+}
+
+.submit-btn {
+  width: 100%;
+  display: block;
+  background-color: #F5F5F7;
+  border: none;
+  color: #B1B2B7;
+  cursor: pointer;
+}
+
+.submit-btn-short {
+  width: 229px;
+  margin: 0 auto;
+}
+
+.submit-btn-short-blue {
+  color: #fff;
+  background-color: #005FF9;
+}
+
+.submit-btn:hover {
+  background-color: #005FF9;
+  color: #fff;
+}
+
+.submit-btn-short:hover {
+  color: #fff;
+}
+
+.input-wrapper {
+  margin-bottom: 26px;
+}
+
+
+.form-inner form .input-wrapper:first-child {
+  margin-top: 50px;
+}
+.form-inner form .input-wrapper:last-of-type {
+  margin-bottom: 50px;
+}
+.form-container form .input-wrapper:last-of-type {
+  margin-bottom: 40px;
+}
+
+.forgot {
+  font-size: 16px;
+  text-decoration: none;
+  color: #B1B2B7;
+  margin-top: 26px;
+}
+
+.forgot-wrapper {
+  margin-top: 26px;
+}
+
+
+
+
 .input-field-password.active {
   background-image: url(./eye.png);
 }
 
-.input-wrapper input::placeholder {
-  font-size: 24px;
-  color: #B1B2B7;
-}
+
 
 
