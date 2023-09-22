@@ -128,21 +128,27 @@
 
               <div class="form-inner">
 
-                <form action="#" class="login">
+                <form method="POST" id="login-form" class="login">
+                    {% csrf_token %}
                   <div class="input-wrapper">
-                    <input type="email" class="input-field" placeholder="Адрес электронной почты" required>
+                    <input type="email" id="user_mail" class="input-field" placeholder="Адрес электронной почты" required>
                   </div>
                   <div class="input-wrapper">
                     <input type="password" id="login-password" class="input-field input-field-password" placeholder="Пароль" required>
                     <div class="btn-pass js-btn-password" data-target="#login-password"></div>
                   </div>
+                  <div id="login_results"></div>
                   <button type="submit" class="submit-btn">Продолжить</button>
                 </form>
 
 
-                <form action="#" class="signup">
+                <form method="POST" id="signup-form" class="signup">
+                    {% csrf_token %}
+                  <div>
+                    <input type="hidden" id="username" value="12345">
+                  </div>
                   <div class="input-wrapper">
-                    <input type="email" class="input-field" placeholder="Адрес электронной почты" required>
+                    <input type="email" id="usermail" class="input-field" placeholder="Адрес электронной почты" required>
                   </div>
                   <div class="input-wrapper">
                     <input type="password" id="signup-password" class="input-field input-field-password" placeholder="Пароль" required>
@@ -1180,6 +1186,7 @@
         </footer>
     </div>
 
+<script src="{% static 'js/accounts.js' %}"></script>
 
 </body>
 </html>
