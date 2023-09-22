@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+# from dotenv import load_dotenv
+#
+# load_dotenv()
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -125,8 +128,8 @@ USE_TZ = True
 # ]
 
 # STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static')]
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
 
 STATIC_IMAGE_URL = 'static/image'
 STATIC_IMAGE_ROOT = os.path.join(BASE_DIR, 'image')
@@ -136,6 +139,13 @@ STATIC_IMAGE_ROOT = os.path.join(BASE_DIR, 'image')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'olga-olechka-5'
+EMAIL_HOST_PASSWORD = 'dqmspldeqqeeblzy'
+EMAIL_USE_SSL = True
+SERVER_EMAIL = 'olga-olechka-5'
+DEFAULT_FROM_EMAIL = 'olga-olechka-5@yandex.ru'
 
 # try:
 #     from .local_settings import *
