@@ -20,11 +20,13 @@ from django.contrib import admin
 from django.urls import path, include
 from accounts.views import signup_endpoint, login_endpoint, signup_confirmation
 from django.contrib.auth.views import LogoutView
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('pages/', include('django.contrib.flatpages.urls')),
     path('resorts/', include('resorts.urls')),
+    path('', RedirectView.as_view(pattern_name='resorts', permanent=True)),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('signup_endpoint/', signup_endpoint, name='signup_endpoint'),
     path('login_endpoint/', login_endpoint, name='login_endpoint'),
