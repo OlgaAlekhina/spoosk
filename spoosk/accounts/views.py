@@ -1,19 +1,13 @@
-from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render, redirect
+from django.http import JsonResponse
 from django.contrib.auth.models import User
-import json
 from django.contrib.auth import login
 import random
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from .tokens import user_token
-
-
-def signup(request):
-    return render(request, 'signup.html', {})
 
 
 # обработка запроса на регистрацию
@@ -35,7 +29,7 @@ def signup_endpoint(request):
             )
             html_content = render_to_string(
                 'signup_confirmation.html',
-                {'domain': get_current_site(request).domain,
+                {'domain': request.get_host(),
                  'user': user,
                  'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                  'token': user_token.make_token(user),
@@ -44,8 +38,6 @@ def signup_endpoint(request):
             msg.attach_alternative(html_content, "text/html")
             msg.send()
             return JsonResponse({"success": "Check your email to finish registration!"}, status=200)
-    else:
-        return render(request, 'test.html', {})
 
 
 # подтверждение регистрации по email
@@ -59,7 +51,7 @@ def signup_confirmation(request, uidb64, token):
         user.is_active = True
         user.save()
         login(request, user)
-        return render(request, 'test.html', {})
+        return redirect('resorts')
     else:
         return render(request, 'link_expired.html', {})
 

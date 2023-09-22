@@ -1,32 +1,27 @@
 // Signup submit
 $('#signup-form').on('submit', function(event){
     event.preventDefault();
-    console.log("form submitted!")  // sanity check
     user_signup();
 });
 
 // AJAX for signup
 function user_signup() {
-    console.log("user_signup is working!") // sanity check
     $.ajax({
-        url : "signup_endpoint", // the endpoint
+        url : "../signup_endpoint/", // the endpoint
         type : "POST", // http method
-        data : { username : $('#username').val(), usermail : $('#usermail').val(), password : $('#password').val() }, // data sent with the post request
+        data : { username : $('#username').val(), usermail : $('#usermail').val(), password : $('#login-password').val() }, // data sent with the post request
 
         // handle a successful response
         success : function(json) {
             $('#usermail').val(''); // remove the value from the input
-            $('#password').val(''); // remove the value from the input
-            console.log(json);
-            $("#response").html("<strong>Check your email to finish registration!");
-            console.log("success"); // another sanity check
+            $('#login-password').val(''); // remove the value from the input
+            $("#signup-response").html("<strong>Check your email to finish registration!");
         },
 
         // handle a non-successful response
         error : function(json) {
-            $('#results').html("<div>"+json.responseJSON.error+
-                "</div>"); // add the error to the dom
-            console.log(json.status + ": " + json.responseText); // provide a bit more info about the error to the console
+            $('#results').html("<strong>"+json.responseJSON.error+
+                "</strong>"); // add the error to the dom
         }
     });
 };
@@ -34,33 +29,28 @@ function user_signup() {
 // Login submit
 $('#login-form').on('submit', function(event){
     event.preventDefault();
-    console.log("form submitted!")  // sanity check
     user_login();
 });
 
 // AJAX for login
 function user_login() {
-    console.log("user_login is working!") // sanity check
     $.ajax({
         url : "../login_endpoint/", // the endpoint
         type : "POST", // http method
-        data : { user_mail : $('#user_mail').val(), login_password : $('#login-password').val() }, // data sent with the post request
+        data : { user_mail : $('#user_mail').val(), login_password : $('#signup-password').val() }, // data sent with the post request
 
         // handle a successful response
         success : function(json) {
             $('#user_mail').val(''); // remove the value from the input
-            $('#login-password').val(''); // remove the value from the input
-            console.log(json);
+            $('#signup-password').val(''); // remove the value from the input
             $("#response").html("<strong>Вы успешно авторизовались!</strong>");
-            console.log("success"); // another sanity check
             location.reload();
         },
 
         // handle a non-successful response
         error : function(json) {
-            $('#login_results').html("<div>"+json.responseJSON.error+
-                "</div>"); // add the error to the dom
-            console.log(json.status + ": " + json.responseText); // provide a bit more info about the error to the console
+            $('#login_results').html("<strong>"+json.responseJSON.error+
+                "</strong>"); // add the error to the dom
         }
     });
 };
