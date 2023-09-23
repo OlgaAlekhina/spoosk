@@ -55,9 +55,36 @@ function user_login() {
     });
 };
 
+// Reset password request submit
+$('#reset-request').on('submit', function(event){
+    event.preventDefault();
+    reset_request();
+});
+
+// AJAX for reset password request
+function reset_request() {
+    $.ajax({
+        url : "../reset_request/", // the endpoint
+        type : "POST", // http method
+        data : { user_mail : $('#reset_mail').val() }, // data sent with the post request
+
+        // handle a successful response
+        success : function(json) {
+            $('#modal-account-recovery').removeClass("open")
+            $('#modal-account-recovery__send-message').addClass("open")
+            $('#res_mail').html($('#reset_mail').val())
+        },
+
+        // handle a non-successful response
+        error : function(json) {
+            $('#reset_results').html("<strong>"+json.responseJSON.error+
+                "</strong>"); // add the error to the dom
+        }
+    });
+};
+
 // makes forms protected from CSRF
 $(function() {
-
 
     // This function gets cookie with a given name
     function getCookie(name) {
