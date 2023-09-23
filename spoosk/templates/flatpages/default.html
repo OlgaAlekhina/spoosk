@@ -193,11 +193,13 @@
 
                 <div class="form-container form-container-small">
                     <h1 class="form-title">Восстановление аккаунта Spoosk</h1>
-                    <form action="#" class="account-recovery">
+                    <form method="POST" id="reset-request" class="account-recovery">
+                        {% csrf_token %}
                         <div class="input-wrapper">
-                            <input type="email" class="input-field" placeholder="Адрес электронной почты" required>
+                            <input type="email" id="reset_mail" class="input-field" placeholder="Адрес электронной почты" required>
                         </div>
-                        <button type="submit" class="submit-btn submit-btn-short" id="submit-btn-account-recovery">Продолжить</button>
+                        <div id="reset_results"></div>
+                        <button type="submit" class="submit-btn submit-btn-short">Продолжить</button>
                     </form>
                 </div>
             </div>
@@ -228,8 +230,8 @@
                 <h2 class="message-title">Сообщение отправлено</h2>
                 <img src="{% static 'image/signup_signin/tuiIconMailLarge.svg' %}" alt="">
                 <p class="message-text" >Мы отправили ссылку <br> для восстановления доступа к вашему аккаунту на адрес
-                    <span>ivanivanov@gmail.ru</span></p>
-                <button class="submit-btn submit-btn-short submit-btn-short-blue"  id="main2">На главную</button>
+                    <span id="res_mail"></span></p>
+                <button class="submit-btn submit-btn-short submit-btn-short-blue"  id="main2"><a href="{% url 'resorts' %}">На главную</a></button>
             </div>
         </div>
 
