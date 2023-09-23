@@ -19,7 +19,7 @@ def signup_endpoint(request):
         if User.objects.filter(email=usermail).exists():
             return JsonResponse({"error": "User with such email address already exists!"}, status=403)
         else:
-            user = User(username=username, password=password, email=usermail)
+            user = User.objects.create_user(username=username, password=password, email=usermail)
             user.is_active = False
             user.save()
             msg = EmailMultiAlternatives(
