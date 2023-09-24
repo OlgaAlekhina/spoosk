@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import login
 import random
@@ -8,6 +8,7 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from .tokens import user_token
+import json
 
 
 # обработка запроса на регистрацию
@@ -107,5 +108,36 @@ def reset_request(request):
             return JsonResponse({"error": "There is no user with such email address!"}, status=403)
 
 
-def reset_confirmation(request, uidb64, token):
-    pass
+# изменение пароля пользователя после подтверждения по mail
+def reset_confirmation(request):
+    uidb64 = request.GET.get('uidb64')
+    token = request.GET.get('token')
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except:
+        user = None
+    if user is not None and user_token.check_token(user, token):
+        response_data = {}
+        response_data['result'] = 'Its a success!'
+        response_data['user'] = user.username
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type='application/json'
+        )
+    else:
+        return JsonResponse({"error": "This link was expired!"}, status=403)
+
+
+def reset_endpoint(request):
+    if request.method == 'POST':
+        password1 = request.POST.get('password1')
+        username = request.POST.get('username')
+        user = User.objects.filter(username=username).first()
+        user.set_password(password1)
+        user.save()
+        return JsonResponse({"success": "Changed password successfully!"}, status=200)
+
+
+def link_expired(request):
+    return render(request, 'link_expired.html', {})

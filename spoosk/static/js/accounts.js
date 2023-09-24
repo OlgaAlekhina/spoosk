@@ -1,3 +1,34 @@
+function get_param() {
+        var href = window.location.href;
+        var href_split = href.split('?')[1]
+        var params = new URLSearchParams(href_split);
+        if (params.has('token')) {
+            var uidb64 = params.get('uidb64');
+            var token = params.get('token');
+            reset_confirmation(uidb64, token)
+        }
+    }
+    window.onload = get_param;
+
+    function reset_confirmation(uidb64, token) {
+        $.ajax({
+                url : "../reset_confirmation/",
+                type : "GET",
+                data : { uidb64 : uidb64, token : token },
+
+                success : function(data) {
+                    $('#modal-new-password').addClass("open");
+                    $('#user_name').val(data.user);
+                    console.log(data.user);
+                },
+
+                error : function(json) {
+                    window.location = 'http://127.0.0.1:8000/link_expired';
+                    console.log("error");
+                }
+            });
+    };
+
 // Signup submit
 $('#signup-form').on('submit', function(event){
     event.preventDefault();
@@ -70,15 +101,42 @@ function reset_request() {
 
         // handle a successful response
         success : function(json) {
-            $('#modal-account-recovery').removeClass("open")
-            $('#modal-account-recovery__send-message').addClass("open")
-            $('#res_mail').html($('#reset_mail').val())
+            $('#modal-account-recovery').removeClass("open");
+            $('#modal-account-recovery__send-message').addClass("open");
+            $('#res_mail').html($('#reset_mail').val());
         },
 
         // handle a non-successful response
         error : function(json) {
             $('#reset_results').html("<strong>"+json.responseJSON.error+
                 "</strong>"); // add the error to the dom
+        }
+    });
+};
+
+// Password change submit
+$('#reset-form').on('submit', function(event){
+    event.preventDefault();
+    change_password();
+});
+
+// AJAX for change password
+function change_password() {
+    $.ajax({
+        url : "../reset_endpoint/", // the endpoint
+        type : "POST", // http method
+        data : { password1 : $('#login-password1').val(), username : $('#user_name').val() }, // data sent with the post request
+
+        // handle a successful response
+        success : function(json) {
+            $('#modal-new-password').removeClass("open")
+            $('#password-changed').addClass("open")
+            console.log("success");
+        },
+
+        // handle a non-successful response
+        error : function(json) {
+            console.log("error");
         }
     });
 };

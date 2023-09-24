@@ -12,7 +12,7 @@
 
 <p>Чтобы изменить свой пароль, пожалуйста, пройдите по ссылке, расположенной ниже.</p>
 
-<p><a href="{{ protocol }}://{{ domain }}{% url 'reset_confirmation' uidb64=uid token=token %}">{{ protocol }}://{{ domain }}{% url 'reset_confirmation' uidb64=uid token=token %}</a></p>
+<p><a href="{{ protocol }}://{{ domain }}/resorts?uidb64={{ uid }}&token={{ token }}">{{ protocol }}://{{ domain }}/resorts?uidb64={{ uid }}&token={{ token }}</a></p>
 
 <p>Если вы не делали этот запрос, можете просто проигнорировать это письмо.</p>
 

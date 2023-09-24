@@ -18,7 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from accounts.views import signup_endpoint, login_endpoint, signup_confirmation, reset_request, reset_confirmation
+from accounts.views import signup_endpoint, login_endpoint, signup_confirmation, reset_request, reset_confirmation, reset_endpoint, link_expired
 from django.contrib.auth.views import LogoutView
 from django.views.generic.base import RedirectView
 
@@ -32,7 +32,9 @@ urlpatterns = [
     path('login_endpoint/', login_endpoint, name='login_endpoint'),
     path('signup_confirmation/<uidb64>/<token>', signup_confirmation, name='signup_confirmation'),
     path('reset_request/', reset_request, name='reset_request'),
-    path('reset_confirmation/<uidb64>/<token>', reset_confirmation, name='reset_confirmation'),
+    path('reset_confirmation/', reset_confirmation, name='reset_confirmation'),
+    path('reset_endpoint/', reset_endpoint, name='reset_endpoint'),
+    path('link_expired/', link_expired, name='link_expired'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
