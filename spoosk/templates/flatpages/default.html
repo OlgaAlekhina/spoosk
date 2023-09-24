@@ -231,7 +231,7 @@
                 <img src="{% static 'image/signup_signin/tuiIconMailLarge.svg' %}" alt="">
                 <p class="message-text" >Мы отправили ссылку <br> для восстановления доступа к вашему аккаунту на адрес
                     <span id="res_mail"></span></p>
-                <button class="submit-btn submit-btn-short submit-btn-short-blue"  id="main2"><a href="{% url 'resorts' %}">На главную</a></button>
+                <button class="submit-btn submit-btn-short submit-btn-short-blue" id="main2"><a href="{% url 'resorts' %}">На главную</a></button>
             </div>
         </div>
 
@@ -256,7 +256,11 @@
                 <img src="{% static 'image/signup_signin/logo.svg' %}" alt="logo" class="form-register__icon">
                 <div class="form-container">
                     <h1 class="form-title">Установите новый пароль</h1>
-                    <form action="#" class="new-password">
+                    <form method="POST" id="reset-form"  class="new-password">
+                        {% csrf_token %}
+                        <div>
+                            <input type="hidden" id="user_name">
+                        </div>
                         <div class="input-wrapper">
                             <input type="password" id="login-password1" class="input-field input-field-password" placeholder="Пароль" required>
                             <div class="btn-pass js-btn-password" data-target="#login-password1"></div>
@@ -296,7 +300,7 @@
                 <h2 class="message-title">Пароль успешно изменён</h2>
                 <img src="{% static 'image/signup_signin/tuiIconCheckCircleLarge.svg' %}" alt="">
                 <p class="message-text" >Теперь вы можете использовать новый пароль для входа в аккаунт. <br>Хорошего вам дня!</p>
-                <button class="submit-btn submit-btn-short submit-btn-short-blue" id="main3">На главную</button>
+                <button class="submit-btn submit-btn-short submit-btn-short-blue" id="main3"><a href="{% url 'resorts' %}">На главную</a></button>
             </div>
         </div>
 
