@@ -133,11 +133,11 @@
                   <div>
                     <input type="hidden" id="username" value="12345">
                   </div>
-                  <div class="input-wrapper">
+                  <div class="input-wrapper input-wrapper-first">
                     <input type="email" id="usermail" class="input-field" placeholder="Адрес электронной почты" required>
                   </div>
                   <div id="results"></div>
-                  <div class="input-wrapper">
+                  <div class="input-wrapper input-wrapper-second">
                     <input type="password" id="login-password" class="input-field input-field-password" placeholder="Пароль" required>
                     <div class="btn-pass js-btn-password" data-target="#login-password"></div>
                   </div>
@@ -148,10 +148,10 @@
 
                 <form method="POST" id="login-form" class="signup">
                     {% csrf_token %}
-                  <div class="input-wrapper">
+                  <div class="input-wrapper input-wrapper-first">
                     <input type="email" id="user_mail" class="input-field" placeholder="Адрес электронной почты" required>
                   </div>
-                  <div class="input-wrapper">
+                  <div class="input-wrapper input-wrapper-second">
                     <input type="password" id="signup-password" class="input-field input-field-password" placeholder="Пароль" required>
                     <div class="btn-pass js-btn-password" data-target="#signup-password"></div>
                   </div>
@@ -195,7 +195,7 @@
                     <h1 class="form-title">Восстановление аккаунта Spoosk</h1>
                     <form method="POST" id="reset-request" class="account-recovery">
                         {% csrf_token %}
-                        <div class="input-wrapper">
+                        <div class="input-wrapper input-wrapper-second">
                             <input type="email" id="reset_mail" class="input-field" placeholder="Адрес электронной почты" required>
                         </div>
                         <div id="reset_results"></div>
@@ -261,11 +261,11 @@
                         <div>
                             <input type="hidden" id="user_name">
                         </div>
-                        <div class="input-wrapper">
+                        <div class="input-wrapper input-wrapper-first">
                             <input type="password" id="login-password1" class="input-field input-field-password" placeholder="Пароль" required>
                             <div class="btn-pass js-btn-password" data-target="#login-password1"></div>
                         </div>
-                        <div class="input-wrapper">
+                        <div class="input-wrapper input-wrapper-second">
                             <input type="password" id="new-login-password" class="input-field input-field-password" placeholder="Подтвердите пароль" required>
                             <div class="btn-pass js-btn-password" data-target="#new-login-password"></div>
                         </div>
