@@ -129,7 +129,6 @@
               <div class="form-inner">
 
                 <form method="POST" id="signup-form" class="login">
-                    {% csrf_token %}
                   <div>
                     <input type="hidden" id="username" value="12345">
                   </div>
@@ -147,7 +146,6 @@
 
 
                 <form method="POST" id="login-form" class="signup">
-                    {% csrf_token %}
                   <div class="input-wrapper">
                     <input type="email" id="user_mail" class="input-field" placeholder="Адрес электронной почты" required>
                   </div>
@@ -194,7 +192,6 @@
                 <div class="form-container form-container-small">
                     <h1 class="form-title">Восстановление аккаунта Spoosk</h1>
                     <form method="POST" id="reset-request" class="account-recovery">
-                        {% csrf_token %}
                         <div class="input-wrapper">
                             <input type="email" id="reset_mail" class="input-field" placeholder="Адрес электронной почты" required>
                         </div>
@@ -257,7 +254,6 @@
                 <div class="form-container">
                     <h1 class="form-title">Установите новый пароль</h1>
                     <form method="POST" id="reset-form"  class="new-password">
-                        {% csrf_token %}
                         <div>
                             <input type="hidden" id="user_name">
                         </div>
