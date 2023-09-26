@@ -1,3 +1,4 @@
+// call AJAX function when url get token parameter
 function get_param() {
         var href = window.location.href;
         var href_split = href.split('?')[1]
@@ -10,24 +11,20 @@ function get_param() {
     }
     window.onload = get_param;
 
-    function reset_confirmation(uidb64, token) {
-        $.ajax({
-                url : "../reset_confirmation/",
-                type : "GET",
-                data : { uidb64 : uidb64, token : token },
+// AJAX for auth parameters confirmation
+function reset_confirmation(uidb64, token) {
+    $.ajax({
+            url : "../reset_confirmation/",
+            type : "GET",
+            data : { uidb64 : uidb64, token : token },
 
-                success : function(data) {
-                    $('#modal-new-password').addClass("open");
-                    $('#user_name').val(data.user);
-                    console.log(data.user);
-                },
-
-                error : function(json) {
-                    window.location = 'http://127.0.0.1:8000/link_expired';
-                    console.log("error");
-                }
-            });
-    };
+            success : function(data) {
+                $('#modal-new-password').addClass("open");
+                $('#user_name').val(data.user);
+                console.log(data.user);
+            },
+        });
+};
 
 // Signup submit
 $('#signup-form').on('submit', function(event){
@@ -46,6 +43,7 @@ function user_signup() {
         success : function(json) {
             $('#usermail').val(''); // remove the value from the input
             $('#login-password').val(''); // remove the value from the input
+            $('#results').html(''); // remove the previous error
             $("#signup-response").html("<strong>Check your email to finish registration!");
         },
 
@@ -74,7 +72,6 @@ function user_login() {
         success : function(json) {
             $('#user_mail').val(''); // remove the value from the input
             $('#signup-password').val(''); // remove the value from the input
-            $("#response").html("<strong>Вы успешно авторизовались!</strong>");
             location.reload();
         },
 

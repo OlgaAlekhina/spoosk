@@ -64,10 +64,10 @@ document.getElementById("forgot-password-btn").addEventListener("click", functio
 //    document.getElementById("modal-account-recovery__send-message").classList.add("open")
 //});
 
-document.getElementById("main2").addEventListener("click", function() {
-    document.getElementById("modal-account-recovery__send-message").classList.remove("open")
-    document.getElementById("modal-new-password").classList.add("open")
-});
+//document.getElementById("main2").addEventListener("click", function() {
+//    document.getElementById("modal-account-recovery__send-message").classList.remove("open")
+//    document.getElementById("modal-new-password").classList.add("open")
+//});
 
 //document.getElementById("change-password").addEventListener("click", function() {
 //    document.getElementById("modal-new-password").classList.remove("open")

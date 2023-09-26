@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, Http404
 from django.contrib.auth.models import User
 from django.contrib.auth import login
 import random
@@ -39,6 +39,8 @@ def signup_endpoint(request):
             msg.attach_alternative(html_content, "text/html")
             msg.send()
             return JsonResponse({"success": "Check your email to finish registration!"}, status=200)
+    else:
+        raise Http404
 
 
 # подтверждение регистрации по email
@@ -80,6 +82,8 @@ def login_endpoint(request):
             return JsonResponse({"success": "The user was log in!"}, status=200)
         else:
             return JsonResponse({"error": "There is no user with such credentials!"}, status=403)
+    else:
+        raise Http404
 
 
 # запрос на смену пароля
@@ -106,6 +110,8 @@ def reset_request(request):
             return JsonResponse({"success": "Check your email for password reset confirmation!"}, status=200)
         else:
             return JsonResponse({"error": "There is no user with such email address!"}, status=403)
+    else:
+        raise Http404
 
 
 # изменение пароля пользователя после подтверждения по mail
@@ -126,7 +132,7 @@ def reset_confirmation(request):
             content_type='application/json'
         )
     else:
-        return JsonResponse({"error": "This link was expired!"}, status=403)
+        return render(request, 'link_expired.html', {})
 
 
 def reset_endpoint(request):
@@ -137,7 +143,7 @@ def reset_endpoint(request):
         user.set_password(password1)
         user.save()
         return JsonResponse({"success": "Changed password successfully!"}, status=200)
+    else:
+        raise Http404
 
 
-def link_expired(request):
-    return render(request, 'link_expired.html', {})
