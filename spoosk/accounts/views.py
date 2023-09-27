@@ -25,7 +25,7 @@ def signup_endpoint(request):
             user.save()
             msg = EmailMultiAlternatives(
                 subject='Регистрация на сайте Spoosk',
-                from_email='olga-olechka-5@yandex.ru',
+                from_email='spoosk.info@gmail.com',
                 to=[user.email, ]
             )
             html_content = render_to_string(
@@ -94,7 +94,7 @@ def reset_request(request):
         if user:
             msg = EmailMultiAlternatives(
                 subject='Восстановление пароля на сайте Spoosk',
-                from_email='olga-olechka-5@yandex.ru',
+                from_email='spoosk.info@gmail.com',
                 to=[user.email, ]
             )
             html_content = render_to_string(
