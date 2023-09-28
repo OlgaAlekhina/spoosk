@@ -253,7 +253,7 @@
                 <img src="{% static 'image/signup_signin/logo.svg' %}" alt="logo" class="form-register__icon">
                 <div class="form-container">
                     <h1 class="form-title">Установите новый пароль</h1>
-                    <form method="POST" id="reset-form"  class="new-password">
+                    <form method="POST" id="reset-form" class="new-password">
                         <div>
                             <input type="hidden" id="user_name">
                         </div>
@@ -265,6 +265,7 @@
                             <input type="password" id="new-login-password" class="input-field input-field-password" placeholder="Подтвердите пароль" required>
                             <div class="btn-pass js-btn-password" data-target="#new-login-password"></div>
                         </div>
+                        <div id="password_error"></div>
                         <button type="submit" class="submit-btn submit-btn-short" id="change-password">Сменить пароль</button>
                     </form>
                 </div>

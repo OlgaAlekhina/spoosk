@@ -114,7 +114,14 @@ function reset_request() {
 // Password change submit
 $('#reset-form').on('submit', function(event){
     event.preventDefault();
-    change_password();
+    password1 = document.getElementById("login-password1").value;
+    password2 = document.getElementById("new-login-password").value;
+    if (password1 != password2) {
+        document.getElementById('password_error').innerHTML="Пароли не совпадают";
+    }
+    else {
+        change_password();
+    }
 });
 
 // AJAX for change password
@@ -193,3 +200,4 @@ $(function() {
     });
 
 });
+
