@@ -1,4 +1,4 @@
-// call AJAX function when url get token parameter
+// call AJAX function when url includes token
 function get_param() {
         var href = window.location.href;
         var href_split = href.split('?')[1]
@@ -29,7 +29,14 @@ function reset_confirmation(uidb64, token) {
 // Signup submit
 $('#signup-form').on('submit', function(event){
     event.preventDefault();
-    user_signup();
+    var password = document.getElementById("login-password");
+    var pass = password.value
+    if (pass.length < 8) {
+        document.getElementById('regpassword_error').innerHTML="Пароль должен содержать не менее 8 символов";
+    }
+    else {
+        user_signup();
+    }
 });
 
 // AJAX for signup
@@ -44,6 +51,7 @@ function user_signup() {
             $('#usermail').val(''); // remove the value from the input
             $('#login-password').val(''); // remove the value from the input
             $('#results').html(''); // remove the previous error
+            $('#regpassword_error').html(''); // remove the previous error
             $("#signup-response").html("<strong>Check your email to finish registration!");
         },
 
