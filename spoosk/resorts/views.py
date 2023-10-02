@@ -1,15 +1,26 @@
 import json
-
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 from django.views.decorators.http import require_POST
 from django.views.generic import ListView
-
 from .filters import ResortFilter
 from .forms import ReviewForm
 from .models import SkiResort, Month, RidingLevel, Review
 from django.http import JsonResponse
+from .serializers import SkiResortSerializer
+from rest_framework import viewsets
+from rest_framework.response import Response
+
+
+class SkiResortViewset(viewsets.ModelViewSet):
+   queryset = SkiResort.objects.all()
+   serializer_class = SkiResortSerializer
+
+   def get(self, request):
+       items = SkiResort.objects.all()
+       serializer = SkiResortSerializer(items, many=True)
+       return Response(serializer.data)
 
 
 class Region:

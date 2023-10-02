@@ -21,11 +21,18 @@ from django.urls import path, include
 from accounts.views import signup_endpoint, login_endpoint, signup_confirmation, reset_request, reset_confirmation, reset_endpoint
 from django.contrib.auth.views import LogoutView
 from django.views.generic.base import RedirectView
+from rest_framework import routers
+from resorts import views
+
+router = routers.DefaultRouter()
+router.register(r'resorts', views.SkiResortViewset)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('pages/', include('django.contrib.flatpages.urls')),
     path('resorts/', include('resorts.urls')),
+    path('api-auth/', include('rest_framework.urls')),
+    path('api/', include(router.urls)),
     path('', RedirectView.as_view(pattern_name='resorts', permanent=True)),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('signup_endpoint/', signup_endpoint, name='signup_endpoint'),
