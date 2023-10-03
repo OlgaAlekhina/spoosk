@@ -13,7 +13,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 
 
-class SkiResortViewset(viewsets.ModelViewSet):
+class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
    queryset = SkiResort.objects.all()
    serializer_class = SkiResortSerializer
 
