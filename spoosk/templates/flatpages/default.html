@@ -142,7 +142,7 @@
                     <div id="regpassword_error"></div>
                   </div>
                   <div id="signup-response"></div>
-                  <button type="submit" class="submit-btn" id="reg_but">Продолжить</button>
+                  <button type="submit" class="submit-btn" id="reg_but" disabled>Продолжить</button>
                 </form>
 
 
@@ -1195,21 +1195,25 @@
 
 <script src="{% static 'js/accounts.js' %}"></script>
 
-<!--<script>-->
-<!--let input1 = document.getElementById("usermail");-->
-<!--let input2 = document.getElementById("login-password");-->
-<!--let button = document.getElementById("reg_but");-->
-<!--button.disabled = true;-->
-<!--input.addEventListener("change", stateHandle);-->
-
-<!--function stateHandle() {-->
-<!--    if(input.value1 === "" || input.value2 === "") {-->
-<!--        button.disabled = true;-->
-<!--    } else {-->
-<!--        button.disabled = false;-->
-<!--    }-->
-<!--}-->
-<!--</script>-->
+<script>
+    let signup_elem = document.forms["signup-form"].getElementsByTagName("input");
+    let button = document.getElementById("reg_but");
+    fields = Array.from(signup_elem);
+    fields.forEach(field => {
+        field.addEventListener('keyup', () => {
+            if (fields.every(field => field.value)) {
+                button.disabled = false;
+                button.style.background = "#005FF9";
+                button.style.color= "#ffffff";
+            }
+            else {
+                button.disabled = true;
+                button.style.background = "#F5F5F7";
+                button.style.color= "#B1B2B7";
+            }
+        })
+    })
+</script>
 
 </body>
 </html>
