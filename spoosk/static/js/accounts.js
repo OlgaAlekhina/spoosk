@@ -1,3 +1,26 @@
+// check if all input fields of forms are not empty to activate submit button
+let get_forms = document.forms;
+let forms = Array.from(get_forms);
+forms.forEach(form => {
+    let get_inputs = form.getElementsByTagName("input");
+    let button = form.querySelector("button");
+    let inputs = Array.from(get_inputs);
+    inputs.forEach(input => {
+        input.addEventListener('keyup', () => {
+            if (inputs.every(input => input.value)) {
+                button.disabled = false;
+                button.style.background = "#005FF9";
+                button.style.color= "#ffffff";
+            }
+            else {
+                button.disabled = true;
+                button.style.background = "#F5F5F7";
+                button.style.color= "#B1B2B7";
+            }
+        })
+    })
+})
+
 // call AJAX function when url includes token
 function get_param() {
         var href = window.location.href;
