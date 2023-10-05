@@ -147,7 +147,6 @@
 
 
                 <form method="POST" id="login-form" class="signup">
-                    {% csrf_token %}
                   <div class="input-wrapper">
                     <input type="email" id="user_mail" class="input-field" placeholder="Адрес электронной почты" required>
                   </div>
@@ -157,7 +156,7 @@
                   </div>
                   <div id="login_results"></div>
                   <div id="response"></div>
-                  <button type="submit" class="submit-btn" disabled>Войти</button>
+                  <button type="submit" class="submit-btn">Войти</button>
                   <div class="forgot-wrapper">
                     <a class="forgot" href="#" id="forgot-password-btn">Забыли пароль?</a>
                   </div>
@@ -198,7 +197,7 @@
                             <input type="email" id="reset_mail" class="input-field" placeholder="Адрес электронной почты" required>
                         </div>
                         <div id="reset_results"></div>
-                        <button type="submit" class="submit-btn submit-btn-short" disabled>Продолжить</button>
+                        <button type="submit" class="submit-btn submit-btn-short">Продолжить</button>
                     </form>
                 </div>
             </div>
@@ -268,7 +267,7 @@
                             <div class="btn-pass js-btn-password" data-target="#new-login-password"></div>
                         </div>
                         <div id="password_error"></div>
-                        <button type="submit" class="submit-btn submit-btn-short" id="change-password" disabled>Сменить пароль</button>
+                        <button type="submit" class="submit-btn submit-btn-short" id="change-password">Сменить пароль</button>
                     </form>
                 </div>
             </div>
