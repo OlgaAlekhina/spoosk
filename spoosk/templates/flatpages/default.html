@@ -88,11 +88,39 @@
                                 <!-- <div class="icon control-btn_profile"></div> -->
                                 <div class="name">Профиль</div>
                             </a>
+
+                            <div class="overlay_authorized_user">
+
+                            <div class="info-user-box">
+                                <div class="info-user">
+                                    <div class="info-user__foto-container">
+                                        <img src="#" alt="" class="info_user__foto">
+                                    </div>
+                                    <div class="info-user__name"><span>Ivan</span> <span>Ivanov</span></div>
+                                    <div class="info-user__nickname">@ivanivanov</div>
+                                </div>
+                                <nav class="nav__user">
+                                    <ul class="menu__list">
+                                        <li class="menu__item">
+                                            <a href="#" class="menu__link menu__link-profile">Профиль</a>
+                                        </li>
+                                        <li class="menu__item">
+                                            <a href="#" class="menu__link menu__link-help">Помощь</a>
+                                        </li>
+                                        <li class="menu__item">
+                                            <a href="#" class="menu__link menu__link-logout">Выйти</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                            </div>
                         </li>
                     </ul>
                 </nav>
             </div>
         </header>
+
+
 
         <div class="modal-signup-signin" id="modal-signup-signin">
           <div class="form-register__box">
@@ -129,6 +157,7 @@
               <div class="form-inner">
 
                 <form method="POST" id="signup-form" class="login">
+                    {% csrf_token %}
                   <div>
                     <input type="hidden" id="username" value="12345">
                   </div>
@@ -139,10 +168,9 @@
                   <div class="input-wrapper">
                     <input type="password" id="login-password" class="input-field input-field-password" placeholder="Пароль" required>
                     <div class="btn-pass js-btn-password" data-target="#login-password"></div>
-                    <div id="regpassword_error"></div>
                   </div>
                   <div id="signup-response"></div>
-                  <button type="submit" class="submit-btn" disabled">Продолжить</button>
+                  <button type="submit" class="submit-btn">Продолжить</button>
                 </form>
 
 
@@ -157,7 +185,7 @@
                   </div>
                   <div id="login_results"></div>
                   <div id="response"></div>
-                  <button type="submit" class="submit-btn" disabled>Войти</button>
+                  <button type="submit" class="submit-btn">Войти</button>
                   <div class="forgot-wrapper">
                     <a class="forgot" href="#" id="forgot-password-btn">Забыли пароль?</a>
                   </div>
@@ -194,11 +222,12 @@
                 <div class="form-container form-container-small">
                     <h1 class="form-title">Восстановление аккаунта Spoosk</h1>
                     <form method="POST" id="reset-request" class="account-recovery">
+                        {% csrf_token %}
                         <div class="input-wrapper">
                             <input type="email" id="reset_mail" class="input-field" placeholder="Адрес электронной почты" required>
                         </div>
                         <div id="reset_results"></div>
-                        <button type="submit" class="submit-btn submit-btn-short" disabled>Продолжить</button>
+                        <button type="submit" class="submit-btn submit-btn-short">Продолжить</button>
                     </form>
                 </div>
             </div>
@@ -255,7 +284,8 @@
                 <img src="{% static 'image/signup_signin/logo.svg' %}" alt="logo" class="form-register__icon">
                 <div class="form-container">
                     <h1 class="form-title">Установите новый пароль</h1>
-                    <form method="POST" id="reset-form" class="new-password">
+                    <form method="POST" id="reset-form"  class="new-password">
+                        {% csrf_token %}
                         <div>
                             <input type="hidden" id="user_name">
                         </div>
@@ -267,8 +297,7 @@
                             <input type="password" id="new-login-password" class="input-field input-field-password" placeholder="Подтвердите пароль" required>
                             <div class="btn-pass js-btn-password" data-target="#new-login-password"></div>
                         </div>
-                        <div id="password_error"></div>
-                        <button type="submit" class="submit-btn submit-btn-short" id="change-password" disabled>Сменить пароль</button>
+                        <button type="submit" class="submit-btn submit-btn-short" id="change-password">Сменить пароль</button>
                     </form>
                 </div>
             </div>
@@ -1195,22 +1224,6 @@
     </div>
 
 <script src="{% static 'js/accounts.js' %}"></script>
-
-<!--<script>-->
-<!--let input1 = document.getElementById("usermail");-->
-<!--let input2 = document.getElementById("login-password");-->
-<!--let button = document.getElementById("reg_but");-->
-<!--button.disabled = true;-->
-<!--input.addEventListener("change", stateHandle);-->
-
-<!--function stateHandle() {-->
-<!--    if(input.value1 === "" || input.value2 === "") {-->
-<!--        button.disabled = true;-->
-<!--    } else {-->
-<!--        button.disabled = false;-->
-<!--    }-->
-<!--}-->
-<!--</script>-->
 
 </body>
 </html>

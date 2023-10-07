@@ -1921,7 +1921,7 @@ input[type="radio"]{
   margin-bottom: 8px;
 }
 .message-text {
-  width: 289px;
+  width: 462px;
   color: #B1B2B7;
   margin: 8px auto 40px auto;
 }
@@ -1998,10 +1998,10 @@ input[type="radio"]{
   background-color: #005FF9;
 }
 
-/*.submit-btn:hover {
+.submit-btn:hover {
   background-color: #005FF9;
   color: #fff;
-}*/
+}
 
 .submit-btn-short:hover {
   color: #fff;
