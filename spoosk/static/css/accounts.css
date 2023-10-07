@@ -1,0 +1,395 @@
+.main-container {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+}
+
+
+/*-----------sidebar------------------*/
+
+.info-user-accounts {
+  position: relative;
+}
+
+.info-user-container {
+  position: absolute;
+  max-width: 296px;
+  width: 100%;
+  top: -117px;
+}
+
+.info-list {
+  margin-bottom: 32px;
+}
+
+.info-list__item {
+  display: inline-flex;
+  align-items: center;
+
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 30.5px;
+  color: #B1B2B7;
+}
+
+.info-list__item::before {
+  content: "";
+  display: inline-block;
+  background: url(../image/accounts/global.svg);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  vertical-align: middle;
+  width: 24px;
+  height: 24px;
+  margin: 0 7px 0 0;
+}
+
+.info-list__item-calendar::before {
+  background: url(../image/accounts/tuiIconCalendarLarge.svg);
+}
+
+.info-list__item:not(:last-child) {
+  margin-bottom: 3px;
+}
+
+.btn-editing-profile {
+  position: relative;
+  padding-left: 28px;
+  width: 100%;
+  padding-top: 11.5px;
+  padding-bottom: 11.5px;
+  background: #FAA800;
+
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.btn-editing-profile:after {
+  content: '';
+  position: absolute;
+  background: url(../image/accounts/tuiIconEditLarge.svg);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  top: 9.5px;
+  left: 28px;
+  width: 24px;
+  height: 24px;
+
+}
+
+.btn-editing-profile:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+/*---------menu----------------------------*/
+
+.nav__accounts {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.menu__list-accounts {
+  display: flex;
+  align-items: center;
+}
+
+.menu__item-accounts {
+  height: 39px;
+  padding: 4px 20px 4px 20px;
+  margin-right: 40px;
+  border: none;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.menu__item-accounts:hover {
+  background: #005FF9;
+}
+
+.menu__link-accounts {
+  font-family: Raleway;
+  line-height: 30.5px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #B1B2B7;
+}
+
+.menu__item-accounts:hover a {
+  color: #fff;
+}
+
+
+
+/*------------------content-------------*/
+
+
+/* .content {
+  display: flex;
+  flex-direction: column;
+} */
+
+.editing_profile-container {
+  max-width: 771px;
+}
+
+.editing_profile-box {
+  border: 1px solid #F0F0F0;
+  border-radius: 21px;
+  max-width: 771px;
+  padding: 20px 40px 57px 40px;
+}
+
+.section-title-accounts {
+  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 30.5px;
+}
+
+.editing_profile {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.label-text {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 30.5px;
+}
+
+.block1-2-3-4 {
+  display: flex;
+}
+
+.block {
+  margin-bottom: 17px;
+}
+
+.editing_profile .block1 {
+  width: 151px;
+  margin-right: 36px;
+  align-self: stretch;
+}
+.editing_profile .block2-3-4 {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.editing_profile .block2-3-4 .block2 {
+  width: 241px;
+}
+.editing_profile .block2-3-4 .block3 {
+  width: 241px;
+}
+.editing_profile .block2-3-4 .block4 {
+  width: 100%;
+}
+
+.editing_profile .block5-7 {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.editing_profile .block5-7 .block5 {
+  width: 334px;
+}
+.editing_profile .block5-7 .block6 {
+  width: 334px;
+}
+.editing_profile .block5-7 .block7 {
+  width: 334px;
+  display: inline-flex;
+}
+
+.hr-line {
+  width: 100%;
+	margin-bottom: 17px;
+	padding: 0;
+	height: 0;
+	border: none;
+  border-radius: 2px;
+	border-top: 2px solid #F0F0F0;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: end;
+  width: 100%;
+}
+
+.user_foto_container {
+    position: relative;
+    width: 151px;
+    height: 151px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #D9D9D9;
+}
+
+.user_foto {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+}
+
+.user_foto_container::before {
+    content: '';
+    position: absolute;
+    height: 32px;
+    width: 32px;
+    background-image: url(../image/accounts/tuiIconImgLarge.svg);
+    top: 60px;
+    left: 60px;
+}
+
+
+.input-field-accounts, .submit-btn-accounts {
+  height: 36px;
+  outline: none;
+  border-radius: 11px;
+  font-family: Raleway;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.input-field-accounts {
+  width: 100%;
+  border: 2px solid #D9D9D9;
+
+  text-indent: 12px;
+  color: #2C2D2E;
+}
+
+.registration-date {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 30.5px;
+  color: #B1B2B7;
+}
+
+.registration-date:not(:last-child) {
+  margin-right: 20px;
+}
+
+.submit-btn-accounts {
+  align-items: flex-end;
+  padding: 2px 30px;
+  display: block;
+  background-color: #005FF9;
+  color: #FFFFFF;
+}
+
+.submit-btn-accounts:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.delete-account {
+  margin-top: 36px;
+  text-align: center;
+}
+
+.delete-account a {
+  font-family: Raleway;
+  line-height: 30.5px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #B1B2B7;
+}
+
+.delete-account a:hover {
+  color: #005FF9;
+}
+
+.delete-account a::after {
+  content: "";
+  display: inline-block;
+  background: url(../image/accounts/tuiIconUserDeleteProfile.svg);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  vertical-align: middle;
+  width: 18px;
+  height: 20px;
+  margin-left: 8px;
+}
+
+
+/*-------modal-delete-account-------*/
+
+._modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 99998;
+  background-color: rgba(0,0,0, .3);
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  visibility: hidden;
+  opacity: 1;
+  transition: opacity .4s, visibility .4s;
+}
+
+._modal.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.cancel-deletion {
+  margin-top: 26px;
+}
+
+.cancel-deletion a {
+  font-size: 24px;
+  font-weight: 600;
+  color: #B1B2B7;
+}
+
+.cancel-deletion a:hover {
+  color: #005FF9;
+}
+/*
+.modal-account-delete1 {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 99998;
+  background-color: rgba(0,0,0, .3);
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity .4s, visibility .4s;
+}
+
+.modal-account-delete1.open {
+  opacity: 1;
+  visibility: visible;
+}*/
+
+
