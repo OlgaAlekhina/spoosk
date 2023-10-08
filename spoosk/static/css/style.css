@@ -2011,15 +2011,14 @@ input[type="radio"]{
   margin-bottom: 26px;
 }
 
-
-.form-inner form .input-wrapper:first-child {
-  margin-top: 50px;
+.form-inner form .input-wrapper-first {
+    margin-top: 50px;
 }
-.form-inner form .input-wrapper:last-of-type {
-  margin-bottom: 50px;
+.form-inner form .input-wrapper-second {
+    margin-bottom: 50px;
 }
-.form-container form .input-wrapper:last-of-type {
-  margin-bottom: 40px;
+.form-container form .input-wrapper-second {
+    margin-bottom: 40px;
 }
 
 .forgot {
