@@ -9,6 +9,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from .tokens import user_token
 import json
+from .models import UserProfile
 
 
 # обработка запроса на регистрацию
@@ -135,6 +136,7 @@ def reset_confirmation(request):
         return render(request, 'link_expired.html', {})
 
 
+# устанавливает новый пароль для пользователя
 def reset_endpoint(request):
     if request.method == 'POST':
         password1 = request.POST.get('password1')
@@ -147,3 +149,16 @@ def reset_endpoint(request):
         raise Http404
 
 
+# страница редактирования данных пользователя
+def userprofile_page(request):
+    return render(request, 'accounts/editing_account.html', {})
+
+
+# временная функция для создания UserProfile для ранее созданных пользователей (удалить вместе с url после однократного использования на проде)
+def add_missing_profiles(request):
+    users = User.objects.all()
+    for user in users:
+        created = UserProfile.objects.get_or_create(user=user)
+        print(user.username, ' : ', created)
+    print("all done")
+    return HttpResponse("It's done.")

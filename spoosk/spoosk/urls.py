@@ -18,9 +18,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from accounts.views import signup_endpoint, login_endpoint, signup_confirmation, reset_request, reset_confirmation, reset_endpoint
-from django.contrib.auth.views import LogoutView
-from django.views.generic.base import RedirectView
 from rest_framework import routers
 from resorts import views
 from rest_framework_swagger.views import get_swagger_view
@@ -37,7 +34,6 @@ schema_view = get_schema_view(
     permission_classes=(permissions.AllowAny,),
 )
 
-
 router = routers.DefaultRouter()
 router.register(r'resorts', views.SkiResortViewset)
 
@@ -46,17 +42,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('pages/', include('django.contrib.flatpages.urls')),
     path('resorts/', include('resorts.urls')),
+    path('', include('accounts.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('api/', include(router.urls)),
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0),name='schema-swagger-ui'),
-    path('', RedirectView.as_view(pattern_name='resorts', permanent=True)),
-    path('logout/', LogoutView.as_view(), name='logout'),
-    path('signup_endpoint/', signup_endpoint, name='signup_endpoint'),
-    path('login_endpoint/', login_endpoint, name='login_endpoint'),
-    path('signup_confirmation/<uidb64>/<token>', signup_confirmation, name='signup_confirmation'),
-    path('reset_request/', reset_request, name='reset_request'),
-    path('reset_confirmation/', reset_confirmation, name='reset_confirmation'),
-    path('reset_endpoint/', reset_endpoint, name='reset_endpoint'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
