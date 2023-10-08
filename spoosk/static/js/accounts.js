@@ -55,7 +55,7 @@ $('#signup-form').on('submit', function(event){
     var password = document.getElementById("login-password");
     var pass = password.value
     if (pass.length < 8) {
-        document.getElementById('regpassword_error').innerHTML="Пароль должен содержать не менее 8 символов";
+        document.getElementById('signup-response').innerHTML="<strong>Пароль должен содержать не менее 8 символов</strong>";
     }
     else {
         user_signup();
@@ -74,7 +74,7 @@ function user_signup() {
             $('#usermail').val(''); // remove the value from the input
             $('#login-password').val(''); // remove the value from the input
             $('#results').html(''); // remove the previous error
-            $('#regpassword_error').html(''); // remove the previous error
+//            $('#regpassword_error').html(''); // remove the previous error
             $("#signup-response").html("<strong>Check your email to finish registration!");
         },
 
