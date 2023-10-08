@@ -1955,11 +1955,11 @@ input[type="radio"]{
   top: 13px;
   right: 30px;
   cursor: pointer;
-  background: url(../image/signup_signin/eyeslash.png);
+  background: url(../image/accounts/eyeslash.png);
 }
 
 .btn-pass.active {
-  background: url(../image/signup_signin/eye.png);
+  background: url(../image/accounts/eye.png);
 }
 
 .input-field, .submit-btn {
@@ -1998,6 +1998,10 @@ input[type="radio"]{
   background-color: #005FF9;
 }
 
+.submit-btn-short-blue a {
+    color: #fff;
+}
+
 .submit-btn:hover {
   background-color: #005FF9;
   color: #fff;
@@ -2005,6 +2009,11 @@ input[type="radio"]{
 
 .submit-btn-short:hover {
   color: #fff;
+}
+
+.submit-btn-short-blue:hover {
+    opacity: 0.7;
+    cursor: pointer;
 }
 
 .input-wrapper {
@@ -2025,20 +2034,167 @@ input[type="radio"]{
   font-size: 16px;
   text-decoration: none;
   color: #B1B2B7;
-  margin-top: 26px;
 }
 
 .forgot-wrapper {
   margin-top: 26px;
 }
 
-
-
-
 .input-field-password.active {
   background-image: url(./eye.png);
 }
 
+/*------------------overlay_authorized_user------------------*/
 
+.overlay_authorized_user {
+    display: none;
+    position: absolute;
+    max-width: 296px;
+    width: 100%;
+    /*
+    position: fixed;
+    left: 0;
+    top: 0;*/
+    /*height: 100vh;*/
+    /*z-index: 99998;*/
+    /*align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .4s, visibility .4s;*/
+}
 
+.profile_box:hover .overlay_authorized_user {
+    display: block;
+    position: absolute;
+    max-width: 296px;
+    width: 100%;
+}
 
+.info-user-box {
+  display: flex;
+  flex-direction: column;
+  /*position: relative;
+  z-index: 1;
+  overflow: hidden;*/
+  width: 100%;
+  background: #fff;
+  padding: 28px 12px;
+  border-radius: 20px;
+  border: 1px solid #F0F0F0;
+}
+
+.info-user {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin: 0 auto 12px auto;
+}
+
+.info-user__foto-container {
+    position: relative;
+    margin-bottom: 20px;
+    width: 104px;
+    height: 104px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #D9D9D9;
+}
+
+.info-user__foto {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+}
+
+.info-user__foto-container::before {
+    content: '';
+    position: absolute;
+    height: 32px;
+    width: 32px;
+    background-image: url(../image/accounts/tuiIconImgLarge.svg);
+    top: 36px;
+    left: 36px;
+}
+
+.info-user__name {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 30.5px;
+  }
+  
+  .info-user__nickname {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 30.5px;
+      color: #B1B2B7;
+    }
+
+.nav__user {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.menu__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.menu__item {
+  display: flex;
+  height: 35px;
+  background-color: #fff;
+  border: none;
+}
+
+.menu__item:hover {
+  background-color: #F0F0F0;
+}
+
+.menu__item:not(:last-child) {
+  margin-bottom: 2px;
+}
+
+.menu__link {
+  display: inline-flex;
+  width: 100%;
+  padding-left: 16px;
+  align-items: center;
+}
+
+.menu__link, .user_name, .user_nickname  {
+  font-family: Raleway;
+  line-height: 30.5px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #2C2D2E;
+}
+
+.menu__link::before {
+  content: "";
+  display: inline-block;
+  background: url(../image/accounts/tuiIconUser.svg);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 24px;
+  height: 24px;
+  margin: 0 11px 0 0;
+}
+
+.menu__link-help::before {
+  background: url(../image/accounts/tuiIconHelpCircleLarge.svg) no-repeat;
+}
+.menu__link-logout::before {
+  background: url(../image/accounts/tuiIconLogoutLarge.svg) no-repeat;
+}
