@@ -74,7 +74,6 @@ function user_signup() {
             $('#usermail').val(''); // remove the value from the input
             $('#login-password').val(''); // remove the value from the input
             $('#results').html(''); // remove the previous error
-//            $('#regpassword_error').html(''); // remove the previous error
             $("#signup-response").html("<strong>Check your email to finish registration!");
         },
 
