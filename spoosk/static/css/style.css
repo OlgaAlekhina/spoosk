@@ -136,6 +136,7 @@ body {
 
 .menu-item {
     text-align: center;
+    cursor: pointer;
 }
 
 .menu-item:not(:last-child) {
