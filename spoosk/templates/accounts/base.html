@@ -91,16 +91,16 @@
                                         <div class="info-user__foto-container">
                                             <img src="#" alt="" class="info-user__foto">
                                         </div>
-                                        <div class="info-user__name"><span>Ivan</span> <span>Ivanov</span></div>
-                                        <div class="info-user__nickname">@ivanivanov</div>
+                                        <div class="info-user__name"><span>{{ first_name }}</span> <span>{{ last_name }}</span></div>
+                                        <div class="info-user__nickname">@{{ niсkname }}</div>
                                     </div>
 
                                     <ul class="menu__list info-list">
                                         <li class="info-list__item">
-                                            <p><span>Санкт-Петербург</span>, <span>Россия</span></p>
+                                            <p><span>{{ city }}</span>, <span>{{ country }}</span></p>
                                         </li>
                                         <li class="info-list__item info-list__item-calendar">
-                                            <p>Дата регистрации: <span>18</span> <span>фев</span> <span>2023</span></p>
+                                            <p>Дата регистрации: <span>{{ reg_date|date:"d"}}</span> <span>{{ reg_date|date:"b"}}</span> <span>{{ reg_date|date:"o"}}</span></p>
                                         </li>
                                     </ul>
 
