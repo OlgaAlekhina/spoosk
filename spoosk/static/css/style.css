@@ -135,6 +135,7 @@ body {
 }
 
 .menu-item {
+    position: relative;
     text-align: center;
     cursor: pointer;
 }
@@ -569,6 +570,12 @@ body {
     font-size: 24px;
     line-height: 28px;
 }
+
+.btn-result:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
 
 /* @media (max-width: 1231px) {
     .btn-result {
@@ -2045,41 +2052,27 @@ input[type="radio"]{
   background-image: url(./eye.png);
 }
 
-/*------------------overlay_authorized_user------------------*/
+/*------------------profile-popup------------------*/
 
-.overlay_authorized_user {
-    display: none;
-    position: absolute;
-    max-width: 296px;
-    width: 100%;
-    /*
-    position: fixed;
-    left: 0;
-    top: 0;*/
-    /*height: 100vh;*/
-    /*z-index: 99998;*/
-    /*align-items: center;
-    justify-content: center;
-    overflow-y: auto;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity .4s, visibility .4s;*/
+.profile-popup {
+  position: absolute;
+  right: 0;
+  display: none;
+  opacity: 0;
+  overflow: visible;
 }
 
-.profile_box:hover .overlay_authorized_user {
-    display: block;
-    position: absolute;
-    max-width: 296px;
-    width: 100%;
+.profile-box:hover .profile-popup {
+  opacity: 1;
+  overflow: visible;
+  display: block;
 }
 
-.info-user-box {
+.popup-authorized-user {
   display: flex;
   flex-direction: column;
-  /*position: relative;
-  z-index: 1;
-  overflow: hidden;*/
-  width: 100%;
+  position: relative;
+  width: 296px;
   background: #fff;
   padding: 28px 12px;
   border-radius: 20px;
@@ -2132,14 +2125,14 @@ input[type="radio"]{
     line-height: 30.5px;
   }
   
-  .info-user__nickname {
-      font-size: 15px;
-      font-weight: 600;
-      line-height: 30.5px;
-      color: #B1B2B7;
-    }
+.info-user__nickname {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 30.5px;
+    color: #B1B2B7;
+}
 
-.nav__user {
+.nav-user {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -2156,6 +2149,7 @@ input[type="radio"]{
   height: 35px;
   background-color: #fff;
   border: none;
+  border-radius: 8px;
 }
 
 .menu__item:hover {
