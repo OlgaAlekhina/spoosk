@@ -95,7 +95,7 @@
 
                                    <div class="info-user">
                                        <div class="info-user__foto-container">
-                                           <img src="{{ request.user.userprofile.avatar.url }}" alt="" class="info-user__foto">
+                                           <img {% if request.user.userprofile.avatar %} src="{{ request.user.userprofile.avatar.url }}" {% endif %} alt="" class="info-user__foto">
                                        </div>
                                        <div class="info-user__name"><span>{{ request.user.first_name }}</span> <span>{{ request.user.last_name }}</span></div>
                                        <div class="info-user__nickname">@{{ request.user.userprofile.name }}</div>
