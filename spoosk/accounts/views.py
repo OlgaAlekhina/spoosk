@@ -151,7 +151,7 @@ def reset_endpoint(request):
 
 
 # страница редактирования данных пользователя
-# @login_required
+@login_required
 def userprofile_page(request):
     user = request.user
     if request.method == "POST":
@@ -160,11 +160,19 @@ def userprofile_page(request):
         user_niсkname = request.POST['user_niсkname']
         user_country = request.POST['user_country']
         user_city = request.POST['user_city']
+        user_avatar = request.FILES['avatar']
         User.objects.filter(id=user.id).update(first_name=user_name, last_name=user_surname)
-        UserProfile.objects.filter(user=user).update(name=user_niсkname, country=user_country, city= user_city)
+        profile = UserProfile.objects.get(user=user)
+        profile.avatar = user_avatar
+        profile.name=user_niсkname
+        profile.country=user_country
+        profile.city= user_city
+        profile.save()
+        print(profile.avatar)
     return render(request, 'accounts/editing_account.html', context={'first_name': user.first_name, 'last_name': user.last_name, \
                                                                      'niсkname': user.userprofile.name, 'country': user.userprofile.country, \
-                                                                     'city': user.userprofile.city, 'reg_date': user.date_joined,})
+                                                                     'city': user.userprofile.city, 'reg_date': user.date_joined, \
+                                                                     'avatar': user.userprofile.avatar})
 
 
 # временная функция для создания UserProfile для ранее созданных пользователей (удалить вместе с url после однократного использования на проде)
