@@ -88,35 +88,36 @@
                                 <!-- <div class="icon control-btn_profile"></div> -->
                                 <div class="name">Профиль</div>
                             </a>
-
+                            {% if request.user.is_authenticated %}
                             <div class="profile-popup">
 
                                <div class="popup-authorized-user">
 
                                    <div class="info-user">
                                        <div class="info-user__foto-container">
-                                           <img src="#" alt="" class="info-user__foto">
+                                           <img src="{{ request.user.userprofile.avatar.url }}" alt="" class="info-user__foto">
                                        </div>
-                                       <div class="info-user__name"><span>Ivan</span> <span>Ivanov</span></div>
-                                       <div class="info-user__nickname">@ivanivanov</div>
+                                       <div class="info-user__name"><span>{{ request.user.first_name }}</span> <span>{{ request.user.last_name }}</span></div>
+                                       <div class="info-user__nickname">@{{ request.user.userprofile.name }}</div>
                                    </div>
 
                                    <nav class="nav-user">
                                        <ul class="menu__list">
                                            <li class="menu__item">
-                                               <a href="#" class="menu__link menu__link-profile">Профиль</a>
+                                               <a href="{% url 'userprofile_page' %}" class="menu__link menu__link-profile">Профиль</a>
                                            </li>
                                            <li class="menu__item">
                                                <a href="#" class="menu__link menu__link-help">Помощь</a>
                                            </li>
                                            <li class="menu__item">
-                                               <a href="#" class="menu__link menu__link-logout">Выйти</a>
+                                               <a href="{% url 'logout' %}" class="menu__link menu__link-logout">Выйти</a>
                                            </li>
                                        </ul>
                                    </nav>
 
                                 </div>
                             </div>
+                            {% endif %}
                         </li>
                     </ul>
                 </nav>

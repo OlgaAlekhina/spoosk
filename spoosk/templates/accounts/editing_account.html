@@ -8,23 +8,25 @@
             {% csrf_token %}
             <div class="block1-2-3-4">
                 <div class="block1">
-                    <div class="user_foto_container">
-                        <img src="#" alt="" class="user_foto">
-                        <!-- <input type="file"> -->
-                    </div>
+                    <label for="avatar" style="cursor: pointer;">
+                        <div class="user_foto_container">
+                            <img id="user_ava" {% if avatar %} src="{{ avatar.url }}" {% endif %} alt="" class="user_foto">
+                        </div>
+                    </label>
+                    <input type="file" id="avatar" name="avatar" style="opacity: 0; height: 0;" onchange="loadFile(event)">
                 </div>
                 <div class="block2-3-4">
                     <div class="block block2">
                         <label class="label-text" for="user_name">Имя</label>
-                        <input type="text" name="user_name" id="user_name" class="input-field-accounts" minlength="2" maxlength="14" required>
+                        <input type="text" name="user_name" id="user_name" class="input-field-accounts" minlength="2" maxlength="14" {% if first_name %} value="{{ first_name }}" {% endif %}>
                     </div>
                     <div class="block block3">
                         <label class="label-text" for="user_surname">Фамилия</label>
-                        <input type="text" name="user_surname" id="user_surname" class="input-field-accounts" minlength="2" maxlength="14" required>
+                        <input type="text" name="user_surname" id="user_surname" class="input-field-accounts" minlength="2" maxlength="14" {% if last_name %} value="{{ last_name }}" {% endif %}>
                     </div>
                     <div class="block block4">
                         <label class="label-text" for="user_niсkname">Никнэйм</label>
-                        <input type="text" name="user_niсkname" id="user_niсkname" class="input-field-accounts" minlength="2" maxlength="20" required>
+                        <input type="text" name="user_niсkname" id="user_niсkname" class="input-field-accounts" minlength="2" maxlength="20" {% if niсkname %} value="{{ niсkname }}" {% endif %}>
                     </div>
                 </div>
             </div>
@@ -34,15 +36,15 @@
             <div class="block5-7">
                 <div class="block block5">
                     <label class="label-text" for="user_country">Страна</label>
-                    <input type="text" name="user_country" id="user_country" class="input-field-accounts" minlength="2" maxlength="20" required>
+                    <input type="text" name="user_country" id="user_country" class="input-field-accounts" minlength="2" maxlength="20" {% if country %} value="{{ country }}" {% endif %}>
                 </div>
                 <div class="block block6">
                     <label class="label-text" for="user_city">Город</label>
-                    <input type="text" name="user_city" id="user_city" class="input-field-accounts" minlength="2" maxlength="20" required>
+                    <input type="text" name="user_city" id="user_city" class="input-field-accounts" minlength="2" maxlength="20" {% if city %} value="{{ city }}" {% endif %}>
                 </div>
                 <div class="block block7">
                     <p class="registration-date">Дата регистрации:</p>
-                    <p class="registration-date"><span>18</span> <span>фев</span> <span>2023</span></p>
+                    <p class="registration-date"><span>{{ reg_date|date:"d"}}</span> <span>{{ reg_date|date:"b"}}</span> <span>{{ reg_date|date:"o"}}</span></p>
                 </div>
 
             </div>
@@ -113,4 +115,5 @@
         </div>
     </div>
 </div>
+
 {% endblock %}
