@@ -17,6 +17,19 @@
   top: -117px;
 }
 
+.info-user-box {
+  display: flex;
+  flex-direction: column;
+  /*position: relative;
+  z-index: 1;
+  overflow: hidden;*/
+  width: 100%;
+  background: #fff;
+  padding: 28px 12px;
+  border-radius: 20px;
+  border: 1px solid #F0F0F0;
+}
+
 .info-list {
   margin-bottom: 32px;
 }
