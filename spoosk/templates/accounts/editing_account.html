@@ -55,6 +55,7 @@
         </form>
     </div>
     <p class="delete-account"><a href="#" id="delete-account">Удалить профиль</a></p>
+    <p style="display: none;" id="user_id">{{ request.user.id }}</p>
 
     <div class="_modal" id="modal-account-delete" data-modal="modal-account-delete">
         <div class="form-register__box">
@@ -78,10 +79,11 @@
             <img src="{% static 'image/accounts/logo.svg' %}" alt="logo" class="form-register__icon">
 
             <h1 class="form-title form-title-message">Удаление аккаунта</h1>
+            {% csrf_token %}
             <p class="message-text account-delete-message-text">Вы уверены, что хотите удалить<br> вашу учетную запись? Все ваши данные<br> и информация будут безвозвратно удалены.</p>
             <button class="submit-btn submit-btn-short submit-btn-short-blue" id="overlay-delete-account">Удалить</button>
             <div class="cancel-deletion">
-                <a href="#">Отменить</a>
+                <a href="{% url 'userprofile_page' %}">Отменить</a>
             </div>
         </div>
     </div>
