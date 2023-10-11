@@ -12,6 +12,7 @@
 
         <script defer src="{% static 'js/script.js' %}"></script>
         <script defer src="{% static 'js/script_overlay.js' %}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
         <title>Иван Иванов - spoosk</title>
     </head>
@@ -92,13 +93,19 @@
                                             <img {% if request.user.userprofile.avatar %} src="{{ request.user.userprofile.avatar.url }}" {% endif %} alt="" class="info-user__foto">
                                         </div>
                                         <div class="info-user__name"><span>{{ first_name }}</span> <span>{{ last_name }}</span></div>
-                                        <div class="info-user__nickname">@{{ niсkname }}</div>
+                                        <div class="info-user__nickname">{% if niсkname %} @{{ niсkname }} {% endif %}</div>
                                     </div>
 
                                     <ul class="menu__list info-list">
+                                        {% if country or city %}
                                         <li class="info-list__item">
-                                            <p><span>{{ city }}</span>, <span>{{ country }}</span></p>
+                                            {% if city and country %}
+                                                <p><span>{{ city }}</span>, <span>{{ country }}</span></p>
+                                            {% else %}
+                                                <p><span>{{ city }}</span> <span>{{ country }}</span></p>
+                                            {% endif %}
                                         </li>
+                                        {% endif %}
                                         <li class="info-list__item info-list__item-calendar">
                                             <p>Дата регистрации: <span>{{ reg_date|date:"d"}}</span> <span>{{ reg_date|date:"b"}}</span> <span>{{ reg_date|date:"o"}}</span></p>
                                         </li>

@@ -75,10 +75,10 @@ document.getElementById("delete-account").addEventListener("click", function() {
     document.getElementById("modal-account-delete").classList.add("open")
 });
 
-document.getElementById("overlay-delete-account").addEventListener("click", function() {
-   document.getElementById("modal-account-delete").classList.remove("open")
-   document.getElementById("modal-account-delete1").classList.add("open")
-});
+//document.getElementById("overlay-delete-account").addEventListener("click", function() {
+//   document.getElementById("modal-account-delete").classList.remove("open")
+//   document.getElementById("modal-account-delete1").classList.add("open")
+//});
 
 //function closeModal(e) {
 //    if (e.target.classList.contains('js-btn-modal-close')) {

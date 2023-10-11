@@ -160,19 +160,37 @@ def userprofile_page(request):
         user_niсkname = request.POST['user_niсkname']
         user_country = request.POST['user_country']
         user_city = request.POST['user_city']
-        user_avatar = request.FILES['avatar']
         User.objects.filter(id=user.id).update(first_name=user_name, last_name=user_surname)
-        profile = UserProfile.objects.get(user=user)
-        profile.avatar = user_avatar
-        profile.name=user_niсkname
-        profile.country=user_country
-        profile.city= user_city
-        profile.save()
-        print(profile.avatar)
+        try:
+            user_avatar = request.FILES['avatar']
+            profile = UserProfile.objects.get(user=user)
+            profile.avatar = user_avatar
+            profile.name = user_niсkname
+            profile.country = user_country
+            profile.city = user_city
+            profile.save()
+        except:
+            profile = UserProfile.objects.get(user=user)
+            profile.name = user_niсkname
+            profile.country = user_country
+            profile.city = user_city
+            profile.save()
     return render(request, 'accounts/editing_account.html', context={'first_name': user.first_name, 'last_name': user.last_name, \
                                                                      'niсkname': user.userprofile.name, 'country': user.userprofile.country, \
                                                                      'city': user.userprofile.city, 'reg_date': user.date_joined, \
                                                                      'avatar': user.userprofile.avatar})
+
+
+# функция удаления аккаунта пользователя
+def delete_account(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        print(user_id)
+        user_id2 = int(user_id)
+        User.objects.filter(id=user_id2).delete()
+        return JsonResponse({"success": "Delete account successfully!"}, status=200)
+    else:
+        raise Http404
 
 
 # временная функция для создания UserProfile для ранее созданных пользователей (удалить вместе с url после однократного использования на проде)
