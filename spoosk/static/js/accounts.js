@@ -49,15 +49,47 @@ function reset_confirmation(uidb64, token) {
         });
 };
 
+// email validator
+function validateEmail(email) {
+    const emailRegex = /^([a-zA-Z0-9!#$%&+=?^_`{|}~-]+@[a-zA-Z0-9.-]+[a-zA-Z0-9]+\.[a-zA-Z]{2,})$/;
+    if (! emailRegex.test(email) && email.length < 51){
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+// password validator
+function validatePassword(password) {
+    if (password.length < 8) {
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
 // Signup submit
 $('#signup-form').on('submit', function(event){
     event.preventDefault();
-    var password = document.getElementById("login-password");
-    var pass = password.value
-    if (pass.length < 8) {
+    var email = document.getElementById("usermail").value;
+    var password = document.getElementById("login-password").value;
+    var validate_email = validateEmail(email);
+    if (validate_email === false) {
+        document.getElementById('results').innerHTML="<strong>Некорректно введен адрес электронной почты</strong>";
+    }
+    else {
+        document.getElementById('results').innerHTML="";
+        }
+    var validate_password = validatePassword(password);
+    if (validate_password === false) {
         document.getElementById('signup-response').innerHTML="<strong>Пароль должен содержать не менее 8 символов</strong>";
     }
     else {
+        document.getElementById('signup-response').innerHTML="";
+        }
+    if (validate_email === true && validate_password === true) {
         user_signup();
     }
 });
@@ -74,7 +106,7 @@ function user_signup() {
             $('#usermail').val(''); // remove the value from the input
             $('#login-password').val(''); // remove the value from the input
             $('#results').html(''); // remove the previous error
-            $("#signup-response").html("<strong>Check your email to finish registration!");
+            $("#signup-response").html("<strong>Вам на почту было отправлено письмо для подтверждения регистрации</strong>");
         },
 
         // handle a non-successful response
@@ -147,7 +179,7 @@ $('#reset-form').on('submit', function(event){
     password1 = document.getElementById("login-password1").value;
     password2 = document.getElementById("new-login-password").value;
     if (password1 != password2) {
-        document.getElementById('password_error').innerHTML="Пароли не совпадают";
+        document.getElementById('password_error').innerHTML="<strong>Пароли не совпадают</strong>";
     }
     else {
         change_password();
@@ -165,7 +197,6 @@ function change_password() {
         success : function(json) {
             $('#modal-new-password').removeClass("open")
             $('#password-changed').addClass("open")
-            console.log("success");
         },
 
         // handle a non-successful response

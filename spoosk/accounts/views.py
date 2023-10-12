@@ -20,7 +20,7 @@ def signup_endpoint(request):
         usermail = request.POST.get('usermail')
         password = request.POST.get('password')
         if User.objects.filter(email=usermail).exists():
-            return JsonResponse({"error": "User with such email address already exists!"}, status=403)
+            return JsonResponse({"error": "Пользователь с таким email адресом уже существует"}, status=403)
         else:
             user = User.objects.create_user(username=username, password=password, email=usermail)
             user.is_active = False
@@ -83,7 +83,7 @@ def login_endpoint(request):
             login(request, user)
             return JsonResponse({"success": "The user was log in!"}, status=200)
         else:
-            return JsonResponse({"error": "There is no user with such credentials!"}, status=403)
+            return JsonResponse({"error": "Неправильно введены учетные данные"}, status=403)
     else:
         raise Http404
 
@@ -111,7 +111,7 @@ def reset_request(request):
             msg.send()
             return JsonResponse({"success": "Check your email for password reset confirmation!"}, status=200)
         else:
-            return JsonResponse({"error": "There is no user with such email address!"}, status=403)
+            return JsonResponse({"error": "Пользователя с таким email адресом не существует"}, status=403)
     else:
         raise Http404
 
