@@ -1985,6 +1985,7 @@ input[type="radio"]{
 
   text-indent: 30px;
   color: #2C2D2E;
+  font-variant-numeric: lining-nums;
 }
 
 .submit-btn {

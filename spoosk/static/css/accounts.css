@@ -146,6 +146,7 @@
 
 .editing_profile-container {
   max-width: 771px;
+  margin-bottom: 266px;
 }
 
 .editing_profile-box {
@@ -226,12 +227,12 @@
 
 .hr-line {
   width: 100%;
-	margin-bottom: 17px;
-	padding: 0;
-	height: 0;
-	border: none;
+  margin-bottom: 17px;
+  padding: 0;
+  height: 0;
+  border: none;
   border-radius: 2px;
-	border-top: 2px solid #F0F0F0;
+  border-top: 2px solid #F0F0F0;
 }
 
 .btn-container {
@@ -280,6 +281,7 @@
   font-family: Raleway;
   font-size: 16px;
   font-weight: 400;
+  font-variant-numeric: lining-nums;
 }
 
 .input-field-accounts {
@@ -405,4 +407,48 @@
   visibility: visible;
 }*/
 
+/*------------*/
+.reviews-account-container {
+    margin-bottom: 17px;
+}
+.reviews-account-box {
+    padding: 0 10px 0 20px;
+}
+.reviews-content-account {
+    display: flex;
+    flex-wrap: wrap;
+}
+.review-column-account {
+    margin-bottom: 24px;
+}
+.review-item-account {
+    padding: 16px 10px 52px 20px;
+
+    background-color: #ffff;
+    border-radius: 32px;
+    box-shadow: 0px 6px 10px 2px #E9E9E9;
+}
+.review-content-account {
+    max-width: 714px;
+    display: flex;
+}
+
+.review-content-account .img-foto {
+    border-radius: 30px;
+}
+
+.review-content-text-account {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 22px;
+}
+
+.review-resort-name-account {
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: 600;
+
+    color: #005FF9;
+}
 
