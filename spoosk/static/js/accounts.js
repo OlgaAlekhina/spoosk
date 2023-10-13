@@ -52,7 +52,7 @@ function reset_confirmation(uidb64, token) {
 // email validator
 function validateEmail(email) {
     const emailRegex = /^([a-zA-Z0-9!#$%&+=?^_`{|}~-]+@[a-zA-Z0-9.-]+[a-zA-Z0-9]+\.[a-zA-Z]{2,})$/;
-    if (! emailRegex.test(email) && email.length < 51){
+    if (! emailRegex.test(email) && email.length > 50){
         return false;
     }
     else {
