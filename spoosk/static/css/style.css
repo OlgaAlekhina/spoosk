@@ -2053,6 +2053,30 @@ input[type="radio"]{
   background-image: url(./eye.png);
 }
 
+.google-account {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.circle {
+  display: flex;
+  background: #F5F5F7;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+.circle img {
+  margin: auto;
+}
+.google-account__text {
+  margin-left: 24px;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 30px;
+  color: #B1B2B7;
+}
 /*------------------profile-popup------------------*/
 
 .profile-popup {
