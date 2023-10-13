@@ -2053,13 +2053,15 @@ input[type="radio"]{
   background-image: url(./eye.png);
 }
 
+.social-wrapper {
+  margin-top: 32px;
+}
 .google-account {
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
 }
-
 .circle {
   display: flex;
   background: #F5F5F7;
