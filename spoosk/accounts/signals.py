@@ -8,7 +8,10 @@ from .models import UserProfile
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
     if created:
-        UserProfile.objects.create(user=instance)
+        email = instance.email
+        dog_spot = email.find('@')
+        name = email[:dog_spot]
+        UserProfile.objects.create(user=instance, name=name)
 
 
 @receiver(post_save, sender=User)
