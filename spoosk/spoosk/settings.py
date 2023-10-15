@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+# from dotenv import load_dotenv
+#
+# load_dotenv()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,13 +36,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'resorts',
-
     'django.contrib.sites',
     'django.contrib.flatpages',
     'django_extensions',
     'django_filters',
+    'rest_framework',
+    'rest_framework_swagger',
+    'drf_yasg',
+
 ]
 
 SITE_ID = 1
@@ -124,7 +130,7 @@ USE_TZ = True
 # ]
 
 # STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static')]
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 STATIC_IMAGE_URL = 'static/image'
@@ -135,6 +141,11 @@ STATIC_IMAGE_ROOT = os.path.join(BASE_DIR, 'image')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAdminUser',
+    ]
+}
 
 # try:
 #     from .local_settings import *
