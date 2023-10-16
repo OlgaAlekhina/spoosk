@@ -91,6 +91,13 @@ class SkiResort(models.Model):
         return result[0]
 
     @property
+    def skipass_min(self):
+        skipass_price = self.skipass_set.order_by('price').first()
+        skipass_min = skipass_price.price
+
+        return skipass_min
+
+    @property
     def count_trail_calculation(self):
         all_trail = self.skytrail_set.all()
         count_trail = sum([trail.complexity for trail in all_trail])
@@ -114,6 +121,11 @@ class SkiResort(models.Model):
         all_trail = self.skilifts_set.all().aggregate(armchair=Sum('armchair'), bugelny=Sum('bugelny'), gondola=Sum('gondola'), travelators=Sum('travelators'))
 
         return all_trail
+
+    @property
+    def trail_number_count(self):
+        trail_number = len(self.skytrail_set.all())
+        return trail_number
 
     @property
     def type_name_price(self):
