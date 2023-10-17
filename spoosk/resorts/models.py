@@ -37,25 +37,25 @@ class SkiPass(models.Model):
 
 
 class SkiResort(models.Model):
-    id_resort = models.CharField(db_column='ID_resort', primary_key=True, max_length=20)  # Field name made lowercase.
+    id_resort = models.CharField(db_column='ID_resort', primary_key=True, max_length=20, help_text="avalable: 'Sheregesh', 'Roza_hutor', 'Gazprom', 'Elbrus', 'Dombay', 'Big_wood', 'Arkhyz'")  # Field name made lowercase.
     name = models.CharField(max_length=200, blank=True, null=True)
     region = models.CharField(max_length=100, blank=True, null=True)
-    begin_season = models.CharField(max_length=50, blank=True, null=True)
-    end_season = models.CharField(max_length=50, blank=True, null=True)
-    freeride = models.IntegerField(blank=True, null=True)
-    snowpark = models.IntegerField(blank=True, null=True)
-    evening_skiing = models.IntegerField(blank=True, null=True)
-    school = models.IntegerField(blank=True, null=True)
-    ind_training = models.IntegerField(blank=True, null=True)
-    children_school = models.IntegerField(blank=True, null=True)
-    equip_rental = models.IntegerField(blank=True, null=True)
-    distance_airport = models.IntegerField(blank=True, null=True)
-    distance_railway = models.IntegerField(blank=True, null=True)
-    info = models.TextField(blank=True, null=True)
-    image = models.ImageField('image', upload_to="static/image/card", null=True)
-    list_month = models.TextField(blank=True, null=True)
-    link_ofsite = models.CharField(blank=True, null=True)
-    main_resort_img = models.ImageField('image', upload_to="static/image/resorts", null=True)
+    begin_season = models.CharField(max_length=50, blank=True, null=True, help_text="start of the ski season month")
+    end_season = models.CharField(max_length=50, blank=True, null=True, help_text="end of the ski season month")
+    freeride = models.IntegerField(blank=True, null=True, help_text="'1' if resort has freeride, '0' if has not")
+    snowpark = models.IntegerField(blank=True, null=True, help_text="'1' if resort has snowpark, '0' if has not")
+    evening_skiing = models.IntegerField(blank=True, null=True, help_text="'1' if resort has evening skiing, '0' if has not")
+    school = models.IntegerField(blank=True, null=True, help_text="'1' if resort has ski school, '0' if has not")
+    ind_training = models.IntegerField(blank=True, null=True, help_text="have no idea what is this field for")
+    children_school = models.IntegerField(blank=True, null=True, help_text="'1' if resort has training school for children, '0' if has not")
+    equip_rental = models.IntegerField(blank=True, null=True, help_text="'1' if resort has equipment rental, '0' if has not")
+    distance_airport = models.IntegerField(blank=True, null=True, help_text="km from airport")
+    distance_railway = models.IntegerField(blank=True, null=True, help_text="km from railway station")
+    info = models.TextField(blank=True, null=True, help_text="resort description")
+    image = models.ImageField('image', upload_to="static/image/card", null=True, help_text="url of small image for resort's card")
+    list_month = models.TextField(blank=True, null=True, help_text="list of months which cover the ski season")
+    link_ofsite = models.CharField(blank=True, null=True, help_text="url of resort's website")
+    main_resort_img = models.ImageField('image', upload_to="static/image/resorts", null=True, help_text="url of large image for resort's page header")
 
     class Meta:
         managed = True
