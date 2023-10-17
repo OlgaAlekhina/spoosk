@@ -46,7 +46,7 @@ class SkiResort(models.Model):
     snowpark = models.IntegerField(blank=True, null=True, help_text="'1' if resort has snowpark, '0' if has not")
     evening_skiing = models.IntegerField(blank=True, null=True, help_text="'1' if resort has evening skiing, '0' if has not")
     school = models.IntegerField(blank=True, null=True, help_text="'1' if resort has ski school, '0' if has not")
-    ind_training = models.IntegerField(blank=True, null=True, help_text="have no idea what is this field for")
+    ind_training = models.IntegerField(blank=True, null=True, help_text="have no idea what's this field for")
     children_school = models.IntegerField(blank=True, null=True, help_text="'1' if resort has training school for children, '0' if has not")
     equip_rental = models.IntegerField(blank=True, null=True, help_text="'1' if resort has equipment rental, '0' if has not")
     distance_airport = models.IntegerField(blank=True, null=True, help_text="km from airport")
