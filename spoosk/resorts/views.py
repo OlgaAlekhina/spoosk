@@ -13,13 +13,15 @@ from django.http import JsonResponse
 from .serializers import SkiResortSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework.authentication import TokenAuthentication
 
 
 class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
-   queryset = SkiResort.objects.all()
-   serializer_class = SkiResortSerializer
+    authentication_classes = [TokenAuthentication]
+    queryset = SkiResort.objects.all()
+    serializer_class = SkiResortSerializer
 
-   def get(self, request):
+    def get(self, request):
        items = SkiResort.objects.all()
        serializer = SkiResortSerializer(items, many=True)
        return Response(serializer.data)
