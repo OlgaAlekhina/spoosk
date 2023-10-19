@@ -21,7 +21,6 @@
 //     event.currentTarget.classList.remove('open');
 // });
 
-
 // Открыть модальное окно сравнения
 //document.getElementById("open-modal-comparison-btn").addEventListener("click", function() {
 //    document.getElementById("my-modal-comparison").classList.add("open")
@@ -62,8 +61,6 @@
 //     event.currentTarget.classList.remove('open');
 // });
 
-
-
 /*------Модальное окно удаление аккаунта-----*/
 
 // Открыть модальное окно удаления аккаунта
@@ -71,7 +68,7 @@
 //const modals = document.querySelectorAll('.modal');
 //const modalBtnsClose = document.querySelectorAll('.js-btn-modal-close');
 //
-//document.getElementById("btn-delete-account").addEventListener("click", function() {
+//document.getElementById("btn-delete-account").ad dEventListener("click", function() {
 //    document.getElementById("modal-account-delete").classList.add("open")
 //});
 
