@@ -663,17 +663,16 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 0;
+    z-index: 99998;
     background-color: rgba(0, 0, 0, .3);
     display: grid;
     align-items: center;
     justify-content: center;
-    overflow: auto;
+    overflow-y: auto;
     visibility: hidden;
     opacity: 0;
     transform: opasity .4s visibility .4s;
 }
-
 
 .modal_box {
     position: absolute;
@@ -1657,8 +1656,8 @@ body {
     color: #005FF9;
     cursor: pointer;
 }
-
-.modal-password-changed {
+/*------------Modal new-password--------------------------------------------*/
+/*.modal-password-changed {
     position: fixed;
     left: 0;
     top: 0;
@@ -1678,11 +1677,12 @@ body {
 .modal-password-changed.open {
     opacity: 1;
     visibility: visible;
-}
+}*/
 
 
 /*------------Modal new-password--------------------------------------------*/
-.modal-new-password {
+
+/*.modal-new-password {
     position: fixed;
     left: 0;
     top: 0;
@@ -1702,13 +1702,13 @@ body {
 .modal-new-password.open {
     opacity: 1;
     visibility: visible;
-}
+}*/
 .new-password {
   margin-top: 36px;
 }
 
 /*------------Modal account-recovery--------------------------------------------*/
-.modal-account-recovery__send-message {
+/*.modal-account-recovery__send-message {
     position: fixed;
     left: 0;
     top: 0;
@@ -1728,11 +1728,11 @@ body {
 .modal-account-recovery__send-message.open {
     opacity: 1;
     visibility: visible;
-}
+}*/
 
 /*------------Modal account-recovery--------------------------------------------*/
 
-.modal-account-recovery {
+/*.modal-account-recovery {
     position: fixed;
     left: 0;
     top: 0;
@@ -1752,7 +1752,7 @@ body {
 .modal-account-recovery.open {
     opacity: 1;
     visibility: visible;
-}
+}*/
 
 .form-register__box-rec {
   position: relative;
@@ -1772,7 +1772,7 @@ body {
 
 /*------------Modal signup/signin--------------------------------------------*/
 
-.modal-signup-signin {
+/*.modal-signup-signin {
     position: fixed;
     left: 0;
     top: 0;
@@ -1787,14 +1787,14 @@ body {
     visibility: hidden;
     opacity: 0;
     transition: opacity .4s, visibility .4s;
-}
+}*/
 
 .modal-signup-signin.open {
     opacity: 1;
     visibility: visible;
 }
 
-.modal-profile__close {
+.modal__close-btn {
     position: absolute;
     width: 24px;
     height: 24px;
@@ -1848,7 +1848,7 @@ body {
   content: '';
   position: absolute;
   height: 4px;
-  width: 164px;
+  width: 74px;
   bottom: -2px;
   left: -9.5px;
   background: #005FF9;
@@ -1877,7 +1877,7 @@ input[type="radio"]{
   content: '';
   position: absolute;
   height: 4px;
-  width: 74px;
+  width: 164px;
   bottom: -2px;
   left: -9.5px;
   background: #005FF9;
@@ -1893,10 +1893,10 @@ input[type="radio"]{
  display: none;
 }
 
-#login:checked ~ label.signup{
+#signup:checked ~ label.login{
   color: #B1B2B7;
 }
-#login:checked ~ label.login{
+#signup:checked ~ label.signup{
   cursor: default;
   user-select: none;
 }

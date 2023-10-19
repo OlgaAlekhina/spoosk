@@ -68,12 +68,12 @@
 
 // Открыть модальное окно удаления аккаунта
 
-const modals = document.querySelectorAll('._modal');
-const modalBtnsClose = document.querySelectorAll('.js-btn-modal-close');
+//const modals = document.querySelectorAll('.modal');
+//const modalBtnsClose = document.querySelectorAll('.js-btn-modal-close');
 
-document.getElementById("delete-account").addEventListener("click", function() {
-    document.getElementById("modal-account-delete").classList.add("open")
-});
+//document.getElementById("delete-account").addEventListener("click", function() {
+//    document.getElementById("modal-account-delete").classList.add("open")
+//});
 
 //document.getElementById("overlay-delete-account").addEventListener("click", function() {
 //   document.getElementById("modal-account-delete").classList.remove("open")
@@ -89,7 +89,7 @@ document.getElementById("delete-account").addEventListener("click", function() {
 //    modal.addEventListener('click', e => closeModal(e))
 //})
 
-Array.from(modalBtnsClose, closeButton => {
-    closeButton.addEventListener('click', e => e.target.closest('._modal').classList.remove('open'));
-});
+//Array.from(modalBtnsClose, closeButton => {
+//    closeButton.addEventListener('click', e => e.target.closest('.modal').classList.remove('open'));
+//});
 

@@ -164,7 +164,7 @@ function change_password() {
         // handle a successful response
         success : function(json) {
             $('#modal-new-password').removeClass("open")
-            $('#password-changed').addClass("open")
+            $('#modal-password-changed').addClass("open")
             console.log("success");
         },
 
