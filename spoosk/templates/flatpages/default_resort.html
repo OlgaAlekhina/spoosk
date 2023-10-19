@@ -145,7 +145,7 @@
                 </svg>
             </button>
 
-            <img src="{% static 'image/signup_signin/logo.svg' %}" alt="logo" class="form-register__icon">
+            <img src="{% static 'image/accounts/logo.svg' %}" alt="logo" class="form-register__icon">
 
             <div class="form-container">
 
@@ -176,6 +176,15 @@
                   <div class="forgot-wrapper">
                     <a class="forgot" href="#" id="forgot-password-btn">Забыли пароль?</a>
                   </div>
+
+                    <div class="social-wrapper">
+                      <a class="google-account">
+                          <div class="circle">
+                              <img class="google-account__icon" src="{% static 'image/accounts/Google.svg' %}">
+                          </div>
+                          <p class="google-account__text" href="#">Использовать аккаунт Google</p>
+                      </a>
+                    </div>
                 </form>
 
                 <form method="POST" id="signup-form" class="signup">
@@ -193,6 +202,15 @@
                   </div>
                   <div id="signup-response"></div>
                   <button type="submit" class="submit-btn">Продолжить</button>
+
+                  <div class="social-wrapper">
+                      <a class="google-account">
+                          <div class="circle">
+                              <img class="google-account__icon" src="{% static 'image/accounts/Google.svg' %}">
+                          </div>
+                          <p class="google-account__text" href="#">Использовать аккаунт Google</p>
+                      </a>
+                  </div>
                 </form>
 
 
@@ -222,7 +240,7 @@
                     </svg>
                 </button>
 
-                <img src="{% static 'image/signup_signin/logo.svg' %}" alt="logo" class="form-register__icon">
+                <img src="{% static 'image/accounts/logo.svg' %}" alt="logo" class="form-register__icon">
 
                 <div class="form-container form-container-small">
                     <h1 class="form-title">Восстановление аккаунта Spoosk</h1>
@@ -286,7 +304,7 @@
                         0.0985542 12.2751 0.280712L6.9951 5.57371L1.71507 0.280712Z" fill="#2C2D2E"/>
                     </svg>
                 </button>
-                <img src="{% static 'image/signup_signin/logo.svg' %}" alt="logo" class="form-register__icon">
+                <img src="{% static 'image/accounts/logo.svg' %}" alt="logo" class="form-register__icon">
                 <div class="form-container">
                     <h1 class="form-title">Установите новый пароль</h1>
                     <form method="POST" id="reset-form"  class="new-password">
@@ -302,6 +320,7 @@
                             <input type="password" id="new-login-password" class="input-field input-field-password" placeholder="Подтвердите пароль" autocomplete="off" required>
                             <div class="btn-pass js-btn-password" data-target="#new-login-password"></div>
                         </div>
+                        <div id="password_error"></div>
                         <button type="submit" class="submit-btn submit-btn-short" id="change-password">Сменить пароль</button>
                     </form>
                 </div>
@@ -327,7 +346,7 @@
                     </svg>
                 </button>
 
-                <img src="{% static 'image/signup_signin/logo.svg' %}" alt="logo" class="form-register__icon">
+                <img src="{% static 'image/accounts/logo.svg' %}" alt="logo" class="form-register__icon">
 
                 <h1 class="form-title form-title-message">Восстановление аккаунта Spoosk</h1>
                 <h2 class="message-title">Пароль успешно изменён</h2>
