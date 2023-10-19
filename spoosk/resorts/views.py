@@ -7,8 +7,8 @@ from django.views.decorators.http import require_POST
 from django.views.generic import ListView
 
 from .filters import ResortFilter
-from .forms import ReviewForm
-from .models import SkiResort, Month, RidingLevel, Review
+# from .forms import ReviewForm
+from .models import SkiResort, Month, RidingLevel
 from django.http import JsonResponse
 from .serializers import SkiResortSerializer
 from rest_framework import viewsets
@@ -17,7 +17,6 @@ from rest_framework.authentication import TokenAuthentication
 
 
 class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
-    authentication_classes = [TokenAuthentication]
     queryset = SkiResort.objects.all()
     serializer_class = SkiResortSerializer
 

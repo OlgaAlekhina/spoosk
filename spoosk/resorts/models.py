@@ -64,7 +64,7 @@ class SkiResort(models.Model):
     def __str__(self):
         return f'{self.name} {self.region} {self.list_month}'
 
-    def get_absolute_url(self):  # добавим абсолютный путь, чтобы после создания нас перебрасывало на страницу с товаром
+    def get_absolute_url(self):
         return reverse("resort_detail", kwargs={"slug": self.name})
 
     @property
@@ -132,6 +132,46 @@ class SkiResort(models.Model):
         all_trail = self.skipass_set.all().values('type', 'name', 'price')
         return all_trail
 
+    @property
+    def number_green_trails(self):
+        green_trails = self.skytrail_set.all().filter(complexity="green")
+        return len(green_trails)
+
+    @property
+    def number_blue_trails(self):
+        blue_trails = self.skytrail_set.all().filter(complexity="blue")
+        return len(blue_trails)
+
+    @property
+    def number_red_trails(self):
+        red_trails = self.skytrail_set.all().filter(complexity="red")
+        return len(red_trails)
+
+    @property
+    def number_black_trails(self):
+        black_trails = self.skytrail_set.all().filter(complexity="black")
+        return len(black_trails)
+
+    @property
+    def number_gondola(self):
+        number_gondola = self.skilifts_set.all().filter(gondola='1')
+        return len(number_gondola)
+
+    @property
+    def number_armchair(self):
+        number_armchair = self.skilifts_set.all().filter(armchair='1')
+        return len(number_armchair)
+
+    @property
+    def number_travelators(self):
+        number_travelators = self.skilifts_set.all().filter(travelators='1')
+        return len(number_travelators)
+
+    @property
+    def number_bugelny(self):
+        number_bugelny = self.skilifts_set.all().filter(bugelny='1')
+        return len(number_bugelny)
+
 
 class SkyTrail(models.Model):
     id = models.CharField(db_column='ID', primary_key=True, max_length=20)  # Field name made lowercase.
@@ -175,16 +215,6 @@ class RidingLevel(models.Model):
         return f'{self.name}'
 
 
-class Review(models.Model):
-    author = models.CharField(max_length=20, blank=True, null=True, verbose_name='Ваше имя')
-    riding_level = models.ForeignKey(RidingLevel, models.DO_NOTHING, verbose_name='Ваш уровень катания', blank=True, null=True, )
-    resort = models.ForeignKey(SkiResort,  models.DO_NOTHING, db_column='ID_resort')
-    text_review = models.TextField(blank=True, null=True, verbose_name='Ваш отзыв')
-    # image_review = models.ImageField(upload_to="images/", null=True, blank=True)
-
-    class Meta:
-        managed = True
-        db_table = 'review'
 
 # python manage.py shell_plus --print-sql
 #  from django.db.models import *
