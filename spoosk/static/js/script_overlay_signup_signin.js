@@ -88,9 +88,9 @@ document.getElementById("forgot-password-btn").addEventListener("click", functio
 //const modals = document.querySelectorAll('.modal');
 //const modalBtnsClose = document.querySelectorAll('.js-btn-modal-close');
 
-document.getElementById("btn-delete-account").addEventListener("click", function() {
-    document.getElementById("modal-account-delete").classList.add("open")
-});
+//document.getElementById("btn-delete-account").addEventListener("click", function() {
+//    document.getElementById("modal-account-delete").classList.add("open")
+//});
 
 //document.getElementById("overlay-delete-account").addEventListener("click", function() {
 //   document.getElementById("modal-account-delete").classList.remove("open")
