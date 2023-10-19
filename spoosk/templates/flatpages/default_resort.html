@@ -31,6 +31,7 @@
     <script defer src="{% static 'js/script_filter.js' %}"></script>
     <script defer src="{% static 'js/script.js' %}"></script>
     <script defer src="{% static 'js/script_overlay.js' %}"></script>
+    <script defer src="{% static 'js/script_overlay_signup_signin.js' %}"></script>
 
     {% block title %}
 
@@ -87,12 +88,255 @@
                                 <img src="{% static 'image/header/header_account_icon_blue.svg' %}" alt="Поиск" width="28" height="28">
                                 <div class="name">Профиль</div>
                             </a>
+
+                            {% if request.user.is_authenticated %}
+                            <div class="profile-popup">
+
+                               <div class="popup-authorized-user">
+
+                                   <div class="info-user">
+                                       <div class="info-user__foto-container">
+                                           <img {% if request.user.userprofile.avatar %} src="{{ request.user.userprofile.avatar.url }}" {% endif %} alt="" class="info-user__foto">
+                                       </div>
+                                       <div class="info-user__name"><span>{{ request.user.first_name }}</span> <span>{{ request.user.last_name }}</span></div>
+                                       <div class="info-user__nickname">{% if request.user.userprofile.name %}@{{ request.user.userprofile.name }}{% endif %}</div>
+                                   </div>
+
+                                   <nav class="nav-user">
+                                       <ul class="menu__list">
+                                           <li class="menu__item">
+                                               <a href="{% url 'userprofile_page' %}" class="menu__link menu__link-profile">Профиль</a>
+                                           </li>
+                                           <li class="menu__item">
+                                               <a href="#" class="menu__link menu__link-help">Помощь</a>
+                                           </li>
+                                           <li class="menu__item">
+                                               <a href="{% url 'logout' %}" class="menu__link menu__link-logout">Выйти</a>
+                                           </li>
+                                       </ul>
+                                   </nav>
+
+                                </div>
+                            </div>
+                            {% endif %}
                         </li>
                     </ul>
                 </nav>
 
             </div>
         </header>
+
+        {% if not request.user.is_authenticated %}
+        <div class="modal" id="modal-signup-signin">
+          <div class="form-register__box">
+            <button class="modal__close-btn" id="close-modal-profile-btn">
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M2.70659 0.292919C2.51799 0.110761 2.26539 0.00996641
+                    2.00319 0.0122448C1.74099 0.0145233 1.49018 0.119692 1.30477 0.305101C1.11937 0.490509 1.0142 0.741321
+                    1.01192 1.00352C1.00964 1.26571 1.11044 1.51832 1.29259 1.70692L6.58559 6.99992L1.29259 12.2929C1.19708
+                    12.3852 1.1209 12.4955 1.06849 12.6175C1.01608 12.7395 0.988496 12.8707 0.987342 13.0035C0.986189 13.1363
+                    1.01149 13.268 1.06177 13.3909C1.11205 13.5138 1.18631 13.6254 1.2802 13.7193C1.37409 13.8132 1.48574 13.8875
+                    1.60864 13.9377C1.73154 13.988 1.86321 14.0133 1.99599 14.0122C2.12877 14.011 2.25999 13.9834 2.382 13.931C2.504
+                    13.8786 2.61435 13.8024 2.70659 13.7069L7.99959 8.41392L13.2926 13.7069C13.4812 13.8891 13.7338 13.9899 13.996
+                    13.9876C14.2582 13.9853 14.509 13.8801 14.6944 13.6947C14.8798 13.5093 14.985 13.2585 14.9873 12.9963C14.9895
+                    12.7341 14.8888 12.4815 14.7066 12.2929L9.41359 6.99992L14.7066 1.70692C14.8888 1.51832 14.9895 1.26571 14.9873
+                    1.00352C14.985 0.741321 14.8798 0.490509 14.6944 0.305101C14.509 0.119692 14.2582 0.0145233 13.996 0.0122448C13.7338
+                    0.00996641 13.4812 0.110761 13.2926 0.292919L7.99959 5.58592L2.70659 0.292919Z" fill="#2C2D2E"/>
+                </svg>
+            </button>
+
+            <img src="{% static 'image/signup_signin/logo.svg' %}" alt="logo" class="form-register__icon">
+
+            <div class="form-container">
+
+              <div class="slide-controls">
+                <input type="radio" name="slide" id="login" checked>
+                <input type="radio" name="slide" id="signup">
+                <label for="login" class="slide login">вход</label>
+                <label for="signup" class="slide signup">регистрация</label>
+              </div>
+
+              <hr class="line">
+
+
+              <div class="form-inner">
+
+                  <form method="POST" id="login-form" class="login">
+                    {% csrf_token %}
+                  <div class="input-wrapper input-wrapper-first">
+                    <input type="email" id="user_mail" class="input-field" placeholder="Адрес электронной почты" autocomplete="off" required>
+                  </div>
+                  <div class="input-wrapper input-wrapper-second">
+                    <input type="password" id="login-password" class="input-field input-field-password" placeholder="Пароль" autocomplete="off" required>
+                    <div class="btn-pass js-btn-password" data-target="#login-password"></div>
+                  </div>
+                  <div id="login_results"></div>
+                  <div id="response"></div>
+                  <button type="submit" class="submit-btn">Войти</button>
+                  <div class="forgot-wrapper">
+                    <a class="forgot" href="#" id="forgot-password-btn">Забыли пароль?</a>
+                  </div>
+                </form>
+
+                <form method="POST" id="signup-form" class="signup">
+                    {% csrf_token %}
+                  <div>
+                    <input type="hidden" id="username" value="12345">
+                  </div>
+                  <div class="input-wrapper input-wrapper-first">
+                    <input type="email" id="usermail" class="input-field" placeholder="Адрес электронной почты" autocomplete="off" required>
+                  </div>
+                  <div id="results"></div>
+                  <div class="input-wrapper input-wrapper-second">
+                    <input type="password" id="signup-password" class="input-field input-field-password" placeholder="Пароль" autocomplete="off" required>
+                    <div class="btn-pass js-btn-password" data-target="#signup-password"></div>
+                  </div>
+                  <div id="signup-response"></div>
+                  <button type="submit" class="submit-btn">Продолжить</button>
+                </form>
+
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+        <div class="modal" id="modal-account-recovery">
+            <div class="form-register__box-rec">
+                <button class="modal__close-btn" id="close-modal-profile-btn1">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M1.71507 0.280712C1.52693 0.0985542 1.27495 -0.00224062
+                        1.0134 3.78025e-05C0.751843 0.00231622 0.501645 0.107485 0.316692 0.292894C0.131738 0.478302 0.0268265
+                        0.729114 0.0245536 0.991311C0.0222808 1.25351 0.122829 1.50611 0.30454 1.69471L5.58457 6.98771L0.30454
+                        12.2807C0.209264 12.373 0.133268 12.4833 0.0809879 12.6053C0.0287073 12.7273 0.00118865 12.8585 3.76645e-05
+                        12.9913C-0.00111332 13.1241 0.0241262 13.2558 0.0742838 13.3787C0.124441 13.5016 0.198513 13.6132 0.292175
+                        13.7071C0.385838 13.801 0.497216 13.8753 0.619811 13.9255C0.742406 13.9758 0.873763 14.0011 1.00622 14C1.13867
+                        13.9988 1.26957 13.9712 1.39127 13.9188C1.51298 13.8664 1.62305 13.7902 1.71507 13.6947L6.9951 8.40171L12.2751
+                        13.6947C12.4633 13.8769 12.7153 13.9777 12.9768 13.9754C13.2384 13.9731 13.4886 13.8679 13.6735 13.6825C13.8585
+                        13.4971 13.9634 13.2463 13.9657 12.9841C13.9679 12.7219 13.8674 12.4693 13.6857 12.2807L8.40564 6.98771L13.6857
+                        1.69471C13.8674 1.50611 13.9679 1.25351 13.9657 0.991311C13.9634 0.729114 13.8585 0.478302 13.6735 0.292894C13.4886
+                        0.107485 13.2384 0.00231622 12.9768 3.78025e-05C12.7153 -0.00224062 12.4633 0.0985542 12.2751 0.280712L6.9951 5.57371L1.71507
+                        0.280712Z" fill="#2C2D2E"/>
+                    </svg>
+                </button>
+
+                <img src="{% static 'image/signup_signin/logo.svg' %}" alt="logo" class="form-register__icon">
+
+                <div class="form-container form-container-small">
+                    <h1 class="form-title">Восстановление аккаунта Spoosk</h1>
+                    <form method="POST" id="reset-request" class="account-recovery">
+                        {% csrf_token %}
+                        <div class="input-wrapper input-wrapper-second">
+                            <input type="email" id="reset_mail" class="input-field" placeholder="Адрес электронной почты" required>
+                        </div>
+                        <div id="reset_results"></div>
+                        <button type="submit" class="submit-btn submit-btn-short">Продолжить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="modal-account-recovery__send-message">
+            <div class="form-register__box">
+                <button class="modal__close-btn" id="">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M1.71507 0.280712C1.52693 0.0985542 1.27495
+                        -0.00224062 1.0134 3.78025e-05C0.751843 0.00231622 0.501645 0.107485 0.316692 0.292894C0.131738
+                        0.478302 0.0268265 0.729114 0.0245536 0.991311C0.0222808 1.25351 0.122829 1.50611 0.30454 1.69471L5.58457
+                        6.98771L0.30454 12.2807C0.209264 12.373 0.133268 12.4833 0.0809879 12.6053C0.0287073 12.7273 0.00118865
+                        12.8585 3.76645e-05 12.9913C-0.00111332 13.1241 0.0241262 13.2558 0.0742838 13.3787C0.124441 13.5016
+                        0.198513 13.6132 0.292175 13.7071C0.385838 13.801 0.497216 13.8753 0.619811 13.9255C0.742406 13.9758
+                        0.873763 14.0011 1.00622 14C1.13867 13.9988 1.26957 13.9712 1.39127 13.9188C1.51298 13.8664 1.62305 13.7902
+                        1.71507 13.6947L6.9951 8.40171L12.2751 13.6947C12.4633 13.8769 12.7153 13.9777 12.9768 13.9754C13.2384 13.9731
+                        13.4886 13.8679 13.6735 13.6825C13.8585 13.4971 13.9634 13.2463 13.9657 12.9841C13.9679 12.7219 13.8674 12.4693
+                        13.6857 12.2807L8.40564 6.98771L13.6857 1.69471C13.8674 1.50611 13.9679 1.25351 13.9657 0.991311C13.9634 0.729114
+                        13.8585 0.478302 13.6735 0.292894C13.4886 0.107485 13.2384 0.00231622 12.9768 3.78025e-05C12.7153 -0.00224062 12.4633
+                        0.0985542 12.2751 0.280712L6.9951 5.57371L1.71507 0.280712Z" fill="#2C2D2E"/>
+                    </svg>
+                </button>
+
+                <img src="{% static 'image/signup_signin/logo.svg' %}" alt="logo" class="form-register__icon">
+
+                <h1 class="form-title form-title-message">Восстановление аккаунта Spoosk</h1>
+                <h2 class="message-title">Сообщение отправлено</h2>
+                <img src="{% static 'image/signup_signin/tuiIconMailLarge.svg' %}" alt="">
+                <p class="message-text" >Мы отправили ссылку <br> для восстановления доступа к вашему аккаунту на адрес
+                    <span id="res_mail"></span></p>
+                <button class="submit-btn submit-btn-short submit-btn-short-blue" id="main2"><a href="{% url 'resorts' %}">На главную</a></button>
+            </div>
+        </div>
+
+        <div class="modal" id="modal-new-password">
+            <div class="form-register__box-rec">
+                <button class="modal__close-btn" id="close-modal-add-review">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M1.71507 0.280712C1.52693 0.0985542 1.27495
+                        -0.00224062 1.0134 3.78025e-05C0.751843 0.00231622 0.501645 0.107485 0.316692 0.292894C0.131738
+                        0.478302 0.0268265 0.729114 0.0245536 0.991311C0.0222808 1.25351 0.122829 1.50611 0.30454 1.69471L5.58457
+                        6.98771L0.30454 12.2807C0.209264 12.373 0.133268 12.4833 0.0809879 12.6053C0.0287073 12.7273 0.00118865
+                        12.8585 3.76645e-05 12.9913C-0.00111332 13.1241 0.0241262 13.2558 0.0742838 13.3787C0.124441 13.5016
+                        0.198513 13.6132 0.292175 13.7071C0.385838 13.801 0.497216 13.8753 0.619811 13.9255C0.742406 13.9758
+                        0.873763 14.0011 1.00622 14C1.13867 13.9988 1.26957 13.9712 1.39127 13.9188C1.51298 13.8664 1.62305 13.7902
+                        1.71507 13.6947L6.9951 8.40171L12.2751 13.6947C12.4633 13.8769 12.7153 13.9777 12.9768 13.9754C13.2384 13.9731
+                        13.4886 13.8679 13.6735 13.6825C13.8585 13.4971 13.9634 13.2463 13.9657 12.9841C13.9679 12.7219 13.8674 12.4693
+                        13.6857 12.2807L8.40564 6.98771L13.6857 1.69471C13.8674 1.50611 13.9679 1.25351 13.9657 0.991311C13.9634 0.729114
+                        13.8585 0.478302 13.6735 0.292894C13.4886 0.107485 13.2384 0.00231622 12.9768 3.78025e-05C12.7153 -0.00224062 12.4633
+                        0.0985542 12.2751 0.280712L6.9951 5.57371L1.71507 0.280712Z" fill="#2C2D2E"/>
+                    </svg>
+                </button>
+                <img src="{% static 'image/signup_signin/logo.svg' %}" alt="logo" class="form-register__icon">
+                <div class="form-container">
+                    <h1 class="form-title">Установите новый пароль</h1>
+                    <form method="POST" id="reset-form"  class="new-password">
+                        {% csrf_token %}
+                        <div>
+                            <input type="hidden" id="user_name">
+                        </div>
+                        <div class="input-wrapper input-wrapper-first">
+                            <input type="password" id="login-password1" class="input-field input-field-password" placeholder="Пароль" autocomplete="off" required>
+                            <div class="btn-pass js-btn-password" data-target="#login-password1"></div>
+                        </div>
+                        <div class="input-wrapper input-wrapper-second">
+                            <input type="password" id="new-login-password" class="input-field input-field-password" placeholder="Подтвердите пароль" autocomplete="off" required>
+                            <div class="btn-pass js-btn-password" data-target="#new-login-password"></div>
+                        </div>
+                        <button type="submit" class="submit-btn submit-btn-short" id="change-password">Сменить пароль</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="modal-password-changed">
+            <div class="form-register__box">
+                <button class="modal__close-btn" id="close-modal-add-review1">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M1.71507 0.280712C1.52693 0.0985542 1.27495
+                        -0.00224062 1.0134 3.78025e-05C0.751843 0.00231622 0.501645 0.107485 0.316692 0.292894C0.131738
+                        0.478302 0.0268265 0.729114 0.0245536 0.991311C0.0222808 1.25351 0.122829 1.50611 0.30454 1.69471L5.58457
+                        6.98771L0.30454 12.2807C0.209264 12.373 0.133268 12.4833 0.0809879 12.6053C0.0287073 12.7273 0.00118865
+                        12.8585 3.76645e-05 12.9913C-0.00111332 13.1241 0.0241262 13.2558 0.0742838 13.3787C0.124441 13.5016
+                        0.198513 13.6132 0.292175 13.7071C0.385838 13.801 0.497216 13.8753 0.619811 13.9255C0.742406 13.9758
+                        0.873763 14.0011 1.00622 14C1.13867 13.9988 1.26957 13.9712 1.39127 13.9188C1.51298 13.8664 1.62305 13.7902
+                        1.71507 13.6947L6.9951 8.40171L12.2751 13.6947C12.4633 13.8769 12.7153 13.9777 12.9768 13.9754C13.2384 13.9731
+                        13.4886 13.8679 13.6735 13.6825C13.8585 13.4971 13.9634 13.2463 13.9657 12.9841C13.9679 12.7219 13.8674 12.4693
+                        13.6857 12.2807L8.40564 6.98771L13.6857 1.69471C13.8674 1.50611 13.9679 1.25351 13.9657 0.991311C13.9634 0.729114
+                        13.8585 0.478302 13.6735 0.292894C13.4886 0.107485 13.2384 0.00231622 12.9768 3.78025e-05C12.7153 -0.00224062 12.4633
+                        0.0985542 12.2751 0.280712L6.9951 5.57371L1.71507 0.280712Z" fill="#2C2D2E"/>
+                    </svg>
+                </button>
+
+                <img src="{% static 'image/signup_signin/logo.svg' %}" alt="logo" class="form-register__icon">
+
+                <h1 class="form-title form-title-message">Восстановление аккаунта Spoosk</h1>
+                <h2 class="message-title">Пароль успешно изменён</h2>
+                <img src="{% static 'image/signup_signin/tuiIconCheckCircleLarge.svg' %}" alt="">
+                <p class="message-text" >Теперь вы можете использовать новый пароль для входа в аккаунт. <br>Хорошего вам дня!</p>
+                <button class="submit-btn submit-btn-short submit-btn-short-blue" id="main3"><a href="{% url 'resorts' %}">На главную</a></button>
+            </div>
+        </div>
+        {% endif %}
 
                             {% block content %}
                             {{ flatpage.content }}
