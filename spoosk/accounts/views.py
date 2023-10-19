@@ -20,7 +20,7 @@ def signup_endpoint(request):
         usermail = request.POST.get('usermail')
         password = request.POST.get('password')
         if User.objects.filter(email=usermail).exists():
-            return JsonResponse({"error": "User with such email address already exists!"}, status=403)
+            return JsonResponse({"error": "Пользователь с таким email адресом уже существует"}, status=403)
         else:
             user = User.objects.create_user(username=username, password=password, email=usermail)
             user.is_active = False
@@ -83,7 +83,7 @@ def login_endpoint(request):
             login(request, user)
             return JsonResponse({"success": "The user was log in!"}, status=200)
         else:
-            return JsonResponse({"error": "There is no user with such credentials!"}, status=403)
+            return JsonResponse({"error": "Неправильно введены учетные данные"}, status=403)
     else:
         raise Http404
 
@@ -111,7 +111,7 @@ def reset_request(request):
             msg.send()
             return JsonResponse({"success": "Check your email for password reset confirmation!"}, status=200)
         else:
-            return JsonResponse({"error": "There is no user with such email address!"}, status=403)
+            return JsonResponse({"error": "Пользователя с таким email адресом не существует"}, status=403)
     else:
         raise Http404
 
@@ -160,22 +160,29 @@ def userprofile_page(request):
         user_niсkname = request.POST['user_niсkname']
         user_country = request.POST['user_country']
         user_city = request.POST['user_city']
-        User.objects.filter(id=user.id).update(first_name=user_name, last_name=user_surname)
+        profile = UserProfile.objects.get(user=user)
+        user = User.objects.get(id=user.id)
         try:
             user_avatar = request.FILES['avatar']
-            profile = UserProfile.objects.get(user=user)
             profile.avatar = user_avatar
             profile.name = user_niсkname
             profile.country = user_country
             profile.city = user_city
+            user.first_name = user_name
+            user.last_name = user_surname
+            user.save()
             profile.save()
         except:
-            profile = UserProfile.objects.get(user=user)
             profile.name = user_niсkname
             profile.country = user_country
             profile.city = user_city
+            user.first_name = user_name
+            user.last_name = user_surname
+            user.save()
             profile.save()
-    return render(request, 'accounts/editing_account.html', context={'first_name': user.first_name, 'last_name': user.last_name, \
+        return redirect('userprofile_page')
+    else:
+        return render(request, 'accounts/editing_account.html', context={'first_name': user.first_name, 'last_name': user.last_name, \
                                                                      'niсkname': user.userprofile.name, 'country': user.userprofile.country, \
                                                                      'city': user.userprofile.city, 'reg_date': user.date_joined, \
                                                                      'avatar': user.userprofile.avatar})
