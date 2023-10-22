@@ -321,19 +321,20 @@
   text-align: center;
 }
 
-.delete-account a {
+.delete-account span {
   font-family: Raleway;
   line-height: 30.5px;
   font-size: 16px;
   font-weight: 500;
   color: #B1B2B7;
+  cursor: pointer;
 }
 
-.delete-account a:hover {
+.delete-account span:hover {
   color: #005FF9;
 }
 
-.delete-account a::after {
+.delete-account span::after {
   content: "";
   display: inline-block;
   background: url(../image/accounts/tuiIconUserDeleteProfile.svg);
@@ -346,66 +347,6 @@
   margin-left: 8px;
 }
 
-
-/*-------modal-delete-account-------*/
-
-._modal {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100vh;
-  z-index: 99998;
-  background-color: rgba(0,0,0, .3);
-  display: grid;
-  align-items: center;
-  justify-content: center;
-  overflow-y: auto;
-  visibility: hidden;
-  opacity: 1;
-  transition: opacity .4s, visibility .4s;
-}
-
-._modal.open {
-  opacity: 1;
-  visibility: visible;
-}
-
-.cancel-deletion {
-  margin-top: 26px;
-}
-
-.cancel-deletion a {
-  font-size: 24px;
-  font-weight: 600;
-  color: #B1B2B7;
-}
-
-.cancel-deletion a:hover {
-  color: #005FF9;
-}
-/*
-.modal-account-delete1 {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100vh;
-  z-index: 99998;
-  background-color: rgba(0,0,0, .3);
-  display: grid;
-  align-items: center;
-  justify-content: center;
-  overflow-y: auto;
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity .4s, visibility .4s;
-}
-
-.modal-account-delete1.open {
-  opacity: 1;
-  visibility: visible;
-}*/
 
 /*------------*/
 .reviews-account-container {
