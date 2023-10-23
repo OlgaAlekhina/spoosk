@@ -346,7 +346,18 @@
   height: 20px;
   margin-left: 8px;
 }
+.cancel-deletion {
+  margin-top: 26px;
+}
 
+.cancel-deletion a {
+  font-size: 24px;
+  font-weight: 600;
+  color: #B1B2B7;
+}
+
+.cancel-deletion a:hover {
+  color: #005FF9;
 
 /*------------*/
 .reviews-account-container {
