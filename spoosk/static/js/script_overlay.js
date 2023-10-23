@@ -13,7 +13,14 @@ for (let i = 0; i < btnCloseModal.length; i++) {
   // Привязка обработчика события "click" для каждой кнопки крестика
   btnCloseModal[i].addEventListener("click", function() {
     // Закрытие модального окна
-    modals[i].classList.remove("open")
+    modals[i].classList.remove("open");
+//    document.getElementById("login-form").reset();
+//    document.getElementById("signup-form").reset();
+//    document.getElementById("reset-request").reset();
+//    document.getElementById("reset-form").reset();
+//    document.getElementById('signup-response').innerHTML="";
+//    document.getElementById('results').innerHTML="";
+//    document.getElementById('reset_results').innerHTML="";
   });
 
   // Обработчик события "click" для удаления класса "open" модального окна при нажатии вне окна
@@ -21,9 +28,20 @@ for (let i = 0; i < btnCloseModal.length; i++) {
     event._isClickWithInModal = true;
   });
 
+  document.querySelector(".modal .form-register__box-rec").addEventListener('click', event => {
+    event._isClickWithInModal = true;
+  });
+
   modals[i].addEventListener("click", event => {
     if (event._isClickWithInModal) return
     event.currentTarget.classList.remove('open');
+//    document.getElementById("login-form").reset();
+//    document.getElementById("signup-form").reset();
+//    document.getElementById("reset-request").reset();
+//    document.getElementById("reset-form").reset();
+//    document.getElementById('signup-response').innerHTML="";
+//    document.getElementById('results').innerHTML="";
+//    document.getElementById('reset_results').innerHTML="";
   });
 }
 
@@ -36,13 +54,18 @@ document.addEventListener("keydown", function(event) {
       if (modal.classList.contains("open")) {
         // Удаление класса "open" для закрытия модального окна
         modal.classList.remove("open");
+//        document.getElementById("login-form").reset();
+//        document.getElementById("signup-form").reset();
+//        document.getElementById("reset-request").reset();
+//        document.getElementById("reset-form").reset();
+//        document.getElementById('signup-response').innerHTML="";
+//        document.getElementById('results').innerHTML="";
+//        document.getElementById('reset_results').innerHTML="";
         break;
       }
     }
   }
 });
-
-
 
 // Открыть модальное окно удаления аккаунта
 document.getElementById("btn-delete-account").addEventListener("click", function() {
