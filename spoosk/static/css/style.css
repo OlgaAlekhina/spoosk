@@ -2081,18 +2081,15 @@ input[type="radio"]{
   line-height: 30px;
   color: #B1B2B7;
 }
-.cancel-deletion {
-  margin-top: 26px;
+
+.error-massage {
+    position: absolute;
+    margin-top: 4px;
+    font-size: 14px;
+    color: red;
+    transition: 0.5s;
 }
 
-.cancel-deletion a {
-  font-size: 24px;
-  font-weight: 600;
-  color: #B1B2B7;
-}
-
-.cancel-deletion a:hover {
-  color: #005FF9;
 /*------------------profile-popup------------------*/
 
 .profile-popup {
