@@ -126,7 +126,7 @@
         {% if not request.user.is_authenticated %}
         <div class="modal" id="modal-signup-signin">
           <div class="form-register__box">
-            <button class="modal__close-btn" id="close-modal-profile-btn">
+            <button class="modal__close-btn">
               <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M2.70659 0.292919C2.51799 0.110761 2.26539 0.00996641
                     2.00319 0.0122448C1.74099 0.0145233 1.49018 0.119692 1.30477 0.305101C1.11937 0.490509 1.0142 0.741321
@@ -166,8 +166,9 @@
                   <div class="input-wrapper input-wrapper-second">
                     <input type="password" id="login-password" class="input-field input-field-password" placeholder="Пароль" autocomplete="off" required>
                     <div class="btn-pass js-btn-password" data-target="#login-password"></div>
+                    <div class="error-massage" id="login_results"></div>
                   </div>
-                  <div id="login_results"></div>
+
                   <div id="response"></div>
                   <button type="submit" class="submit-btn">Войти</button>
                   <div class="forgot-wrapper">
@@ -196,8 +197,8 @@
                   <div class="input-wrapper input-wrapper-second">
                     <input type="password" id="signup-password" class="input-field input-field-password" placeholder="Пароль" autocomplete="off" required>
                     <div class="btn-pass js-btn-password" data-target="#signup-password"></div>
+                    <div class="error-massage" id="signup-response"></div>
                   </div>
-                  <div id="signup-response"></div>
                   <button type="submit" class="submit-btn">Продолжить</button>
 
                   <div class="social-wrapper">
@@ -220,7 +221,7 @@
 
         <div class="modal" id="modal-account-recovery">
             <div class="form-register__box-rec">
-                <button class="modal__close-btn" id="close-modal-profile-btn1">
+                <button class="modal__close-btn">
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M1.71507 0.280712C1.52693 0.0985542 1.27495 -0.00224062
                         1.0134 3.78025e-05C0.751843 0.00231622 0.501645 0.107485 0.316692 0.292894C0.131738 0.478302 0.0268265
@@ -244,9 +245,9 @@
                     <form method="POST" id="reset-request" class="account-recovery">
                         {% csrf_token %}
                         <div class="input-wrapper input-wrapper-second">
-                            <input type="email" id="reset_mail" class="input-field" placeholder="Адрес электронной почты" required>
+                            <input type="email" id="reset_mail" class="input-field" placeholder="Адрес электронной почты" autocomplete="off" required>
+                            <div class="error-massage" id="reset_results"></div>
                         </div>
-                        <div id="reset_results"></div>
                         <button type="submit" class="submit-btn submit-btn-short">Продолжить</button>
                     </form>
                 </div>
@@ -255,7 +256,7 @@
 
         <div class="modal" id="modal-account-recovery__send-message">
             <div class="form-register__box">
-                <button class="modal__close-btn" id="">
+                <button class="modal__close-btn">
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M1.71507 0.280712C1.52693 0.0985542 1.27495
                         -0.00224062 1.0134 3.78025e-05C0.751843 0.00231622 0.501645 0.107485 0.316692 0.292894C0.131738
@@ -285,7 +286,7 @@
 
         <div class="modal" id="modal-new-password">
             <div class="form-register__box-rec">
-                <button class="modal__close-btn" id="close-modal-add-review">
+                <button class="modal__close-btn">
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M1.71507 0.280712C1.52693 0.0985542 1.27495
                         -0.00224062 1.0134 3.78025e-05C0.751843 0.00231622 0.501645 0.107485 0.316692 0.292894C0.131738
@@ -326,7 +327,7 @@
 
         <div class="modal" id="modal-password-changed">
             <div class="form-register__box">
-                <button class="modal__close-btn" id="close-modal-add-review1">
+                <button class="modal__close-btn">
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M1.71507 0.280712C1.52693 0.0985542 1.27495
                         -0.00224062 1.0134 3.78025e-05C0.751843 0.00231622 0.501645 0.107485 0.316692 0.292894C0.131738
