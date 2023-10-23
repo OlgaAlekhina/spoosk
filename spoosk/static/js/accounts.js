@@ -51,7 +51,7 @@ function reset_confirmation(uidb64, token) {
 
 // email validator
 function validateEmail(email) {
-    const emailRegex = /^([a-zA-Z0-9!#$%&+=?^_`{|}~-]+@[a-zA-Z0-9.-]+[a-zA-Z0-9]+\.[a-zA-Z]{2,})$/;
+    const emailRegex = /^([a-zA-Z0-9!#.$%&+=?^_`{|}~-]+@[a-zA-Z0-9.-]+[a-zA-Z0-9]+\.[a-zA-Z]{2,})$/;
     if (!emailRegex.test(email)){
         return false;
     }
@@ -74,7 +74,7 @@ function validatePassword(password) {
 $('#signup-form').on('submit', function(event){
     event.preventDefault();
     var email = document.getElementById("usermail").value;
-    var password = document.getElementById("login-password").value;
+    var password = document.getElementById("signup-password").value;
     var validate_email = validateEmail(email);
     if (validate_email === false) {
         document.getElementById('results').innerHTML="<strong>Некорректно введен адрес электронной почты</strong>";
@@ -99,12 +99,12 @@ function user_signup() {
     $.ajax({
         url : "../signup_endpoint/", // the endpoint
         type : "POST", // http method
-        data : { username : $('#username').val(), usermail : $('#usermail').val(), password : $('#login-password').val() }, // data sent with the post request
+        data : { username : $('#username').val(), usermail : $('#usermail').val(), password : $('#signup-password').val() }, // data sent with the post request
 
         // handle a successful response
         success : function(json) {
             $('#usermail').val(''); // remove the value from the input
-            $('#login-password').val(''); // remove the value from the input
+            $('#signup-password').val(''); // remove the value from the input
             $('#results').html(''); // remove the previous error
             $("#signup-response").html("<strong>Вам на почту было отправлено письмо для подтверждения регистрации</strong>");
         },
@@ -128,12 +128,12 @@ function user_login() {
     $.ajax({
         url : "../login_endpoint/", // the endpoint
         type : "POST", // http method
-        data : { user_mail : $('#user_mail').val(), login_password : $('#signup-password').val() }, // data sent with the post request
+        data : { user_mail : $('#user_mail').val(), login_password : $('#login-password').val() }, // data sent with the post request
 
         // handle a successful response
         success : function(json) {
             $('#user_mail').val(''); // remove the value from the input
-            $('#signup-password').val(''); // remove the value from the input
+            $('#login-password').val(''); // remove the value from the input
             location.reload();
         },
 
