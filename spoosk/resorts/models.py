@@ -1,9 +1,9 @@
 from decimal import Decimal
 from itertools import product
-
 from django.db import models
 from django.db.models import Sum, Max, Count
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 class SkiLifts(models.Model):
@@ -56,6 +56,7 @@ class SkiResort(models.Model):
     list_month = models.TextField(blank=True, null=True, help_text="list of months which cover the ski season")
     link_ofsite = models.CharField(blank=True, null=True, help_text="url of resort's website")
     main_resort_img = models.ImageField('image', upload_to="static/image/resorts", null=True, help_text="url of large image for resort's page header")
+    rating = models.DecimalField(max_digits=2, decimal_places=1, blank=True, null=True)
 
     class Meta:
         managed = True
@@ -215,6 +216,23 @@ class RidingLevel(models.Model):
         return f'{self.name}'
 
 
+class SkiReview(models.Model):
+    resort = models.ForeignKey(SkiResort, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField()
+    rating = models.IntegerField()
+
+
+    # class Review(models.Model):
+#     author = models.CharField(max_length=20, blank=True, null=True, verbose_name='Ваше имя')
+#     riding_level = models.ForeignKey(RidingLevel, models.DO_NOTHING, verbose_name='Ваш уровень катания', blank=True, null=True, )
+#     resort = models.ForeignKey(SkiResort,  models.DO_NOTHING, db_column='ID_resort')
+#     text_review = models.TextField(blank=True, null=True, verbose_name='Ваш отзыв')
+#     # image_review = models.ImageField(upload_to="images/", null=True, blank=True)
+#
+#     class Meta:
+#         managed = True
+#         db_table = 'review'
 
 # python manage.py shell_plus --print-sql
 #  from django.db.models import *
