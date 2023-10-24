@@ -112,9 +112,6 @@ class Migration(migrations.Migration):
             name='snowpark',
             field=models.IntegerField(blank=True, help_text="'1' if resort has snowpark, '0' if has not", null=True),
         ),
-        migrations.DeleteModel(
-            name='Review',
-        ),
         migrations.AddField(
             model_name='skireview',
             name='resort',

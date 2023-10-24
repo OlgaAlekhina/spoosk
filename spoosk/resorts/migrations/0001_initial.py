@@ -109,18 +109,4 @@ class Migration(migrations.Migration):
                 'managed': True,
             },
         ),
-        migrations.CreateModel(
-            name='Review',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('author', models.CharField(blank=True, max_length=20, null=True, verbose_name='Ваше имя')),
-                ('text_review', models.TextField(blank=True, null=True, verbose_name='Ваш отзыв')),
-                ('resort', models.ForeignKey(db_column='ID_resort', on_delete=django.db.models.deletion.DO_NOTHING, to='resorts.skiresort')),
-                ('riding_level', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='resorts.ridinglevel', verbose_name='Ваш уровень катания')),
-            ],
-            options={
-                'db_table': 'review',
-                'managed': True,
-            },
-        ),
     ]
