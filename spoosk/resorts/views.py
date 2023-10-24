@@ -286,3 +286,10 @@ class Search(ListView):
     # def get(self, request, slug):
     #     resort = SkiResort.objects.get(name=slug)
     #     return render(request, 'resort_detail.html', {"resort": resort})
+
+
+# add resort to user's favourites
+def add_resort(request, pk):
+    resort = SkiResort.objects.get(id_resort=pk)
+    user = request.user
+    resort.users.add(user)
