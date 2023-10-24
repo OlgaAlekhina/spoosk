@@ -56,7 +56,7 @@ class SkiResort(models.Model):
     list_month = models.TextField(blank=True, null=True)
     link_ofsite = models.CharField(blank=True, null=True)
     main_resort_img = models.ImageField('image', upload_to="static/image/resorts", null=True)
-    users = models.ManyToManyField(User, related_name='user')
+    users = models.ManyToManyField(User, blank=True, related_name='user')
 
     class Meta:
         managed = True
