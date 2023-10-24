@@ -189,6 +189,7 @@ def userprofile_page(request):
 
 
 # функция удаления аккаунта пользователя
+@login_required
 def delete_account(request):
     if request.method == 'POST':
         user_id = request.POST.get('user_id')
@@ -208,3 +209,11 @@ def add_missing_profiles(request):
         print(user.username, ' : ', created)
     print("all done")
     return HttpResponse("It's done.")
+
+
+# выводит избранные курорты на страницу личного кабинета
+@login_required
+def favorites(request):
+    user = request.user
+    resorts = user.user.all()
+    return render(request, context={'resorts': resorts}) # потом надо будет вставить сюда название шаблона
