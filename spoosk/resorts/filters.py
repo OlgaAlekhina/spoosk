@@ -1,11 +1,21 @@
 import calendar
 from datetime import datetime
 import locale
-
 import django_filters
 from django.db.models import Q
 from django_filters import FilterSet, CharFilter, Filter
 from .models import SkiResort
+from django_filters import rest_framework as filters
+
+
+class ResortSimpleFilter(filters.FilterSet):
+    resort_region = CharFilter(field_name='region', lookup_expr='icontains')
+    resort_month = CharFilter(field_name='list_month', lookup_expr='icontains')
+
+    class Meta:
+        model = SkiResort
+        fields = ['resort_region', 'resort_month']
+
 
 #
 # def filter_by_month(month_name):

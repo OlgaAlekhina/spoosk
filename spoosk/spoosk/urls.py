@@ -25,6 +25,7 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
 from django.views.generic.base import RedirectView
+from resorts.views import ResortSimpleFilter
 
 
 schema_view = get_schema_view(
@@ -46,6 +47,7 @@ urlpatterns = [
     path('resorts/', include('resorts.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('api/', include(router.urls)),
+    path('api/search-resort/', ResortSimpleFilter.as_view()),
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0),name='schema-swagger-ui'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
