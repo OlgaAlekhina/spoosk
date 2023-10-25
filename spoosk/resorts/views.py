@@ -4,13 +4,14 @@ from django.urls import reverse
 from django.views import View
 from django.views.decorators.http import require_POST
 from django.views.generic import ListView
-from .filters import ResortFilter
+from .filters import ResortFilter, ResortSimpleFilter
 # from .forms import ReviewForm
 from .models import SkiResort, Month, RidingLevel
 from django.http import JsonResponse
 from .serializers import SkiResortSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework import generics
 
 
 # endpoints for resorts
@@ -22,6 +23,13 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
        items = SkiResort.objects.all()
        serializer = SkiResortSerializer(items, many=True)
        return Response(serializer.data)
+
+
+# endpoint for simple resorts filter
+class ResortSimpleFilter(generics.ListAPIView):
+    queryset = SkiResort.objects.all()
+    serializer_class = SkiResortSerializer
+    filterset_class = ResortSimpleFilter
 
 
 class Region:
