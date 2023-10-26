@@ -1,5 +1,13 @@
 from rest_framework import serializers
-from .models import SkiResort
+from .models import SkiResort, SkiPass
+
+
+# serializer for SkiPass model
+class SkipassSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SkiPass
+        fields = ('name', 'type', 'price')
 
 
 # serializer for SkiResort model
@@ -16,6 +24,7 @@ class SkiResortSerializer(serializers.ModelSerializer):
     armchair_skilift = serializers.ReadOnlyField(source='number_armchair', help_text="number of armchair skilifts of resort")
     travelators_skilift = serializers.ReadOnlyField(source='number_travelators', help_text="number of travelator skilifts of resort")
     bugelny_skilift = serializers.ReadOnlyField(source='number_bugelny', help_text="number of bugelny skilifts of resort")
+    skipasses = SkipassSerializer(source='resorts', many=True, help_text="list of resort's skipasses")
 
     class Meta:
         model = SkiResort
