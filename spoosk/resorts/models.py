@@ -23,7 +23,7 @@ class SkiLifts(models.Model):
 
 class SkiPass(models.Model):
     id = models.CharField(db_column='ID', primary_key=True, max_length=20)  # Field name made lowercase.
-    id_resort = models.ForeignKey('SkiResort', models.DO_NOTHING, db_column='ID_resort')  # Field name made lowercase.
+    id_resort = models.ForeignKey('SkiResort', models.DO_NOTHING, db_column='ID_resort', related_name='resorts')  # Field name made lowercase.
     type = models.CharField(max_length=200, blank=True, null=True)
     name = models.CharField(max_length=200, blank=True, null=True)
     adult = models.IntegerField(blank=True, null=True)
