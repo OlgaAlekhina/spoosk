@@ -7,7 +7,7 @@ class SkipassSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SkiPass
-        fields = ('name', 'type', 'price')
+        fields = ('type', 'price')
 
 
 # serializer for SkiResort model
