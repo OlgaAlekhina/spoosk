@@ -93,7 +93,7 @@ class SkiResort(models.Model):
 
     @property
     def skipass_min(self):
-        skipass_price = self.skipass_set.order_by('price').first()
+        skipass_price = self.resorts.order_by('price').first()
         skipass_min = skipass_price.price
 
         return skipass_min
@@ -130,7 +130,7 @@ class SkiResort(models.Model):
 
     @property
     def type_name_price(self):
-        all_trail = self.skipass_set.all().values('type', 'name', 'price')
+        all_trail = self.resorts.all().values('type', 'name', 'price')
         return all_trail
 
     @property
