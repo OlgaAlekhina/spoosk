@@ -2089,7 +2089,9 @@ input[type="radio"]{
     color: red;
     transition: 0.5s;
 }
-
+.no-scroll {
+    overflow-y: hidden;
+}
 /*------------------profile-popup------------------*/
 
 .profile-popup {
