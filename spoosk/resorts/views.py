@@ -11,6 +11,8 @@ from django.http import JsonResponse
 from .serializers import SkiResortSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 
 
 class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
@@ -286,3 +288,13 @@ class Search(ListView):
     # def get(self, request, slug):
     #     resort = SkiResort.objects.get(name=slug)
     #     return render(request, 'resort_detail.html', {"resort": resort})
+
+
+# add resort to user's favourites
+@login_required
+def add_resort(request, pk):
+    resort = SkiResort.objects.get(id_resort=pk)
+    user = request.user
+    resort.users.add(user)
+    next = request.GET.get('next', reverse('resorts')) # надо будет вставить в шаблоне в ссылку переменную next
+    return HttpResponseRedirect(next)
