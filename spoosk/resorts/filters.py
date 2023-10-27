@@ -8,11 +8,15 @@ from .models import SkiResort
 from django_filters import rest_framework as filters
 
 
-class ResortSimpleFilter(filters.FilterSet):
-    resort_region = CharFilter(field_name='region', label="list of all regions")
-    resort_month = CharFilter(field_name='list_month', lookup_expr='icontains', label="list of all months")
-    resort_level = django_filters.Filter(field_name='skytrail__complexity', distinct=True, label="avalable: {'Ученик': green', 'Новичок': 'blue', 'Опытный': 'red', 'Экстремал': 'black'}")
+class SimpleFilter(filters.FilterSet):
+    resort_region = CharFilter(field_name='region', label="parameter values are identical to form choice fields names")
+    resort_month = CharFilter(field_name='list_month', lookup_expr='icontains', label="parameter values are identical to form choice fields names")
+    resort_level = django_filters.Filter(field_name='skytrail__complexity', distinct=True, label="parameter values should be 'green' for 'Ученик', \
+                                        'blue' for 'Новичок', 'red' for 'Опытный', 'black' for 'Экстремал'")
 
+    class Meta:
+        model = SkiResort
+        fields = ('resort_region', 'resort_month', 'resort_level')
 
 #
 # def filter_by_month(month_name):
