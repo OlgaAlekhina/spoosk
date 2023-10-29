@@ -155,6 +155,10 @@ EMAIL_HOST_PASSWORD = 'qpqhkyiaqcdfldrv'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
+# access to Google Auth API
+GP_CLIENT_ID = "632070971106-bmjtdd1kksfo5tohm0kjvd4r3ghfkjie.apps.googleusercontent.com"
+GP_CLIENT_SECRET = "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"
+
 # try:
 #     from .local_settings import *
 # except ImportError:
