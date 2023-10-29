@@ -14,7 +14,6 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.conf import settings
 import requests
-from django.core.files.base import ContentFile
 
 
 # обработка запроса на регистрацию
@@ -162,7 +161,6 @@ def google_login(request):
     redirect_uri = 'http://127.0.0.1:8000/google-login'
     print('redirect_uri: ', redirect_uri)
     if ('code' in request.GET):
-        print('get_code')
         params = {
             'grant_type': 'authorization_code',
             'code': request.GET.get('code'),
@@ -172,10 +170,8 @@ def google_login(request):
         }
         url = 'https://accounts.google.com/o/oauth2/token'
         response = requests.post(url, data=params)
-        print('response#1: ', response)
         url = 'https://www.googleapis.com/oauth2/v1/userinfo'
         access_token = response.json().get('access_token')
-        print('access_tocken: ', access_token)
         response = requests.get(url, params={'access_token': access_token})
         user_data = response.json()
         print('user_data', user_data)
@@ -184,17 +180,16 @@ def google_login(request):
             user, _ = User.objects.get_or_create(email=email, username=email)
             data = {
                 'first_name': user_data.get('name', '').split()[0],
-                'last_name': user_data.get('family_name'),
+                'last_name': user_data.get('family_name', ''),
                 'is_active': True
             }
             user.__dict__.update(data)
             user.save()
-            picture = user_data.get('picture')
-            print(picture)
-            profile = UserProfile.objects.get(user=user)
-            profile.get_image_from_url(picture)
-            profile.save()
             login(request, user)
+            picture = user_data.get('picture')
+            profile = UserProfile.objects.get(user=user)
+            profile.avatar = profile.get_image_from_url(picture)
+            profile.save()
         else:
             print(
                 'Unable to login with Gmail. Please try again'

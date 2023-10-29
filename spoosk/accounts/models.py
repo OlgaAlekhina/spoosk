@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from urllib.request import urlopen
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
+import requests
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -15,11 +16,12 @@ class UserProfile(models.Model):
         return self.user.username
 
     def get_image_from_url(self, url):
-        img_tmp = NamedTemporaryFile()
-        with urlopen(url) as uo:
-            assert uo.status == 200
-            img_tmp.write(uo.read())
-            img_tmp.flush()
-        img = File(img_tmp)
-        # img_name = f'{img_tmp.name}.jpg'
-        self.avatar.save('test.jpg', img)
+        r = requests.get(url)
+        img_temp = NamedTemporaryFile()
+        img_temp.write(r.content)
+        img_temp.flush()
+        url_split = url.split('/')
+        name = url_split[-1]
+        img_name = f'{name}.jpg'
+        self.avatar.save(img_name, File(img_temp), save=True)
+        return self.avatar
