@@ -11,6 +11,10 @@ from .tokens import user_token
 import json
 from .models import UserProfile
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
+from django.conf import settings
+import requests
+from django.core.files.base import ContentFile
 
 
 # обработка запроса на регистрацию
@@ -148,6 +152,63 @@ def reset_endpoint(request):
         return JsonResponse({"success": "Changed password successfully!"}, status=200)
     else:
         raise Http404
+
+
+# вход и/или регистрация пользователя через учетную запись Google
+def google_login(request):
+    # redirect_uri = "%s://%s%s" % (
+    #     request.scheme, request.get_host(), reverse('google_login')
+    # )
+    redirect_uri = 'http://127.0.0.1:8000/google-login'
+    print('redirect_uri: ', redirect_uri)
+    if ('code' in request.GET):
+        print('get_code')
+        params = {
+            'grant_type': 'authorization_code',
+            'code': request.GET.get('code'),
+            'redirect_uri': redirect_uri,
+            'client_id': settings.GP_CLIENT_ID,
+            'client_secret': settings.GP_CLIENT_SECRET
+        }
+        url = 'https://accounts.google.com/o/oauth2/token'
+        response = requests.post(url, data=params)
+        print('response#1: ', response)
+        url = 'https://www.googleapis.com/oauth2/v1/userinfo'
+        access_token = response.json().get('access_token')
+        print('access_tocken: ', access_token)
+        response = requests.get(url, params={'access_token': access_token})
+        user_data = response.json()
+        print('user_data', user_data)
+        email = user_data.get('email')
+        if email:
+            user, _ = User.objects.get_or_create(email=email, username=email)
+            data = {
+                'first_name': user_data.get('name', '').split()[0],
+                'last_name': user_data.get('family_name'),
+                'is_active': True
+            }
+            user.__dict__.update(data)
+            user.save()
+            picture = user_data.get('picture')
+            print(picture)
+            profile = UserProfile.objects.get(user=user)
+            profile.get_image_from_url(picture)
+            profile.save()
+            login(request, user)
+        else:
+            print(
+                'Unable to login with Gmail. Please try again'
+            )
+        return redirect('/')
+    else:
+        url = "https://accounts.google.com/o/oauth2/auth?client_id=%s&response_type=code&scope=%s&redirect_uri=%s&state=google"
+        scope = [
+            "https://www.googleapis.com/auth/userinfo.profile",
+            "https://www.googleapis.com/auth/userinfo.email"
+        ]
+        scope = " ".join(scope)
+        url = url % (settings.GP_CLIENT_ID, scope, redirect_uri)
+        return redirect(url)
 
 
 # страница редактирования данных пользователя

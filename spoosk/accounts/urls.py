@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import signup_endpoint, login_endpoint, signup_confirmation, reset_request, reset_confirmation, reset_endpoint,\
-                    userprofile_page, delete_account, favorites, add_missing_profiles
+                    google_login, userprofile_page, delete_account, favorites, add_missing_profiles
 from django.contrib.auth.views import LogoutView
 from django.views.generic.base import RedirectView
 
@@ -13,6 +13,7 @@ urlpatterns = [
     path('reset_request/', reset_request, name='reset_request'),
     path('reset_confirmation/', reset_confirmation, name='reset_confirmation'),
     path('reset_endpoint/', reset_endpoint, name='reset_endpoint'),
+    path('google-login/', google_login, name='google_login'),
     path('profile/', userprofile_page, name='userprofile_page'),
     path('delete_account/', delete_account, name='delete_account'),
     path('favorites/', favorites, name='favorites'),
