@@ -57,7 +57,7 @@ class SkiResort(models.Model):
     list_month = models.TextField(blank=True, null=True, help_text="list of months which cover the ski season")
     link_ofsite = models.CharField(blank=True, null=True, help_text="url of resort's website")
     main_resort_img = models.ImageField('image', upload_to="static/image/resorts", null=True, help_text="url of large image for resort's page header")
-    rating = models.DecimalField(max_digits=2, decimal_places=1, blank=True, null=True)
+    max_height = models.IntegerField(blank=True, null=True, help_text="maximum height of resort")
 
     class Meta:
         managed = True
