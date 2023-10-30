@@ -190,11 +190,9 @@ def google_login(request):
             profile = UserProfile.objects.get(user=user)
             profile.avatar = profile.get_image_from_url(picture)
             profile.save()
+            return redirect('userprofile_page')
         else:
-            print(
-                'Unable to login with Gmail. Please try again'
-            )
-        return redirect('/')
+            return JsonResponse({"error": "Не удалось войти через Google. Попробуйте еще раз"}, status=403)
     else:
         url = "https://accounts.google.com/o/oauth2/auth?client_id=%s&response_type=code&scope=%s&redirect_uri=%s&state=google"
         scope = [
