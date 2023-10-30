@@ -10,7 +10,7 @@ class SkipassSerializer(serializers.ModelSerializer):
         fields = ('type', 'price')
 
 
-# serializer for SkiResort model
+# serializer for SkiResort model for retrieve method
 class SkiResortSerializer(serializers.ModelSerializer):
     trail_length = serializers.ReadOnlyField(source='total_length_calculation', help_text="summarized length of all resort's trails [km]")
     trail_number = serializers.ReadOnlyField(source='trail_number_count', help_text="number of all resort's trails")
@@ -29,3 +29,14 @@ class SkiResortSerializer(serializers.ModelSerializer):
     class Meta:
         model = SkiResort
         fields = '__all__'
+
+# serializer for SkiResort model for list method
+class ResortSerializer(serializers.ModelSerializer):
+    trail_length = serializers.ReadOnlyField(source='total_length_calculation', help_text="summarized length of all resort's trails [km]")
+    height_difference = serializers.ReadOnlyField(source='max_height_difference', help_text="resort's height difference [m]")
+    skipass = serializers.ReadOnlyField(source='skipass_min', help_text="minimal price of skipass")
+    trail_number = serializers.ReadOnlyField(source='trail_number_count', help_text="number of all resort's trails")
+
+    class Meta:
+        model = SkiResort
+        fields = ['name', 'region', 'image', 'trail_length', 'height_difference', 'skipass', 'trail_number']
