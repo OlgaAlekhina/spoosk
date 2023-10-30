@@ -8,7 +8,7 @@ from .filters import ResortFilter, SimpleFilter
 # from .forms import ReviewForm
 from .models import SkiResort, Month, RidingLevel
 from django.http import JsonResponse
-from .serializers import SkiResortSerializer
+from .serializers import SkiResortSerializer, ResortSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import generics
@@ -23,6 +23,12 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
        items = SkiResort.objects.all()
        serializer = SkiResortSerializer(items, many=True)
        return Response(serializer.data)
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return ResortSerializer
+        if self.action == 'retrieve':
+            return SkiResortSerializer
 
 
 # endpoint for simple resorts filter
