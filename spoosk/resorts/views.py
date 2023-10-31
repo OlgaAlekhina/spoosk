@@ -6,17 +6,22 @@ from django.views.decorators.http import require_POST
 from django.views.generic import ListView
 from .filters import ResortFilter, SimpleFilter
 # from .forms import ReviewForm
-from .models import SkiResort, Month, RidingLevel
+from .models import SkiResort, Month, RidingLevel, SkiPass
 from django.http import JsonResponse
 from .serializers import SkiResortSerializer, ResortSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import generics
+from django.db.models import Prefetch
 
 
 # endpoints for resorts
 class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
-    queryset = SkiResort.objects.all()
+    queryset = SkiResort.objects.prefetch_related(
+        Prefetch(
+        'resorts', queryset=SkiPass.objects.exclude(mob_type__isnull=True) # get skipass objects which have mobile type
+        )
+    )
     serializer_class = SkiResortSerializer
 
     def get(self, request):

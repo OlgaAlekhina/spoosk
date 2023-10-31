@@ -92,10 +92,11 @@ class SkiResort(models.Model):
 
         return result[0]
 
+    # get skipass for resort's card in mob app (where unified=1 & has lowest price)
     @property
     def skipass_min(self):
-        skipass_price = self.resorts.order_by('price').first()
-        skipass_min = skipass_price.price
+        skipass = self.resorts.filter(unified=1).order_by('price').first()
+        skipass_min = skipass.price
 
         return skipass_min
 
