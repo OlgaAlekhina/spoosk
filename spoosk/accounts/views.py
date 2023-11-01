@@ -19,7 +19,7 @@ import requests
 # обработка запроса на регистрацию
 def signup_endpoint(request):
     if request.method == 'POST':
-        username = f'{random.randrange(10000000000)}'
+        username = request.POST.get('usermail')
         usermail = request.POST.get('usermail')
         password = request.POST.get('password')
         if User.objects.filter(email=usermail).exists():
