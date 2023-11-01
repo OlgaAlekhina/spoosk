@@ -155,11 +155,9 @@ def reset_endpoint(request):
 
 # вход и/или регистрация пользователя через учетную запись Google
 def google_login(request):
-    # redirect_uri = "%s://%s%s" % (
-    #     request.scheme, request.get_host(), reverse('google_login')
-    # )
-    redirect_uri = 'http://127.0.0.1:8000/google-login'
-    print('redirect_uri: ', redirect_uri)
+    redirect_uri = "%s://%s%s" % (
+        request.scheme, request.get_host(), reverse('google_login')
+    )
     if ('code' in request.GET):
         params = {
             'grant_type': 'authorization_code',
@@ -174,7 +172,6 @@ def google_login(request):
         access_token = response.json().get('access_token')
         response = requests.get(url, params={'access_token': access_token})
         user_data = response.json()
-        print('user_data', user_data)
         email = user_data.get('email')
         if email:
             user, _ = User.objects.get_or_create(email=email, username=email)
