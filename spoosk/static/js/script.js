@@ -71,3 +71,10 @@ colorBars.forEach( function (bar) {
       }
 
 });
+
+// call function to add resort to user's favorites
+function addtoFavorites(id_resort) {
+    var path = window.location.href
+    var url = "/resorts/add_resort/" + id_resort +'?next=' + path;
+    window.location.replace(url);
+}

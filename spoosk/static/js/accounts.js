@@ -146,30 +146,30 @@ function user_login() {
 };
 
 // Google auth
-$('.google-account').on('click', function(event){
-    event.preventDefault();
-    google_login();
-});
+//$('.google-account').on('click', function(event){
+//    event.preventDefault();
+//    google_login();
+//});
 
 // AJAX for google auth
-function google_login() {
-    $.ajax({
-        url : "../google-login/", // the endpoint
-        type : "GET", // http method
-        crossDomain: true,
-
-        // handle a successful response
-        success : function(json) {
-            console.log('success login with google account');
-        },
-
-        // handle a non-successful response
-        error : function(json) {
-            $('#google-results').html("<strong>"+json.responseJSON.error+
-                "</strong>"); // add the error to the dom
-        }
-    });
-};
+//function google_login() {
+//    $.ajax({
+//        url : "../google-login/", // the endpoint
+//        type : "GET", // http method
+////        crossDomain: true,
+//
+//        // handle a successful response
+//        success : function(json) {
+//            console.log('success login with google account');
+//        },
+//
+//        // handle a non-successful response
+//        error : function(json) {
+//            $('#google-results').html("<strong>"+json.responseJSON.error+
+//                "</strong>"); // add the error to the dom
+//        }
+//    });
+//};
 
 
 // Reset password request submit
