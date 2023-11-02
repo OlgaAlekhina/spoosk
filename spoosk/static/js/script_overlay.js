@@ -45,13 +45,17 @@ modals.forEach((modal) => {
     });
 });
 
-document.querySelector(".modal .form-register__box").addEventListener('click', function (event) {
+if (document.querySelector(".modal .form-register__box")) {
+  element.addEventListener('click', function (event) {
     event._isClickWithInModal = true;
-});
+  });
+}
 
-document.querySelector(".modal .form-register__box-rec").addEventListener('click', function (event) {
+if (document.querySelector(".modal .form-register__box-rec")) {
+  element.addEventListener('click', function (event) {
     event._isClickWithInModal = true;
-});
+  });
+}
 
 // Обработчик события "keydown" для закрытия модального окна при нажатии на клавишу Esc
 document.addEventListener("keydown", function (event) {
