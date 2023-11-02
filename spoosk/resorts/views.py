@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.views import View
 from django.views.decorators.http import require_POST
 from django.views.generic import ListView
-from .filters import ResortFilter, SimpleFilter
+from .filters import ResortFilter, MainFilter, AdvancedFilter
 # from .forms import ReviewForm
 from .models import SkiResort, Month, RidingLevel, SkiPass
 from django.http import JsonResponse
@@ -29,6 +29,7 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
        serializer = SkiResortSerializer(items, many=True)
        return Response(serializer.data)
 
+    # add different serializers to list and detail view
     def get_serializer_class(self):
         if self.action == 'list':
             return ResortSerializer
@@ -36,12 +37,18 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
             return SkiResortSerializer
 
 
-# endpoint for simple resorts filter
-class ResortSimpleFilter(generics.ListAPIView):
+# endpoint for main resorts filter
+class ResortMainFilter(generics.ListAPIView):
     queryset = SkiResort.objects.all()
-    serializer_class = SkiResortSerializer
-    filterset_class = SimpleFilter
+    serializer_class = ResortSerializer
+    filterset_class = MainFilter
 
+
+# endpoint for advanced resorts filter
+class ResortAdvancedFilter(generics.ListAPIView):
+    queryset = SkiResort.objects.all()
+    serializer_class = ResortSerializer
+    filterset_class = AdvancedFilter
 
 class Region:
 
