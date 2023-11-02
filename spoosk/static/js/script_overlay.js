@@ -45,13 +45,17 @@ modals.forEach((modal) => {
     });
 });
 
-document.querySelector(".modal .form-register__box").addEventListener('click', function (event) {
+if (document.querySelector(".modal .form-register__box")) {
+  document.querySelector(".modal .form-register__box").addEventListener('click', function (event) {
     event._isClickWithInModal = true;
-});
+  });
+}
 
-document.querySelector(".modal .form-register__box-rec").addEventListener('click', function (event) {
+if (document.querySelector(".modal .form-register__box-rec")) {
+  document.querySelector(".modal .form-register__box-rec").addEventListener('click', function (event) {
     event._isClickWithInModal = true;
-});
+  });
+}
 
 // Обработчик события "keydown" для закрытия модального окна при нажатии на клавишу Esc
 document.addEventListener("keydown", function (event) {
@@ -65,5 +69,5 @@ document.addEventListener("keydown", function (event) {
 
 // Открыть модальное окно удаления аккаунта
 document.getElementById("btn-delete-account").addEventListener("click", function() {
-    document.getElementById("modal-account-delete").classList.add("open")
+    openModal(document.getElementById("modal-account-delete"))
 });

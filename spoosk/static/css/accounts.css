@@ -1,6 +1,6 @@
 .main-container {
   display: grid;
-  grid-template-columns: 350px 1fr;
+  grid-template-columns: 340px 1fr;
 }
 
 
@@ -101,7 +101,7 @@
 
 .nav__accounts {
   padding-top: 40px;
-  padding-bottom: 40px;
+  padding-bottom: 26px;
 }
 
 .menu__list-accounts {
@@ -355,9 +355,50 @@
   font-weight: 600;
   color: #B1B2B7;
 }
-
 .cancel-deletion a:hover {
   color: #005FF9;
+}
+
+.no-cards {
+    padding: 186px 0 276px 0;
+    text-align: center;
+    line-height: 30.5px;
+    font-weight: 500;
+}
+
+.no-cards p:first-of-type {
+    margin-bottom: 11px;
+    font-size: 24px;
+    color: #4D4E50;
+}
+
+.no-cards p:last-of-type {
+    margin-bottom: 44px;
+    font-size: 20px;
+    color: #B1B2B7;
+}
+
+.no-cards p:last-of-type::after {
+    content: url('../image/accounts/heart.svg');
+    padding-left: 8px;
+    vertical-align: middle;
+    width: 28px;
+    height: 28px;
+}
+
+/*------favorites------*/
+
+.favorites-account-box {
+  padding: 14px 0px 0px 20px;
+}
+
+.cards-content-favorites {
+   justify-content: start;
+}
+
+.cards-wrapper-favorites {
+    padding-left: 0px;
+}
 
 /*------------*/
 .reviews-account-container {
