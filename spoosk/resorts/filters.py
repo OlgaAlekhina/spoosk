@@ -8,7 +8,7 @@ from .models import SkiResort
 from django_filters import rest_framework as filters
 
 
-class SimpleFilter(filters.FilterSet):
+class MainFilter(filters.FilterSet):
     resort_region = CharFilter(field_name='region', label="parameter values are identical to form choice fields names")
     resort_month = CharFilter(field_name='list_month', lookup_expr='icontains', label="parameter values are identical to form choice fields names")
     resort_level = django_filters.Filter(field_name='skytrail__complexity', distinct=True, label="parameter values should be 'green' for 'Ученик', \
@@ -17,6 +17,21 @@ class SimpleFilter(filters.FilterSet):
     class Meta:
         model = SkiResort
         fields = ('resort_region', 'resort_month', 'resort_level')
+
+
+class AdvancedFilter(filters.FilterSet):
+    # has_green_skitrail = django_filters.Filter(field_name='skytrail__complexity', distinct=True, label="parameter value should be '1' if 'easy trails' is checked")
+    has_gondola = django_filters.Filter(field_name='skilifts__gondola', distinct=True, label="parameter value should be '1' if 'gondola skilift' is checked")
+    has_armchair = django_filters.Filter(field_name='skilifts__armchair', distinct=True, label="parameter value should be '1' if 'armchair skilift' is checked")
+    has_bugelny = django_filters.Filter(field_name='skilifts__bugelny', distinct=True, label="parameter value should be '1' if 'bugelny skilift' is checked")
+    has_travelators = django_filters.Filter(field_name='skilifts__travelators', distinct=True, label="parameter value should be '1' if 'travelator skilift' is checked")
+    # resort_month = CharFilter(field_name='list_month', lookup_expr='icontains', label="parameter values are identical to form choice fields names")
+    # resort_level = django_filters.Filter(field_name='skytrail__complexity', distinct=True, label="parameter values should be 'green' for 'Ученик', \
+    #                                     'blue' for 'Новичок', 'red' for 'Опытный', 'black' for 'Экстремал'")
+
+    class Meta:
+        model = SkiResort
+        fields = ('has_gondola', )
 
 #
 # def filter_by_month(month_name):
