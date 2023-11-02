@@ -46,13 +46,13 @@ modals.forEach((modal) => {
 });
 
 if (document.querySelector(".modal .form-register__box")) {
-  element.addEventListener('click', function (event) {
+  document.querySelector(".modal .form-register__box").addEventListener('click', function (event) {
     event._isClickWithInModal = true;
   });
 }
 
 if (document.querySelector(".modal .form-register__box-rec")) {
-  element.addEventListener('click', function (event) {
+  document.querySelector(".modal .form-register__box-rec").addEventListener('click', function (event) {
     event._isClickWithInModal = true;
   });
 }
@@ -69,5 +69,5 @@ document.addEventListener("keydown", function (event) {
 
 // Открыть модальное окно удаления аккаунта
 document.getElementById("btn-delete-account").addEventListener("click", function() {
-    document.getElementById("modal-account-delete").classList.add("open")
+    openModal(document.getElementById("modal-account-delete"))
 });
