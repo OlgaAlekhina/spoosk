@@ -246,7 +246,6 @@ def userprofile_page(request):
 def delete_account(request):
     if request.method == 'POST':
         user_id = request.POST.get('user_id')
-        print(user_id)
         user_id2 = int(user_id)
         User.objects.filter(id=user_id2).delete()
         return JsonResponse({"success": "Delete account successfully!"}, status=200)
@@ -269,4 +268,4 @@ def add_missing_profiles(request):
 def favorites(request):
     user = request.user
     resorts = user.user.all()
-    return render(request, context={'resorts': resorts}) # потом надо будет вставить сюда название шаблона
+    return render(request, 'accounts/favorites_resorts.html', context={'resorts': resorts})
