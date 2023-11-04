@@ -295,6 +295,10 @@ class Search(ListView):
 def add_resort(request, pk):
     resort = SkiResort.objects.get(id_resort=pk)
     user = request.user
-    resort.users.add(user)
-    next = request.GET.get('next', reverse('resorts')) # надо будет вставить в шаблоне в ссылку переменную next
+    if resort in SkiResort.objects.filter(users=user):
+        resort.users.remove(user)
+    else:
+        resort.users.add(user)
+    next = request.GET.get('next', reverse('resorts'))
     return HttpResponseRedirect(next)
+
