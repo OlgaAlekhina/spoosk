@@ -234,6 +234,32 @@ function change_password() {
     });
 };
 
+// AJAX for add/remove resort to/from favorites
+function addtoFavorites(id_resort) {
+    console.log(id_resort);
+    origin = location.origin;
+    $.ajax({
+        url : origin + "/add_resort/" + id_resort + "/", // the endpoint
+        type : "GET", // http method
+    });
+};
+
+// AJAX for remove resort from favorites with page reload
+function removefromFavorites(id_resort) {
+    console.log(id_resort);
+    origin = location.origin;
+    $.ajax({
+        url : origin + "/add_resort/" + id_resort + "/", // the endpoint
+        type : "GET", // http method
+
+        // handle a successful response
+        success : function(json) {
+            console.log("success");
+            location.reload();
+        },
+    });
+};
+
 // makes forms protected from CSRF
 $(function() {
 
