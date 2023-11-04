@@ -8,5 +8,4 @@ urlpatterns = [
     path('autocomplete/', views.autocomplete, name='autocomplete'),
     path('base_searching_results/', FilterResortsView.as_view(), name='base_searching_results'),
     path('<slug>/', SkiResortDetailView.as_view(), name='resort_detail'),
-    path('add_resort/<int:pk>/', add_resort, name='add_resort'),
 ]

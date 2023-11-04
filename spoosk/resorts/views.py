@@ -297,8 +297,10 @@ def add_resort(request, pk):
     user = request.user
     if resort in SkiResort.objects.filter(users=user):
         resort.users.remove(user)
+        return JsonResponse({"success": "Delete resort successfully!"}, status=200)
     else:
         resort.users.add(user)
-    next = request.GET.get('next', reverse('resorts'))
-    return HttpResponseRedirect(next)
+        return JsonResponse({"success": "Add resort successfully!"}, status=200)
+
+
 
