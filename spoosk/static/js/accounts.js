@@ -222,8 +222,8 @@ function change_password() {
 
         // handle a successful response
         success : function(json) {
-            $('#modal-new-password').removeClass("open")
-            $('#modal-password-changed').addClass("open")
+            $('#modal-new-password').removeClass("open");
+            $('#modal-password-changed').addClass("open");
             console.log("success");
         },
 
@@ -237,10 +237,28 @@ function change_password() {
 // AJAX for add/remove resort to/from favorites
 function addtoFavorites(id_resort) {
     console.log(id_resort);
+    favorites_id = "favorites-" + id_resort;
+    console.log(favorites_id);
     origin = location.origin;
     $.ajax({
         url : origin + "/add_resort/" + id_resort + "/", // the endpoint
         type : "GET", // http method
+
+        // handle a successful response
+        success : function(data) {
+            console.log("success");
+            console.log(data.result);
+            console.log(data.action);
+            if (data.action === 'delete') {
+                $("#" + favorites_id).removeClass("favorites-btn");
+                $("#" + favorites_id).addClass("btn-white");
+            }
+            else {
+//                $("#" + favorites_id).css('border-color', '#005FF9');
+                $("#" + favorites_id).removeClass("btn-white");
+                $("#" + favorites_id).addClass("favorites-btn");
+            }
+        },
     });
 };
 

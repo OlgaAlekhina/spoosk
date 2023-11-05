@@ -1349,6 +1349,21 @@ body {
 
 }
 
+.favorites-btn {
+    padding: 4px 20px;
+    background-color: white;
+    border: 2px solid #005FF9;
+}
+
+.favorites-btn svg path {
+    stroke-opacity: 1;
+    fill-rule: nonzero;
+    clip-rule: inherit;
+    fill-opacity: 1;
+    fill: #005FF9;
+    stroke: #005FF9;
+}
+
 .cards-btn-blue {
     padding: 12px 33px;
     background-color: #005FF9;
