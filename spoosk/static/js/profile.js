@@ -32,6 +32,33 @@ function deleteAccount() {
     });
 };
 
+// AJAX for remove resort from favorites with page reload
+function removefromFavorites(id_resort) {
+    origin = location.origin;
+    $.ajax({
+        url : origin + "/add_resort/" + id_resort + "/", // the endpoint
+        type : "GET", // http method
+
+        // handle a successful response
+        success : function(json) {
+            loadFavorites();
+        },
+    });
+};
+
+// AJAX for loading user's favorites
+function loadFavorites() {
+    $.ajax({
+        url : "/favorites/", // the endpoint
+        type : "GET", // http method
+
+        // handle a successful response
+        success : function(response) {
+            $(".editing_profile-container").html(response);
+        },
+    });
+};
+
 // makes forms protected from CSRF
 $(function() {
 
