@@ -12,7 +12,7 @@ from .serializers import SkiResortSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import JsonResponse, HttpResponse, Http404
 
 
 class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
@@ -297,10 +297,24 @@ def add_resort(request, pk):
     user = request.user
     if resort in SkiResort.objects.filter(users=user):
         resort.users.remove(user)
-        return JsonResponse({"success": "Delete resort successfully!"}, status=200)
+        response_data = {}
+        response_data['result'] = 'Successfully delete resort from favorites!'
+        response_data['action'] = 'delete'
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type='application/json'
+        )
+       # return JsonResponse({"success": "Delete resort successfully!"}, status=200)
     else:
         resort.users.add(user)
-        return JsonResponse({"success": "Add resort successfully!"}, status=200)
+       #return JsonResponse({"success": "Add resort successfully!"}, status=200)
+        response_data = {}
+        response_data['result'] = 'Successfully add resort to favorites!'
+        response_data['action'] = 'add'
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type='application/json'
+        )
 
 
 
