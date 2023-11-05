@@ -268,4 +268,5 @@ def add_missing_profiles(request):
 def favorites(request):
     user = request.user
     resorts = user.user.all()
-    return render(request, 'accounts/favorites_resorts.html', context={'resorts': resorts})
+    html = render_to_string('accounts/favorites_resorts.html', context={'resorts': resorts})
+    return JsonResponse(html, safe=False)

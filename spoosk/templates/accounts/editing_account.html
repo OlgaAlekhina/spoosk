@@ -1,7 +1,7 @@
 {% extends 'accounts/base.html' %}
 {% load static %}
 {% block content %}
-<div class="editing_profile-container">
+<div class="editing_profile-container" id="editing_profile-container">
     <div class="editing_profile-box">
         <h1 class="section-title-accounts">Профиль</h1>
         <form method="post" action="{% url 'userprofile_page' %}" enctype='multipart/form-data'  class="editing_profile">
