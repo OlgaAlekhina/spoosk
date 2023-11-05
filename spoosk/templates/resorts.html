@@ -1,5 +1,6 @@
 {% extends 'flatpages/default.html' %}
 {% load static %}
+{% load custom_filters %}
 {% block title %}
 Resorts
 {% endblock title %}
@@ -64,8 +65,7 @@ Resorts
                                                     <path d="M6 20.5V14.5" stroke="#D9D9D9" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                                 </svg>
                                             </button>
-
-                                            <button class="cards-btn btn-white" id="favorites-{{ resort.id_resort }}" onclick="addtoFavorites({{ resort.id_resort }})">
+                                            <button class="cards-btn {% if resort|in_favorites:request.user %} favorites-btn {% else %} btn-white {% endif %}" id="favorites-{{ resort.id_resort }}" onclick="addtoFavorites({{ resort.id_resort }})">
                                                 <svg viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M12.0119 6.07196L10.9249 4.98496C10.4155 4.46862 9.80891 4.05816
                                                     9.14015 3.7772C8.4714 3.49625 7.75368 3.35036 7.02831 3.34793C6.30295 3.3455 5.58426 3.48658 4.91364 3.76304C4.24302
