@@ -1,4 +1,5 @@
 from django import template
+from resorts.models import SkiResort
 
 register = template.Library()
 
@@ -32,3 +33,13 @@ def format_results_count(n):
     else:
         word = 'вариантов'
     return f'Найдено {n} {word}:'
+
+
+# check if resort is in user's favorites
+@register.filter(name='in_favorites')
+def in_favorites(resort, user):
+    if user.is_authenticated:
+        if resort in SkiResort.objects.filter(users=user):
+            return True
+    else:
+        return False

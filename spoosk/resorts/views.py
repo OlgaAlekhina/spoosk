@@ -304,10 +304,8 @@ def add_resort(request, pk):
             json.dumps(response_data),
             content_type='application/json'
         )
-       # return JsonResponse({"success": "Delete resort successfully!"}, status=200)
     else:
         resort.users.add(user)
-       #return JsonResponse({"success": "Add resort successfully!"}, status=200)
         response_data = {}
         response_data['result'] = 'Successfully add resort to favorites!'
         response_data['action'] = 'add'
