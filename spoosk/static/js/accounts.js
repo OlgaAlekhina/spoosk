@@ -145,28 +145,23 @@ function user_login() {
     });
 };
 
-// Google auth
-//$('.google-account').on('click', function(event){
-//    event.preventDefault();
-//    google_login();
-//});
-
 // AJAX for google auth
-//function google_login() {
+//function googleLogin() {
 //    $.ajax({
-//        url : "../google-login/", // the endpoint
+//        url : "../google-login", // the endpoint
 //        type : "GET", // http method
 ////        crossDomain: true,
 //
 //        // handle a successful response
-//        success : function(json) {
+//        success : function() {
 //            console.log('success login with google account');
 //        },
 //
 //        // handle a non-successful response
-//        error : function(json) {
-//            $('#google-results').html("<strong>"+json.responseJSON.error+
-//                "</strong>"); // add the error to the dom
+//        error : function() {
+//            console.log('error');
+////            $('#google-results').html("<strong>"+json.responseJSON.error+
+////                "</strong>"); // add the error to the dom
 //        }
 //    });
 //};
