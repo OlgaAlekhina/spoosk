@@ -223,6 +223,7 @@ class SkiReview(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
     rating = models.IntegerField()
+    add_at = models.DateTimeField(auto_now=True)
 
 
 # python manage.py shell_plus --print-sql
