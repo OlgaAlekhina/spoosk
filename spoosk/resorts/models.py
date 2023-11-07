@@ -132,7 +132,7 @@ class SkiResort(models.Model):
 
     @property
     def type_name_price(self):
-        all_trail = self.resorts.all().values('type', 'name', 'price')
+        all_trail = self.resorts.all().exclude(mob_type__isnull=True).values('type', 'name', 'price')
         return all_trail
 
     @property
