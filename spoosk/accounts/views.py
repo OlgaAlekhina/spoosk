@@ -158,6 +158,7 @@ def google_login(request):
     redirect_uri = "%s://%s%s" % (
         request.scheme, request.get_host(), reverse('google_login')
     )
+    print(redirect_uri)
     if ('code' in request.GET):
         params = {
             'grant_type': 'authorization_code',
