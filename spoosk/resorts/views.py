@@ -50,6 +50,7 @@ class ResortAdvancedFilter(generics.ListAPIView):
     serializer_class = ResortSerializer
     filterset_class = AdvancedFilter
 
+
 class Region:
 
     @staticmethod
