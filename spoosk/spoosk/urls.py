@@ -25,7 +25,7 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
 from django.views.generic.base import RedirectView
-from resorts.views import ResortMainFilter, ResortAdvancedFilter
+from resorts.views import ResortMainFilter, ResortAdvancedFilter, get_regions
 
 
 schema_view = get_schema_view(
@@ -49,6 +49,7 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api/resorts/main_filter', ResortMainFilter.as_view()),
     path('api/resorts/advanced_filter', ResortAdvancedFilter.as_view()),
+    path('api/resorts/regions', get_regions),
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0),name='schema-swagger-ui'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
