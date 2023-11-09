@@ -13,6 +13,8 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import generics
 from django.db.models import Prefetch
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 
 # endpoints for resorts
@@ -35,6 +37,13 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
             return ResortSerializer
         if self.action == 'retrieve':
             return SkiResortSerializer
+
+
+# endpoint for list of regions
+@api_view()
+def get_regions(request):
+    regions = SkiResort.objects.values('region').distinct('region')
+    return Response(regions)
 
 
 # endpoint for main resorts filter
