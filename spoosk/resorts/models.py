@@ -196,7 +196,7 @@ class SkyTrail(models.Model):
 class ResortImage(models.Model):
     title = models.CharField(max_length=200, blank=True, null=True)
     image = models.ImageField(upload_to="static/image/resorts")
-    resort = models.ForeignKey(SkiResort, on_delete=models.CASCADE)
+    resort = models.ForeignKey(SkiResort, on_delete=models.CASCADE, related_name='resort_images')
     add_at = models.DateTimeField(auto_now=True)
 
 
