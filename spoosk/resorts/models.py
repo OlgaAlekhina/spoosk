@@ -56,6 +56,7 @@ class SkiResort(models.Model):
     image = models.ImageField('image', upload_to="static/image/card", null=True, help_text="url of small image for resort's card")
     list_month = models.TextField(blank=True, null=True, help_text="list of months which cover the ski season")
     link_ofsite = models.CharField(blank=True, null=True, help_text="url of resort's website")
+    link_skipasses = models.CharField(blank=True, null=True, help_text="url of skipasses page on resort's website")
     main_resort_img = models.ImageField('image', upload_to="static/image/resorts", null=True, help_text="url of large image for resort's page header")
     max_height = models.IntegerField(blank=True, null=True, help_text="maximum height of resort")
 
@@ -190,6 +191,13 @@ class SkyTrail(models.Model):
 
     def __str__(self):
         return f'{self.id} - {self.name} - {self.complexity} - {self.extent} - {self.height_difference}'
+
+
+class ResortImage(models.Model):
+    title = models.CharField(max_length=200, blank=True, null=True)
+    image = models.ImageField(upload_to="static/image/resorts")
+    resort = models.ForeignKey(SkiResort, on_delete=models.CASCADE)
+    add_at = models.DateTimeField(auto_now=True)
 
 
 class Month(models.Model):
