@@ -15,6 +15,10 @@ from rest_framework import generics
 from django.db.models import Prefetch
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.db.models import Count
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
+from django.db.models import OuterRef, Subquery
 
 
 # endpoints for resorts
@@ -55,9 +59,14 @@ class ResortMainFilter(generics.ListAPIView):
 
 # endpoint for advanced resorts filter
 class ResortAdvancedFilter(generics.ListAPIView):
-    queryset = SkiResort.objects.all()
+    # annotation of queryset with trails number and skipass price for ordering of the filtration result
+    skipasses = SkiPass.objects.filter(id_resort=OuterRef("pk")).filter(mob_type="one_day")
+    queryset = SkiResort.objects.annotate(trail_number=Count("skytrail")).\
+                                annotate(skipass=Subquery(skipasses.values("price")))
     serializer_class = ResortSerializer
     filterset_class = AdvancedFilter
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    ordering_fields = '__all__'
 
 
 class Region:
