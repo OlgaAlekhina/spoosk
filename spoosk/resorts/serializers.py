@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import SkiResort, SkiPass
+from .models import SkiResort, SkiPass, ResortImage
 
 
 # serializer for SkiPass model
@@ -8,6 +8,14 @@ class SkipassSerializer(serializers.ModelSerializer):
     class Meta:
         model = SkiPass
         fields = ('mob_type', 'price')
+
+
+# serializer for ResortImage model
+class ResortImageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ResortImage
+        fields = ('title', 'image')
 
 
 # serializer for SkiResort model for retrieve method
@@ -25,6 +33,7 @@ class SkiResortSerializer(serializers.ModelSerializer):
     travelators_skilift = serializers.ReadOnlyField(source='number_travelators', help_text="number of travelator skilifts of resort")
     bugelny_skilift = serializers.ReadOnlyField(source='number_bugelny', help_text="number of bugelny skilifts of resort")
     skipasses = SkipassSerializer(source='resorts', many=True, help_text="list of resort's skipasses")
+    images = ResortImageSerializer(source='resort_images', many=True, help_text="list of resort's additional images")
 
     class Meta:
         model = SkiResort
