@@ -46,12 +46,22 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
 # endpoint for list of regions
 @api_view()
 def get_regions(request):
+    """ Список всех регионов горнолыжных курортов, которые имеются в базе данных """
     regions = SkiResort.objects.values('region').distinct('region')
     return Response(regions)
 
 
 # endpoint for main resorts filter
 class ResortMainFilter(generics.ListAPIView):
+    """ Необходимо передавать параметры, которые указал пользователь, после url и вопросительного знака.
+Значение параметра resort_region должно быть идентично названию региона в БД. Точные названия можно получить в эндпоинте /api/resorts/regions.
+Значение параметра resort_month – это название месяца (по-русски, можно с большой или маленькой буквы).
+Значение параметра resort_level может быть green, blue, red или black, что соответствует сложностям трасс курорта.
+Если пользователь не выбрал значение, то параметр в запросе передавать не нужно.
+Пример:
+/api/resorts/main_filter?resort_region=Алтай&resort_month=январь&resort_level=red
+Этот запрос вернет все курорты в регионе Алтай с возможностью катания в январе на сложных трассах (для опытных туристов).
+"""
     queryset = SkiResort.objects.all()
     serializer_class = ResortSerializer
     filterset_class = MainFilter
@@ -59,6 +69,12 @@ class ResortMainFilter(generics.ListAPIView):
 
 # endpoint for advanced resorts filter
 class ResortAdvancedFilter(generics.ListAPIView):
+    """ Этот фильтр может использоваться с сортировкой результатов или без. Необходимо передавать параметры, которые указал пользователь, после url и вопросительного знака.
+    Пример: /api/resorts/advanced_filter?have_red_skitrails=red&have_gondola=1&airport_distance=100&ordering=skipass
+Такой запрос будет отбирать курорты, в которых имеются трассы повышенной сложности, гондольные подъемники, и с расположением не далее 100 км от аэропорта. Курорты будут отсортированы по цене дневного скипасса (по возрастанию цены).
+Если какие-то параметры не содержат смысловых значений, то их не следует включать в запрос.
+Сортировка может осуществляться по количеству трасс и по цене дневного скипасса (позже добавлю по рейтингу). Для этого указывается параметр ordering, который может иметь следующие значения: 1) trail_number (сортировка в порядке возрастания) или -trail_number (в порядке убывания); 2) skipass (в порядке возрастания) или -skipass (в порядке убывания).
+ """
     # annotation of queryset with trails number and skipass price for ordering of the filtration result
     skipasses = SkiPass.objects.filter(id_resort=OuterRef("pk")).filter(mob_type="one_day")
     queryset = SkiResort.objects.annotate(trail_number=Count("skytrail")).\
