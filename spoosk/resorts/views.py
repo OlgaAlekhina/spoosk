@@ -85,6 +85,14 @@ class ResortAdvancedFilter(generics.ListAPIView):
     ordering_fields = '__all__'
 
 
+# endpoint for search resorts filter
+class ResortSearchView(generics.ListAPIView):
+    queryset = SkiResort.objects.all()
+    serializer_class = ResortSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name']
+
+
 class Region:
 
     @staticmethod
