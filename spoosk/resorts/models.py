@@ -65,7 +65,7 @@ class SkiResort(models.Model):
         db_table = 'ski_resort'
 
     def __str__(self):
-        return f'{self.name} {self.region} {self.list_month}'
+        return f'{self.name}'
 
     def get_absolute_url(self):
         return reverse("resort_detail", kwargs={"slug": self.name})
@@ -197,7 +197,10 @@ class ResortImage(models.Model):
     title = models.CharField(max_length=200, blank=True, null=True)
     image = models.ImageField(upload_to="static/image/resorts")
     resort = models.ForeignKey(SkiResort, on_delete=models.CASCADE, related_name='resort_images')
-    add_at = models.DateTimeField(auto_now=True)
+    add_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.title}'
 
 
 class Month(models.Model):
@@ -232,6 +235,19 @@ class SkiReview(models.Model):
     text = models.TextField()
     rating = models.IntegerField()
     add_at = models.DateTimeField(auto_now=True)
+    approved = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.resort} # {self.id}'
+
+
+class ReviewImage(models.Model):
+    image = models.ImageField(upload_to="static/image/reviews")
+    review = models.ForeignKey(SkiReview, on_delete=models.CASCADE, related_name='review_images')
+    add_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.review} : photo # {self.id}'
 
 
 # python manage.py shell_plus --print-sql
