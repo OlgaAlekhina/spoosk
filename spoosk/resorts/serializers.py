@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import SkiResort, SkiPass, ResortImage
+from .models import SkiResort, SkiPass, ResortImage, SkiReview, ReviewImage
 
 
 # serializer for SkiPass model
@@ -18,6 +18,25 @@ class ResortImageSerializer(serializers.ModelSerializer):
         fields = ('title', 'image')
 
 
+# serializer for ReviewImage model
+class ReviewImageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ReviewImage
+        fields = ('id', 'image')
+
+
+# serializer for SkiReview model
+class SkireviewSerializer(serializers.ModelSerializer):
+    author_name = serializers.ReadOnlyField(source='author.first_name')
+    author_lastname = serializers.ReadOnlyField(source='author.last_name')
+    images = ReviewImageSerializer(source='review_images', many=True, help_text="list of review's images")
+
+    class Meta:
+        model = SkiReview
+        fields = ('resort', 'author_name', 'author_lastname', 'text', 'rating', 'add_at', 'images')
+
+
 # serializer for SkiResort model for retrieve method
 class SkiResortSerializer(serializers.ModelSerializer):
     trail_length = serializers.ReadOnlyField(source='total_length_calculation', help_text="summarized length of all resort's trails [km]")
@@ -34,6 +53,7 @@ class SkiResortSerializer(serializers.ModelSerializer):
     bugelny_skilift = serializers.ReadOnlyField(source='number_bugelny', help_text="number of bugelny skilifts of resort")
     skipasses = SkipassSerializer(source='resorts', many=True, help_text="list of resort's skipasses")
     images = ResortImageSerializer(source='resort_images', many=True, help_text="list of resort's additional images")
+    reviews = SkireviewSerializer(source='resort_reviews', many=True, help_text="list of resort's reviews")
 
     class Meta:
         model = SkiResort
@@ -49,3 +69,5 @@ class ResortSerializer(serializers.ModelSerializer):
     class Meta:
         model = SkiResort
         fields = ['id_resort', 'name', 'region', 'image', 'trail_length', 'height_difference', 'skipass', 'trail_number']
+
+
