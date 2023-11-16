@@ -230,9 +230,9 @@ class RidingLevel(models.Model):
 
 
 class SkiReview(models.Model):
-    resort = models.ForeignKey(SkiResort, on_delete=models.CASCADE)
+    resort = models.ForeignKey(SkiResort, on_delete=models.CASCADE, related_name='resort_reviews')
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    text = models.TextField()
+    text = models.TextField(max_length=2000, blank=True, null=True)
     rating = models.IntegerField()
     add_at = models.DateTimeField(auto_now=True)
     approved = models.BooleanField(default=False)

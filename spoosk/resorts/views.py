@@ -6,9 +6,9 @@ from django.views.decorators.http import require_POST
 from django.views.generic import ListView
 from .filters import ResortFilter, MainFilter, AdvancedFilter
 # from .forms import ReviewForm
-from .models import SkiResort, Month, RidingLevel, SkiPass
+from .models import SkiResort, Month, RidingLevel, SkiPass, SkiReview
 from django.http import JsonResponse
-from .serializers import SkiResortSerializer, ResortSerializer
+from .serializers import SkiResortSerializer, ResortSerializer, SkireviewSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import generics
@@ -91,6 +91,13 @@ class ResortSearchView(generics.ListAPIView):
     serializer_class = ResortSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['name']
+
+
+# endpoint for skireviews
+class SkireviewView(generics.ListAPIView):
+    """ Список всех одобренных отзывов, отсортированный по дате создания """
+    queryset = SkiReview.objects.filter(approved=True).order_by('-add_at')
+    serializer_class = SkireviewSerializer
 
 
 class Region:
