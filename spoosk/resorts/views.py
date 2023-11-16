@@ -68,7 +68,7 @@ class SkiResortList(Region, ListView):
         context['ski_pass_one'] = SkiResort.ski_pass_one
         context['count'] = SkiResort.count
         context['type_name_price'] = SkiResort.type_name_price
-        # context['reviews'] = Review.objects.all().order_by('-id')[:10]
+        context['reviews'] = Review.objects.all().order_by('-id')[:10]
 
         # context['where'] = 'Все регионы'
         # context['when'] = 'Не важно'

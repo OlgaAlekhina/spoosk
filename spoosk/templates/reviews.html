@@ -136,7 +136,7 @@
                                         <div class="review-content-text">
                                             <div class="review-author-name">{{ review.author|capfirst }}</div>
                                             <div class="review-author-subname">{{ review.riding_level }}</div>
-                                            <a href="{% url 'resorts' %}"><h3 class="review-resort-name">{{ review.resort }}</h3></a>
+                                            <a href="{% url 'resorts' %}"><h3 class="review-resort-name">{{ review.resort.name }}</h3></a>
                                             <ul class="stars-list">
                                                 <li class="stars-item">
                                                     <img src="{% static 'image/reviews/reviews_rating.svg' %}" alt="звезда">
