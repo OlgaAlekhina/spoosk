@@ -23,18 +23,18 @@ class ReviewImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ReviewImage
-        fields = ('id', 'image')
+        fields = ('review', 'image')
 
 
 # serializer for SkiReview model
 class SkireviewSerializer(serializers.ModelSerializer):
     author_name = serializers.ReadOnlyField(source='author.first_name')
     author_lastname = serializers.ReadOnlyField(source='author.last_name')
-    images = ReviewImageSerializer(source='review_images', many=True, help_text="list of review's images")
+    images = ReviewImageSerializer(source='review_images', many=True, required=False, help_text="list of review's images")
 
     class Meta:
         model = SkiReview
-        fields = ('resort', 'author_name', 'author_lastname', 'text', 'rating', 'add_at', 'images')
+        fields = ('resort', 'author_name', 'author_lastname', 'text', 'rating', 'add_at', 'approved', 'images')
 
 
 # serializer for SkiResort model for retrieve method

@@ -19,6 +19,8 @@ from django.db.models import Count
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import OuterRef, Subquery
+from rest_framework import pagination
+from rest_framework.permissions import IsAuthenticated
 
 
 # endpoints for resorts
@@ -29,6 +31,7 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
         )
     )
     serializer_class = SkiResortSerializer
+    pagination_class = None
 
     def get(self, request):
        items = SkiResort.objects.all()
@@ -65,6 +68,7 @@ class ResortMainFilter(generics.ListAPIView):
     queryset = SkiResort.objects.all()
     serializer_class = ResortSerializer
     filterset_class = MainFilter
+    pagination_class = None
 
 
 # endpoint for advanced resorts filter
@@ -83,21 +87,44 @@ class ResortAdvancedFilter(generics.ListAPIView):
     filterset_class = AdvancedFilter
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     ordering_fields = '__all__'
+    pagination_class = None
 
 
 # endpoint for search resorts filter
 class ResortSearchView(generics.ListAPIView):
+    """ Endpoint для поисковой строки. В качестве параметра передается текст, который пользователь ввел в поисковую строку. """
     queryset = SkiResort.objects.all()
     serializer_class = ResortSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['name']
+    pagination_class = None
 
 
-# endpoint for skireviews
+# endpoint for skireviews list on main page
 class SkireviewView(generics.ListAPIView):
-    """ Список всех одобренных отзывов, отсортированный по дате создания """
+    """ Список всех одобренных отзывов, отсортированный по дате создания, необходимый для главной страницы приложения.
+     Выводится по 2 отзыва на страницу. Запрос может включать номер страницы в качестве параметра.
+     Пример: /api/resorts/reviews?page=2
+     В теле ответа передаются параметры next и previous, которые содержат ссылки на предыдущую и следующую страницы. Возможно, их будет удобно использовать при разработке мобильного приложения."""
     queryset = SkiReview.objects.filter(approved=True).order_by('-add_at')
     serializer_class = SkireviewSerializer
+    pagination.PageNumberPagination.page_size = 2
+
+
+# endpoint to create skireview
+class SkireviewCreateView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = SkiReview.objects.all()
+    serializer_class = SkireviewSerializer
+
+    def perform_create(self, serializer):
+        serializer.validated_data['author'] = self.request.user
+        return super(SkireviewCreateView, self).perform_create(serializer)
+
+
+# endpoint to get, update or delete of skireview
+class ReviewView(generics.RetrieveUpdateDestroyAPIView):
+    pass
 
 
 class Region:
