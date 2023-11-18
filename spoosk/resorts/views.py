@@ -21,6 +21,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import OuterRef, Subquery
 from rest_framework import pagination
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
+from drf_yasg.utils import swagger_auto_schema
 
 
 # endpoints for resorts
@@ -116,10 +118,24 @@ class SkireviewCreateView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
     queryset = SkiReview.objects.all()
     serializer_class = SkireviewSerializer
+    parser_classes = (JSONParser, MultiPartParser)
 
-    def perform_create(self, serializer):
-        serializer.validated_data['author'] = self.request.user
-        return super(SkireviewCreateView, self).perform_create(serializer)
+    def get_parsers(self):
+        if getattr(self, 'swagger_fake_view', False):
+            return []
+
+        return super().get_parsers()
+
+    def create(self, request, *args, **kwargs):
+        serializer = SkireviewSerializer(data=request.data, context={'request': request, })
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)
+
+    # def perform_create(self, serializer):
+    #     serializer.validated_data['author'] = self.request.user
+    #     return super(SkireviewCreateView, self).perform_create(serializer)
 
 
 # endpoint to get, update or delete of skireview
