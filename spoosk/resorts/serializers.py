@@ -23,7 +23,7 @@ class ReviewImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ReviewImage
-        fields = ('review', 'image')
+        fields = ('image', )
 
 
 # serializer for SkiReview model
@@ -34,7 +34,21 @@ class SkireviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SkiReview
-        fields = ('resort', 'author_name', 'author_lastname', 'text', 'rating', 'add_at', 'approved', 'images')
+        fields = ('resort', 'author_name', 'author_lastname', 'text', 'rating', 'add_at', 'images')
+
+    def create(self, validated_data):
+        resort = validated_data['resort']
+        author = self.context['request'].user
+        text = validated_data['text']
+        rating = validated_data['rating']
+        images = self.context['request'].FILES.getlist('images')
+
+        m1 = SkiReview(resort=resort, author=author, text=text, rating=rating)
+        m1.save()
+        for image in list(images):
+            m2 = ReviewImage(review=m1, image=image)
+            m2.save()
+        return m1
 
 
 # serializer for SkiResort model for retrieve method
