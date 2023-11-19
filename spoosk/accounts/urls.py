@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import signup_endpoint, login_endpoint, signup_confirmation, reset_request, reset_confirmation, reset_endpoint,\
-                    google_login, userprofile_page, delete_account, favorites, add_missing_profiles
+                    google_login, userprofile_page, delete_account, favorites, add_missing_profiles, user_reviews
 from resorts.views import add_resort
 from django.contrib.auth.views import LogoutView
 from django.views.generic.base import RedirectView
@@ -20,4 +20,5 @@ urlpatterns = [
     path('add_resort/<int:pk>/', add_resort, name='add_resort'),
     path('favorites/', favorites, name='favorites'),
     path('add_missing_profiles/', add_missing_profiles, name='add_missing_profiles'),
+    path('user_reviews/', user_reviews, name='user_reviews'),
 ]

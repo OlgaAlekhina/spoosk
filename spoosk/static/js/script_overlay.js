@@ -31,6 +31,11 @@ document.getElementById("open-modal-profile-btn").addEventListener("click", func
     openModal(document.getElementById("modal-signup-signin"))
 });
 
+// Привязка обработчика события "click" для кнопки "Оставить отзыв на странице курорта"
+document.getElementById("open-modal-add-review").addEventListener("click", function() {
+    openModal(document.getElementById("modal-add-review"))
+});
+
 closeModalBtns.forEach((btn, i) => {
     btn.addEventListener("click", function () {
         closeModal(modals[i]);
@@ -53,6 +58,12 @@ if (document.querySelector(".modal .form-register__box")) {
 
 if (document.querySelector(".modal .form-register__box-rec")) {
   document.querySelector(".modal .form-register__box-rec").addEventListener('click', function (event) {
+    event._isClickWithInModal = true;
+  });
+}
+
+if (document.querySelector(".modal .modal-add-review__box")) {
+  document.querySelector(".modal .modal-add-review__box").addEventListener('click', function (event) {
     event._isClickWithInModal = true;
   });
 }

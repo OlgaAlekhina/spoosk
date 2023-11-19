@@ -84,12 +84,25 @@ class SkiResortDetailView(View):
 
     def get(self, request, slug):
         resort = SkiResort.objects.get(name=slug)
-        return render(request, 'resort_detail.html', {"resort": resort})
-        # reviews_list = Review.objects.filter(resort=resort).order_by('-id')
-        # reviews = reviews_list
-        #
-        # form = ReviewForm()
-        # return render(request, 'resort_detail.html', {"resort": resort, "reviews": reviews, "form": form})
+        # return render(request, 'resort_detail.html', {"resort": resort})
+        reviews_list = Review.objects.filter(resort=resort).order_by('-id')
+        reviews = reviews_list
+
+        form = ReviewForm()
+        return render(request, 'resort_detail.html', {"resort": resort, "reviews": reviews, "form": form})
+
+
+    def post(self, request, slug):
+        resort = SkiResort.objects.get(name=slug)
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.resort = resort
+            review.save()
+            return redirect('resort_detail', slug=slug)
+        else:
+            reviews = Review.objects.filter(resort=resort)
+            return render(request, 'resort_detail.html', {"resort": resort, "reviews": reviews, "form": form})
 
     # def post(self, request, slug):
     #     resort = SkiResort.objects.get(name=slug)

@@ -98,24 +98,24 @@ Resorts
 {% endblock content %}
 
 
-{% block content1 %}
-    {% if resorts %}
-        {% for resort in resorts %}
-            {% if resort.name == 'Роза Хутор' %}
-            <a href="{{ resort.get_absolute_url }}"><h3 class="review-resort-name">{{ resort.name }}</h3></a>
-            {% endif %}
-        {% endfor%}
-    {% endif %}
-{% endblock content1 %}
+<!--{% block content1 %}-->
+<!--    {% if resorts %}-->
+<!--        {% for resort in resorts %}-->
+<!--            {% if resort.name == 'Роза Хутор' %}-->
+<!--            <a href="{{ resort.get_absolute_url }}"><h3 class="review-resort-name">{{ resort.name }}</h3></a>-->
+<!--            {% endif %}-->
+<!--        {% endfor%}-->
+<!--    {% endif %}-->
+<!--{% endblock content1 %}-->
 
 
-{% block content2 %}
-    {% if resorts %}
-        {% for resort in resorts %}
-            {% if resort.name == 'Большой Вудъявр' %}
-            <a href="{{ resort.get_absolute_url }}"><h3 class="review-resort-name">{{ resort.name }}</h3></a>
-            {% endif %}
-        {% endfor%}
-    {% endif %}
-{% endblock content2 %}
+<!--{% block content2 %}-->
+<!--    {% if resorts %}-->
+<!--        {% for resort in resorts %}-->
+<!--            {% if resort.name == 'Большой Вудъявр' %}-->
+<!--            <a href="{{ resort.get_absolute_url }}"><h3 class="review-resort-name">{{ resort.name }}</h3></a>-->
+<!--            {% endif %}-->
+<!--        {% endfor%}-->
+<!--    {% endif %}-->
+<!--{% endblock content2 %}-->
 
