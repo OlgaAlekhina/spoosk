@@ -59,6 +59,18 @@ function loadFavorites() {
     });
 };
 
+function loadReviews() {
+    $.ajax({
+        url : "/user_reviews/", // the endpoint
+        type : "GET", // http method
+
+        // handle a successful response
+        success : function(response) {
+            $(".editing_profile-container").html(response);
+        },
+    });
+};
+
 // makes forms protected from CSRF
 $(function() {
 

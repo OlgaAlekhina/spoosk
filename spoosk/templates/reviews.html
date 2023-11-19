@@ -1,124 +1,6 @@
 
 {% load static %}
 
-
-<!--    <div class="wrapper reviews-wrapper">-->
-<!--        <div class="cards-wrapper">-->
-<!--            <h2 class="section-title section-title-reviews">Последние отзывы</h2>-->
-
-<!--            <div class="reviews-content">-->
-
-<!--                {% if reviews %}-->
-<!--                    {% for review in reviews %}-->
-<!--                        <div class="review-column">-->
-<!--                                <div class="review-item">-->
-<!--                                    <div class="review-content">-->
-<!--                                        {% if review.image_review %}-->
-<!--                                        <img class="img-foto" src="{{ review.image_review.url }}" alt="{{ review.resort }}">-->
-<!--                                        {% else %}-->
-<!--                                        <img class="img-foto" src="{% static 'image/reviews/roza_hutor.jpg' %}" alt="{{ review.resort }}">-->
-<!--                                        {% endif %}-->
-<!--                                        <div class="review-content-text">-->
-<!--                                            <div class="review-author-name">{{ review.author }}</div>-->
-<!--                                            <div class="review-author-subname">{{ review.riding_level }}</div>-->
-<!--                                            <a href="{% url 'resorts' %}"><h3 class="review-resort-name">{{ review.resort }}</h3></a>-->
-<!--                                            <ul class="stars-list">-->
-<!--                                                <li class="stars-item">-->
-<!--                                                    <img src="{% static 'image/reviews/reviews_rating.svg' %}" alt="звезда">-->
-<!--                                                </li>-->
-<!--                                                <li class="stars-item">-->
-<!--                                                    <img src="{% static 'image/reviews/reviews_rating.svg' %}" alt="звезда">-->
-<!--                                                </li>-->
-<!--                                                <li class="stars-item">-->
-<!--                                                    <img src="{% static 'image/reviews/reviews_rating.svg' %}" alt="звезда">-->
-<!--                                                </li>-->
-<!--                                                <li class="stars-item">-->
-<!--                                                    <img src="{% static 'image/reviews/reviews_rating.svg' %}" alt="звезда">-->
-<!--                                                </li>-->
-<!--                                                <li class="stars-item">-->
-<!--                                                    <img src="{% static 'image/reviews/reviews_rating.svg' %}" alt="звезда">-->
-<!--                                                </li>-->
-<!--                                            </ul>-->
-<!--                                            <div class="rating rating-montains">-->
-<!--                                                <img src="{% static 'image/reviews/mountains.svg' %}" alt="Горы">-->
-<!--                                                <div> <span>10</span>/<span>10</span> </div>-->
-<!--                                            </div>-->
-<!--                                            <div class="rating rating-skier">-->
-<!--                                                <img src="{% static 'image/reviews/snowboarding.svg' %}" alt="Лыжник">-->
-<!--                                                <div> <span>10</span>/<span>10</span> </div>-->
-<!--                                            </div>-->
-<!--                                            <div class="rating rating-lift">-->
-<!--                                                <img src="{% static 'image/reviews/lift.svg' %}" alt="Подъемник">-->
-<!--                                                <div> <span>8</span>/<span>10</span> </div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-
-<!--                                    </div>-->
-
-<!--                                    <div class="review-text">-->
-<!--                                        <div class="review-title">Отзыв:</div>-->
-<!--                                        <p class="review-title-text">{{ review.text_review }}</p>-->
-<!--                                    </div>-->
-
-<!--                                    <a class="btn-reviews" href="#">Подробнее</a>-->
-
-<!--                                </div>-->
-<!--                        </div>-->
-<!--                    {% endfor %}-->
-<!--                {% endif %}-->
-
-<!--            </div>-->
-
-
-<!--      {% if reviews.paginator.num_pages > 1 %}-->
-
-<!--        <nav class="list-pages">-->
-<!--            <ul class="ellipse-list" >-->
-
-<!--                {% if reviews.has_previous %}-->
-<!--                <a href="?page={{ reviews.previous_page_number }}">-->
-<!--                    <img class="chevron-left" src="{% static 'image/reviews/chevron_left.svg' %}" alt="">-->
-<!--                </a>-->
-<!--                {% endif %}-->
-
-<!--                {% for p in reviews.paginator.page_range %}-->
-<!--                    {% if reviews.number == p %}-->
-<!--                        <li class="page-num ellipse-item blue&#45;&#45;active">-->
-<!--                            <a href="?page={{ p }}">-->
-<!--                                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">-->
-<!--                                    <circle cx="5" cy="5" r="5" fill="#B1B2B7"/>-->
-<!--                                </svg>-->
-<!--                            </a>-->
-<!--                        </li>-->
-
-<!--                    {% else %}-->
-<!--                        <li class="page-num ellipse-item">-->
-<!--                            <a href="?page={{ p }}">-->
-<!--                                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">-->
-<!--                                    <circle cx="5" cy="5" r="5" fill="#B1B2B7"/>-->
-<!--                                </svg>-->
-<!--                            </a>-->
-<!--                        </li>-->
-<!--                    {% endif %}-->
-<!--                {% endfor %}-->
-
-
-<!--                {% if reviews.has_next %}-->
-<!--                    <a href="?page={{ reviews.next_page_number }}">-->
-<!--                        <img  class="chevron-right" src="{% static 'image/reviews/chevron_right.svg' %}" alt="">-->
-<!--                    </a>-->
-<!--                {% endif %}-->
-
-<!--            </ul>-->
-<!--        </nav>-->
-<!--      {% endif %}-->
-<!--      </div>-->
-
-<!--    </div>-->
-
-
-
-
     <div class="wrapper reviews-wrapper">
         <div class="cards-wrapper">
             <h2 class="section-title section-title-reviews">Последние отзывы</h2>
@@ -136,7 +18,7 @@
                                         <div class="review-content-text">
                                             <div class="review-author-name">{{ review.author|capfirst }}</div>
                                             <div class="review-author-subname">{{ review.riding_level }}</div>
-                                            <a href="{% url 'resorts' %}"><h3 class="review-resort-name">{{ review.resort.name }}</h3></a>
+                                            <a href="{{ review.resort.get_absolute_url }}"><h3 class="review-resort-name">{{ review.resort.name }}</h3></a>
                                             <ul class="stars-list">
                                                 <li class="stars-item">
                                                     <img src="{% static 'image/reviews/reviews_rating.svg' %}" alt="звезда">

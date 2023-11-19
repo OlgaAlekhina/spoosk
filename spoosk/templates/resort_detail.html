@@ -83,7 +83,7 @@
 
             <section class="page-additional-info">
                 <div class="wrapper">
-                    <div class="content">
+                    <div class="content-center">
                         <div class="additional-info-container">
 
                             <div class="additional-info-column">
@@ -197,7 +197,7 @@
 
             <section class="page-price-skipass">
                 <div class="wrapper">
-                    <div class="content">
+                    <div class="content-center">
                         <h2 class="table-title">Стоимость ски-пасс</h2>
 <!--                        <div class="conten-btn">-->
 <!--                            <div class="table-button">-->
@@ -273,6 +273,58 @@
                 </div>
 
             </section>
+
+            <section class="page-reviews">
+                {% include "reviews.html" %}
+
+                {% if request.user.is_authenticated %}
+                <div class="wrapper">
+                    <div class="btn-container">
+                        <button class="btn resort-add-review btn-primary" type="button" id="open-modal-add-review">Оставить отзыв</button>
+                    </div>
+                </div>
+                {% endif %}
+            </section>
+
+<div class="modal" id="modal-add-review">
+    <div class="modal-add-review__box">
+            <button class="modal__close-btn">
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M2.70659 0.292919C2.51799 0.110761 2.26539 0.00996641
+                    2.00319 0.0122448C1.74099 0.0145233 1.49018 0.119692 1.30477 0.305101C1.11937 0.490509 1.0142 0.741321
+                    1.01192 1.00352C1.00964 1.26571 1.11044 1.51832 1.29259 1.70692L6.58559 6.99992L1.29259 12.2929C1.19708
+                    12.3852 1.1209 12.4955 1.06849 12.6175C1.01608 12.7395 0.988496 12.8707 0.987342 13.0035C0.986189 13.1363
+                    1.01149 13.268 1.06177 13.3909C1.11205 13.5138 1.18631 13.6254 1.2802 13.7193C1.37409 13.8132 1.48574 13.8875
+                    1.60864 13.9377C1.73154 13.988 1.86321 14.0133 1.99599 14.0122C2.12877 14.011 2.25999 13.9834 2.382 13.931C2.504
+                    13.8786 2.61435 13.8024 2.70659 13.7069L7.99959 8.41392L13.2926 13.7069C13.4812 13.8891 13.7338 13.9899 13.996
+                    13.9876C14.2582 13.9853 14.509 13.8801 14.6944 13.6947C14.8798 13.5093 14.985 13.2585 14.9873 12.9963C14.9895
+                    12.7341 14.8888 12.4815 14.7066 12.2929L9.41359 6.99992L14.7066 1.70692C14.8888 1.51832 14.9895 1.26571 14.9873
+                    1.00352C14.985 0.741321 14.8798 0.490509 14.6944 0.305101C14.509 0.119692 14.2582 0.0145233 13.996 0.0122448C13.7338
+                    0.00996641 13.4812 0.110761 13.2926 0.292919L7.99959 5.58592L2.70659 0.292919Z" fill="#2C2D2E"/>
+                </svg>
+            </button>
+        <div class="modal-content">
+             <div class="modal-body">
+                <form method="POST" class="form" enctype="multipart/form-data">
+                <div class="resort-name-review">{{ resort.name }}</div>
+                <div class="resort-region-review">{{ resort.region }}</div>
+                  {% csrf_token %}
+                  {% for field in form %}
+                    <div class="form__group">
+                        <label class="form__label" for="{{ field.id_for_label }}">{{ field.label }}:</label>
+                        <div>{{field}}</div>
+                    </div>
+                  {% endfor %}
+                  {{ form.media }}
+
+                  <button class="form__button" type="submit">Отправить отзыв</button>
+                </form>
+
+              </div>
+        </div>
+    </div>
+</div>
+
 
  </main>
 

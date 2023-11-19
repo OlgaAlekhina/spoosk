@@ -271,3 +271,7 @@ def favorites(request):
     resorts = user.user.all()
     html = render_to_string('accounts/favorites_resorts.html', context={'resorts': resorts})
     return JsonResponse(html, safe=False)
+
+@login_required
+def user_reviews(request):
+    return render(request, 'accounts/reviews_account.html')
