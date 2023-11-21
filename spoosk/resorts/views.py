@@ -15,7 +15,7 @@ from rest_framework import generics
 from django.db.models import Prefetch
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.db.models import Count
+from django.db.models import Count, Sum
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import OuterRef, Subquery
@@ -79,11 +79,11 @@ class ResortAdvancedFilter(generics.ListAPIView):
     Пример: /api/resorts/advanced_filter?have_red_skitrails=red&have_gondola=1&airport_distance=100&ordering=skipass
 Такой запрос будет отбирать курорты, в которых имеются трассы повышенной сложности, гондольные подъемники, и с расположением не далее 100 км от аэропорта. Курорты будут отсортированы по цене дневного скипасса (по возрастанию цены).
 Если какие-то параметры не содержат смысловых значений, то их не следует включать в запрос.
-Сортировка может осуществляться по количеству трасс и по цене дневного скипасса (позже добавлю по рейтингу). Для этого указывается параметр ordering, который может иметь следующие значения: 1) trail_number (сортировка в порядке возрастания) или -trail_number (в порядке убывания); 2) skipass (в порядке возрастания) или -skipass (в порядке убывания).
+Сортировка может осуществляться по протяженности трасс и по цене дневного скипасса (позже добавлю по рейтингу). Для этого указывается параметр ordering, который может иметь следующие значения: 1) trail_length (сортировка в порядке возрастания) или -trail_length (в порядке убывания); 2) skipass (в порядке возрастания) или -skipass (в порядке убывания).
  """
     # annotation of queryset with trails number and skipass price for ordering of the filtration result
     skipasses = SkiPass.objects.filter(id_resort=OuterRef("pk")).filter(mob_type="one_day")
-    queryset = SkiResort.objects.annotate(trail_number=Count("skytrail")).\
+    queryset = SkiResort.objects.annotate(trail_length=Sum("skytrail__extent")).\
                                 annotate(skipass=Subquery(skipasses.values("price")))
     serializer_class = ResortSerializer
     filterset_class = AdvancedFilter

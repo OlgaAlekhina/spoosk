@@ -3,11 +3,10 @@ from datetime import datetime
 import locale
 import django_filters
 from django.db.models import Q
-from django_filters import FilterSet, CharFilter, Filter
+from django_filters import FilterSet, CharFilter
 from .models import SkiResort
 from django_filters import rest_framework as filters
 from django_filters.constants import EMPTY_VALUES
-from django_filters.fields import Lookup
 
 
 class ListFilter(filters.CharFilter):
@@ -19,36 +18,24 @@ class ListFilter(filters.CharFilter):
         return qs
 
 
-# class ListFilter(Filter):
-#     def filter(self, qs, value):
-#         if value in EMPTY_VALUES:
-#             return qs
-#         value_list = value.split(',')
-#         return super(ListFilter, self).filter(qs, Lookup(value_list, 'in'))
-
-
 class MainFilter(filters.FilterSet):
-    # resort_region = django_filters.Filter(field_name="region", method='test', lookup_expr='in')
     resort_region = ListFilter(field_name="region", lookup_expr='in', label="parameter values are identical to form choice fields names")
-    # resort_region = CharFilter(field_name='region', label="parameter values are identical to form choice fields names")
-    resort_month = CharFilter(field_name='list_month', lookup_expr='icontains', label="parameter values are identical to form choice fields names")
-    resort_level = django_filters.Filter(field_name='skytrail__complexity', distinct=True, label="parameter values should be 'green' for 'Ученик', \
-                                        'blue' for 'Новичок', 'red' for 'Опытный', 'black' for 'Экстремал'")
+    resort_month = CharFilter(field_name='list_month', method='filter_list_month', label="parameter values are identical to form choice fields names")
+    resort_level = ListFilter(field_name='skytrail__complexity', distinct=True, lookup_expr='in', label="parameter values should be 'green' for 'Ученик', \
+                                            'blue' for 'Новичок', 'red' for 'Опытный', 'black' for 'Экстремал'")
 
     class Meta:
         model = SkiResort
         fields = ('resort_region', 'resort_month', 'resort_level')
 
-    # def test(self, queryset, name, value):
-    #     print(queryset)
-    #     print(name)
-    #     print(value)
-    #     if value is not None:
-    #         value_list = value.split(',')
-    #         print(value_list)
-    #         qs = queryset.filter(region__in=value_list)
-    #         print(qs)
-    #     return qs
+    def filter_list_month(self, queryset, name, value):
+        if value is not None:
+            value_list = value.split(',')
+            q = Q()
+            for val in value_list:
+                q |= Q(list_month__icontains=val)
+            qs = queryset.filter(q)
+        return qs
 
 
 class AdvancedFilter(filters.FilterSet):
