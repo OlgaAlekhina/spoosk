@@ -176,16 +176,37 @@ class RidingLevel(models.Model):
         return f'{self.name}'
 
 
-class Review(models.Model):
-    author = models.CharField(max_length=20, blank=True, null=True, verbose_name='Ваше имя')
-    riding_level = models.ForeignKey(RidingLevel, models.DO_NOTHING, verbose_name='Ваш уровень катания', blank=True, null=True, )
-    resort = models.ForeignKey(SkiResort,  models.DO_NOTHING, db_column='ID_resort')
-    text_review = models.TextField(blank=True, null=True, verbose_name='Ваш отзыв')
-    # image_review = models.ImageField(upload_to="images/", null=True, blank=True)
+class SkiReview(models.Model):
+    resort = models.ForeignKey(SkiResort, on_delete=models.CASCADE, related_name='resort_reviews')
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField(max_length=2000, blank=True, null=True)
+    rating = models.IntegerField()
+    add_at = models.DateTimeField(auto_now=True)
+    approved = models.BooleanField(default=False)
 
-    class Meta:
-        managed = True
-        db_table = 'review'
+    def __str__(self):
+        return f'{self.resort} # {self.id}'
+
+
+class ReviewImage(models.Model):
+    image = models.ImageField(upload_to="static/image/reviews")
+    review = models.ForeignKey(SkiReview, on_delete=models.CASCADE, related_name='review_images')
+    add_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.review} : photo # {self.id}'
+
+
+# class Review(models.Model):
+#     author = models.CharField(max_length=20, blank=True, null=True, verbose_name='Ваше имя')
+#     riding_level = models.ForeignKey(RidingLevel, models.DO_NOTHING, verbose_name='Ваш уровень катания', blank=True, null=True, )
+#     resort = models.ForeignKey(SkiResort,  models.DO_NOTHING, db_column='ID_resort')
+#     text_review = models.TextField(blank=True, null=True, verbose_name='Ваш отзыв')
+#     # image_review = models.ImageField(upload_to="images/", null=True, blank=True)
+#
+#     class Meta:
+#         managed = True
+#         db_table = 'review'
 
 # python manage.py shell_plus --print-sql
 #  from django.db.models import *
