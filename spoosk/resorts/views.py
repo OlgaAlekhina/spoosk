@@ -29,9 +29,16 @@ from drf_yasg.utils import swagger_auto_schema
 class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
     queryset = SkiResort.objects.prefetch_related(
         Prefetch(
-        'resorts', queryset=SkiPass.objects.exclude(mob_type__isnull=True) # get skipass objects which have mobile type
+            'resorts', queryset=SkiPass.objects.exclude(mob_type__isnull=True)
+            # get skipass objects which have mobile type
+        )
+    ).prefetch_related(
+        Prefetch(
+            'resort_reviews', queryset=SkiReview.objects.filter(approved=True)
+            # get skireview objects which have been approved
         )
     )
+
     serializer_class = SkiResortSerializer
     pagination_class = None
 
@@ -102,21 +109,10 @@ class ResortSearchView(generics.ListAPIView):
     pagination_class = None
 
 
-# endpoint for skireviews list on main page
-class SkireviewView(generics.ListAPIView):
-    """ Список всех одобренных отзывов, отсортированный по дате создания, необходимый для главной страницы приложения.
-     Выводится по 2 отзыва на страницу. Запрос может включать номер страницы в качестве параметра.
-     Пример: /api/resorts/reviews?page=2
-     В теле ответа передаются параметры next и previous, которые содержат ссылки на предыдущую и следующую страницы. Возможно, их будет удобно использовать при разработке мобильного приложения."""
-    queryset = SkiReview.objects.filter(approved=True).order_by('-add_at')
-    serializer_class = SkireviewSerializer
-    pagination.PageNumberPagination.page_size = 2
-
-
-# endpoint to create skireview
-class SkireviewCreateView(generics.CreateAPIView):
+# endpoints for reviews
+class SkiReviewViewset(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
-    queryset = SkiReview.objects.all()
+    queryset = SkiReview.objects.filter(approved=True).order_by('-add_at')
     serializer_class = SkireviewSerializer
     parser_classes = (JSONParser, MultiPartParser)
 
@@ -133,14 +129,45 @@ class SkireviewCreateView(generics.CreateAPIView):
             return Response(serializer.data)
         return Response(serializer.errors)
 
+# endpoint for skireviews list on main page
+# class SkireviewView(generics.ListAPIView):
+#     """ Список всех одобренных отзывов, отсортированный по дате создания, необходимый для главной страницы приложения.
+#      Выводится по 2 отзыва на страницу. Запрос может включать номер страницы в качестве параметра.
+#      Пример: /api/resorts/reviews?page=2
+#      В теле ответа передаются параметры next и previous, которые содержат ссылки на предыдущую и следующую страницы. Возможно, их будет удобно использовать при разработке мобильного приложения."""
+#     queryset = SkiReview.objects.filter(approved=True).order_by('-add_at')
+#     serializer_class = SkireviewSerializer
+#     pagination.PageNumberPagination.page_size = 2
+
+
+# endpoint to create skireview
+# class SkireviewCreateView(generics.CreateAPIView):
+#     permission_classes = [IsAuthenticated]
+#     queryset = SkiReview.objects.all()
+#     serializer_class = SkireviewSerializer
+#     parser_classes = (JSONParser, MultiPartParser)
+#
+#     def get_parsers(self):
+#         if getattr(self, 'swagger_fake_view', False):
+#             return []
+#
+#         return super().get_parsers()
+#
+#     def create(self, request, *args, **kwargs):
+#         serializer = SkireviewSerializer(data=request.data, context={'request': request, })
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         return Response(serializer.errors)
+
     # def perform_create(self, serializer):
     #     serializer.validated_data['author'] = self.request.user
     #     return super(SkireviewCreateView, self).perform_create(serializer)
 
 
 # endpoint to get, update or delete of skireview
-class ReviewView(generics.RetrieveUpdateDestroyAPIView):
-    pass
+# class ReviewView(generics.RetrieveUpdateDestroyAPIView):
+#     pass
 
 
 class Region:

@@ -34,7 +34,7 @@ class SkireviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SkiReview
-        fields = ('resort', 'author_name', 'author_lastname', 'text', 'rating', 'add_at', 'images')
+        fields = ('id', 'resort', 'author_name', 'author_lastname', 'text', 'rating', 'add_at', 'images')
 
     def create(self, validated_data):
         resort = validated_data['resort']
