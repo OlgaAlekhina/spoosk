@@ -96,8 +96,9 @@ $('#signup-form').on('submit', function(event){
 
 // AJAX for signup
 function user_signup() {
+    origin = location.origin;
     $.ajax({
-        url : "../signup_endpoint/", // the endpoint
+        url : origin + "/signup_endpoint/", // the endpoint
         type : "POST", // http method
         data : { username : $('#username').val(), usermail : $('#usermail').val(), password : $('#signup-password').val() }, // data sent with the post request
 
@@ -125,8 +126,10 @@ $('#login-form').on('submit', function(event){
 
 // AJAX for login
 function user_login() {
+    origin = location.origin;
+    console.log(origin);
     $.ajax({
-        url : "../login_endpoint/", // the endpoint
+        url : origin + "/login_endpoint/", // the endpoint
         type : "POST", // http method
         data : { user_mail : $('#user_mail').val(), login_password : $('#login-password').val() }, // data sent with the post request
 
@@ -175,8 +178,9 @@ $('#reset-request').on('submit', function(event){
 
 // AJAX for reset password request
 function reset_request() {
+    origin = location.origin;
     $.ajax({
-        url : "../reset_request/", // the endpoint
+        url : origin + "/reset_request/", // the endpoint
         type : "POST", // http method
         data : { user_mail : $('#reset_mail').val() }, // data sent with the post request
 

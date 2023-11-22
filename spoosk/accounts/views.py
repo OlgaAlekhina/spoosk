@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.conf import settings
 import requests
+from resorts.models import SkiReview
 
 
 # обработка запроса на регистрацию
@@ -272,6 +273,9 @@ def favorites(request):
     html = render_to_string('accounts/favorites_resorts.html', context={'resorts': resorts})
     return JsonResponse(html, safe=False)
 
+# выводит отзывы пользователя и форму добавления отзыва на страницу личного кабинета
 @login_required
 def user_reviews(request):
-    return render(request, 'accounts/reviews_account.html')
+    user = request.user
+    reviews = SkiReview.objects.filter(author=user)
+    return render(request, 'accounts/reviews_account.html', context={'reviews': reviews})
