@@ -27,20 +27,25 @@ from drf_yasg.utils import swagger_auto_schema
 
 # endpoints for resorts
 class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
+    """
+    list: При получении списка выводится по 6 курортов на страницу. Запрос может включать номер страницы в качестве параметра. Пример: /api/resorts/?page=2
+    В теле ответа передаются параметры next и previous, которые содержат ссылки на предыдущую и следующую страницы, и параметр account, содержащий общее количество найденных объектов.
+
+    retrieve: В качестве параметра передается id курорта
+    """
     queryset = SkiResort.objects.prefetch_related(
         Prefetch(
-            'resorts', queryset=SkiPass.objects.exclude(mob_type__isnull=True)
             # get skipass objects which have mobile type
+            'resorts', queryset=SkiPass.objects.exclude(mob_type__isnull=True)
         )
     ).prefetch_related(
         Prefetch(
-            'resort_reviews', queryset=SkiReview.objects.filter(approved=True)
             # get skireview objects which have been approved
+            'resort_reviews', queryset=SkiReview.objects.filter(approved=True)
         )
     )
-
     serializer_class = SkiResortSerializer
-    pagination_class = None
+    # pagination_class = None
 
     def get(self, request):
        items = SkiResort.objects.all()
@@ -65,18 +70,21 @@ def get_regions(request):
 
 # endpoint for main resorts filter
 class ResortMainFilter(generics.ListAPIView):
-    """ Этот фильтр может использоваться с сортировкой результатов или без.
-Необходимо передавать параметры, которые указал пользователь, после url и вопросительного знака.
-Значение параметра resort_region должно быть идентично названию региона в БД. Точные названия можно получить в эндпоинте /api/resorts/regions.
-Значение параметра resort_month – это название месяца (по-русски, можно с большой или маленькой буквы).
-Значение параметра resort_level может быть green, blue, red или black, что соответствует сложностям трасс курорта.
-Возможные значения остальных параметров указаны в описании каждого параметра в Swagger.
-Параметры resort_region, resort_month и resort_level могут иметь несколько значений, в этом случае их надо указывать через запятую без пробела.
-Если пользователь не выбрал никакого значения, то параметр в запросе передавать не нужно.
-Пример: /api/resorts/filter?resort_region=Алтай&resort_month=январь&resort_level=red&have_red_skitrails=red&have_gondola=1&airport_distance=100&ordering=skipass
-Такой запрос вернет все курорты в регионе Алтай с возможностью катания в январе на сложных трассах (для опытных туристов), в которых имеются трассы повышенной сложности, гондольные подъемники, и с расположением не далее 100 км от аэропорта. Курорты будут отсортированы по цене дневного скипасса (по возрастанию цены).
-Сортировка может осуществляться по протяженности трасс и по цене дневного скипасса (позже добавлю по рейтингу). Для этого указывается параметр ordering, который может иметь следующие значения: 1) trail_length (сортировка в порядке возрастания) или -trail_length (в порядке убывания); 2) skipass (в порядке возрастания) или -skipass (в порядке убывания).
-"""
+    """
+    Этот фильтр может использоваться с сортировкой результатов или без.
+    Необходимо передавать параметры, которые указал пользователь, после url и вопросительного знака.
+    Значение параметра resort_region должно быть идентично названию региона в БД. Точные названия можно получить в эндпоинте /api/resorts/regions.
+    Значение параметра resort_month – это название месяца (по-русски, можно с большой или маленькой буквы).
+    Значение параметра resort_level может быть green, blue, red или black, что соответствует сложностям трасс курорта.
+    Возможные значения остальных параметров указаны в описании каждого параметра в Swagger.
+    Параметры resort_region, resort_month и resort_level могут иметь несколько значений, в этом случае их надо указывать через запятую без пробела.
+    Если пользователь не выбрал никакого значения, то параметр в запросе передавать не нужно.
+    Пример: /api/resorts/filter?resort_region=Алтай&resort_month=январь&resort_level=red&have_red_skitrails=red&have_gondola=1&airport_distance=100&ordering=skipass
+    Такой запрос вернет все курорты в регионе Алтай с возможностью катания в январе на сложных трассах (для опытных туристов), в которых имеются трассы повышенной сложности, гондольные подъемники, и с расположением не далее 100 км от аэропорта. Курорты будут отсортированы по цене дневного скипасса (по возрастанию цены).
+    Сортировка может осуществляться по протяженности трасс и по цене дневного скипасса (позже добавлю по рейтингу). Для этого указывается параметр ordering, который может иметь следующие значения: 1) trail_length (сортировка в порядке возрастания) или -trail_length (в порядке убывания); 2) skipass (в порядке возрастания) или -skipass (в порядке убывания).
+    Выводится по 6 курортов на страницу. Запрос может включать номер страницы в качестве параметра.
+    В теле ответа передаются параметры next и previous, которые содержат ссылки на предыдущую и следующую страницы, и параметр account, содержащий общее количество найденных объектов.
+    """
     # annotation of queryset with trails number and skipass price for ordering of the filtration result
     skipasses = SkiPass.objects.filter(id_resort=OuterRef("pk")).filter(mob_type="one_day")
     queryset = SkiResort.objects.annotate(trail_length=Sum("skytrail__extent")). \
@@ -85,7 +93,7 @@ class ResortMainFilter(generics.ListAPIView):
     filterset_class = MainFilter
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     ordering_fields = '__all__'
-    pagination_class = None
+    # pagination_class = None
 
 
 # endpoint for advanced resorts filter
@@ -109,7 +117,10 @@ class ResortMainFilter(generics.ListAPIView):
 
 # endpoint for search resorts filter
 class ResortSearchView(generics.ListAPIView):
-    """ Endpoint для поисковой строки. В качестве параметра передается текст, который пользователь ввел в поисковую строку. """
+    """
+    Endpoint для поисковой строки. В качестве параметра передается текст, который пользователь ввел в поисковую строку.
+    Поиск осуществляется по названию курорта.
+    """
     queryset = SkiResort.objects.all()
     serializer_class = ResortSerializer
     filter_backends = [filters.SearchFilter]
@@ -119,6 +130,11 @@ class ResortSearchView(generics.ListAPIView):
 
 # endpoints for reviews
 class SkiReviewViewset(viewsets.ModelViewSet):
+    """
+    list: При получении списка выводится по 6 отзывов на страницу, отсортированных по дате создания. Запрос может включать номер страницы в качестве параметра. Пример: /api/reviews/?page=2
+    В теле ответа передаются параметры next и previous, которые содержат ссылки на предыдущую и следующую страницы, и параметр account, содержащий общее количество найденных объектов.
+
+    """
     permission_classes = [IsAuthenticated]
     queryset = SkiReview.objects.filter(approved=True).order_by('-add_at')
     serializer_class = SkireviewSerializer
