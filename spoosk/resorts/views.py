@@ -47,10 +47,10 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
     serializer_class = SkiResortSerializer
     # pagination_class = None
 
-    def get(self, request):
-       items = SkiResort.objects.all()
-       serializer = SkiResortSerializer(items, many=True)
-       return Response(serializer.data)
+    # def get(self, request):
+    #    items = SkiResort.objects.all()
+    #    serializer = SkiResortSerializer(items, many=True)
+    #    return Response(serializer.data)
 
     # add different serializers to list and detail view
     def get_serializer_class(self):
@@ -136,9 +136,15 @@ class SkiReviewViewset(viewsets.ModelViewSet):
 
     """
     permission_classes = [IsAuthenticated]
-    queryset = SkiReview.objects.filter(approved=True).order_by('-add_at')
+    queryset = SkiReview.objects.filter(approved=True)
+    # queryset = SkiReview.objects.filter(approved=True).exclude(text='').order_by('-add_at')
     serializer_class = SkireviewSerializer
     parser_classes = (JSONParser, MultiPartParser)
+
+    def list(self, request):
+        items = SkiReview.objects.filter(approved=True).exclude(text='').order_by('-add_at')
+        serializer = SkireviewSerializer(items, many=True)
+        return Response(serializer.data)
 
     def get_parsers(self):
         if getattr(self, 'swagger_fake_view', False):
