@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.views import View
 from django.views.decorators.http import require_POST
 from django.views.generic import ListView
-from .filters import ResortFilter, MainFilter, AdvancedFilter
+from .filters import ResortFilter, MainFilter
 # from .forms import ReviewForm
 from .models import SkiResort, Month, RidingLevel, SkiPass, SkiReview
 from django.http import JsonResponse
@@ -65,38 +65,46 @@ def get_regions(request):
 
 # endpoint for main resorts filter
 class ResortMainFilter(generics.ListAPIView):
-    """ Необходимо передавать параметры, которые указал пользователь, после url и вопросительного знака.
+    """ Этот фильтр может использоваться с сортировкой результатов или без.
+Необходимо передавать параметры, которые указал пользователь, после url и вопросительного знака.
 Значение параметра resort_region должно быть идентично названию региона в БД. Точные названия можно получить в эндпоинте /api/resorts/regions.
 Значение параметра resort_month – это название месяца (по-русски, можно с большой или маленькой буквы).
 Значение параметра resort_level может быть green, blue, red или black, что соответствует сложностям трасс курорта.
-Если параметр имеет несколько значений, их надо указывать через запятую без пробела.
+Возможные значения остальных параметров указаны в описании каждого параметра в Swagger.
+Параметры resort_region, resort_month и resort_level могут иметь несколько значений, в этом случае их надо указывать через запятую без пробела.
 Если пользователь не выбрал никакого значения, то параметр в запросе передавать не нужно.
-Пример: /api/resorts/main_filter?resort_region=Алтай&resort_month=январь&resort_level=red
-Этот запрос вернет все курорты в регионе Алтай с возможностью катания в январе на сложных трассах (для опытных туристов).
+Пример: /api/resorts/filter?resort_region=Алтай&resort_month=январь&resort_level=red&have_red_skitrails=red&have_gondola=1&airport_distance=100&ordering=skipass
+Такой запрос вернет все курорты в регионе Алтай с возможностью катания в январе на сложных трассах (для опытных туристов), в которых имеются трассы повышенной сложности, гондольные подъемники, и с расположением не далее 100 км от аэропорта. Курорты будут отсортированы по цене дневного скипасса (по возрастанию цены).
+Сортировка может осуществляться по протяженности трасс и по цене дневного скипасса (позже добавлю по рейтингу). Для этого указывается параметр ordering, который может иметь следующие значения: 1) trail_length (сортировка в порядке возрастания) или -trail_length (в порядке убывания); 2) skipass (в порядке возрастания) или -skipass (в порядке убывания).
 """
-    queryset = SkiResort.objects.all()
+    # annotation of queryset with trails number and skipass price for ordering of the filtration result
+    skipasses = SkiPass.objects.filter(id_resort=OuterRef("pk")).filter(mob_type="one_day")
+    queryset = SkiResort.objects.annotate(trail_length=Sum("skytrail__extent")). \
+        annotate(skipass=Subquery(skipasses.values("price")))
     serializer_class = ResortSerializer
     filterset_class = MainFilter
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    ordering_fields = '__all__'
     pagination_class = None
 
 
 # endpoint for advanced resorts filter
-class ResortAdvancedFilter(generics.ListAPIView):
-    """ Этот фильтр может использоваться с сортировкой результатов или без. Необходимо передавать параметры, которые указал пользователь, после url и вопросительного знака. Возможные значения параметров указаны в описании каждого параметра в Swagger.
-    Пример: /api/resorts/advanced_filter?have_red_skitrails=red&have_gondola=1&airport_distance=100&ordering=skipass
-Такой запрос будет отбирать курорты, в которых имеются трассы повышенной сложности, гондольные подъемники, и с расположением не далее 100 км от аэропорта. Курорты будут отсортированы по цене дневного скипасса (по возрастанию цены).
-Если какие-то параметры не содержат смысловых значений, то их не следует включать в запрос.
-Сортировка может осуществляться по протяженности трасс и по цене дневного скипасса (позже добавлю по рейтингу). Для этого указывается параметр ordering, который может иметь следующие значения: 1) trail_length (сортировка в порядке возрастания) или -trail_length (в порядке убывания); 2) skipass (в порядке возрастания) или -skipass (в порядке убывания).
- """
-    # annotation of queryset with trails number and skipass price for ordering of the filtration result
-    skipasses = SkiPass.objects.filter(id_resort=OuterRef("pk")).filter(mob_type="one_day")
-    queryset = SkiResort.objects.annotate(trail_length=Sum("skytrail__extent")).\
-                                annotate(skipass=Subquery(skipasses.values("price")))
-    serializer_class = ResortSerializer
-    filterset_class = AdvancedFilter
-    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
-    ordering_fields = '__all__'
-    pagination_class = None
+# class ResortAdvancedFilter(generics.ListAPIView):
+#     """ Этот фильтр может использоваться с сортировкой результатов или без. Необходимо передавать параметры, которые указал пользователь, после url и вопросительного знака. Возможные значения параметров указаны в описании каждого параметра в Swagger.
+#     Пример: /api/resorts/advanced_filter?have_red_skitrails=red&have_gondola=1&airport_distance=100&ordering=skipass
+# Такой запрос будет отбирать курорты, в которых имеются трассы повышенной сложности, гондольные подъемники, и с расположением не далее 100 км от аэропорта. Курорты будут отсортированы по цене дневного скипасса (по возрастанию цены).
+# Если какие-то параметры не содержат смысловых значений, то их не следует включать в запрос.
+# Сортировка может осуществляться по протяженности трасс и по цене дневного скипасса (позже добавлю по рейтингу). Для этого указывается параметр ordering, который может иметь следующие значения: 1) trail_length (сортировка в порядке возрастания) или -trail_length (в порядке убывания); 2) skipass (в порядке возрастания) или -skipass (в порядке убывания).
+#  """
+#     # annotation of queryset with trails number and skipass price for ordering of the filtration result
+#     skipasses = SkiPass.objects.filter(id_resort=OuterRef("pk")).filter(mob_type="one_day")
+#     queryset = SkiResort.objects.annotate(trail_length=Sum("skytrail__extent")).\
+#                                 annotate(skipass=Subquery(skipasses.values("price")))
+#     serializer_class = ResortSerializer
+#     filterset_class = AdvancedFilter
+#     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+#     ordering_fields = '__all__'
+#     pagination_class = None
 
 
 # endpoint for search resorts filter
