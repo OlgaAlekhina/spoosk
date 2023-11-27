@@ -4,6 +4,7 @@ from django.db import models
 from django.db.models import Sum, Max, Count
 from django.urls import reverse
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class SkiLifts(models.Model):
@@ -233,7 +234,7 @@ class SkiReview(models.Model):
     resort = models.ForeignKey(SkiResort, on_delete=models.CASCADE, related_name='resort_reviews')
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField(max_length=2000, blank=True, null=True)
-    rating = models.IntegerField()
+    rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     add_at = models.DateTimeField(auto_now=True)
     approved = models.BooleanField(default=False)
 

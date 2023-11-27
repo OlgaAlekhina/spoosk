@@ -67,7 +67,7 @@ class SkiResortSerializer(serializers.ModelSerializer):
     bugelny_skilift = serializers.ReadOnlyField(source='number_bugelny', help_text="number of bugelny skilifts of resort")
     skipasses = SkipassSerializer(source='resorts', many=True, help_text="list of resort's skipasses")
     images = ResortImageSerializer(source='resort_images', many=True, help_text="list of resort's additional images")
-    reviews = SkireviewSerializer(source='resort_reviews', many=True, help_text="list of resort's reviews")
+    # reviews = SkireviewSerializer(source='resort_reviews', many=True, help_text="list of resort's reviews")
 
     class Meta:
         model = SkiResort
