@@ -30,6 +30,9 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
     """
     list: При получении списка выводится по 6 курортов на страницу. Запрос может включать номер страницы в качестве параметра. Пример: /api/resorts/?page=2
     В теле ответа передаются параметры next и previous, которые содержат ссылки на предыдущую и следующую страницы, и параметр account, содержащий общее количество найденных объектов.
+    Этот эндпоинт также можно использовать для поисковой строки. Для этого передается параметр search после вопросительного знака. Значением параметра служит текст, который пользователь ввел в поисковую строку.
+    Пример: /api/resorts/?search=газпром
+    Поиск осуществляется по названию курорта.
 
     retrieve: В качестве параметра передается id курорта
     """
@@ -44,7 +47,8 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
             'resort_reviews', queryset=SkiReview.objects.filter(approved=True)
         )
     )
-    serializer_class = SkiResortSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name']
     # pagination_class = None
 
     # def get(self, request):
@@ -116,16 +120,16 @@ class ResortMainFilter(generics.ListAPIView):
 
 
 # endpoint for search resorts filter
-class ResortSearchView(generics.ListAPIView):
-    """
-    Endpoint для поисковой строки. В качестве параметра передается текст, который пользователь ввел в поисковую строку.
-    Поиск осуществляется по названию курорта.
-    """
-    queryset = SkiResort.objects.all()
-    serializer_class = ResortSerializer
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['name']
-    pagination_class = None
+# class ResortSearchView(generics.ListAPIView):
+#     """
+#     Endpoint для поисковой строки. В качестве параметра передается текст, который пользователь ввел в поисковую строку.
+#     Поиск осуществляется по названию курорта.
+#     """
+#     queryset = SkiResort.objects.all()
+#     serializer_class = ResortSerializer
+#     filter_backends = [filters.SearchFilter]
+#     search_fields = ['name']
+#     pagination_class = None
 
 
 # endpoints for reviews
@@ -137,13 +141,16 @@ class SkiReviewViewset(viewsets.ModelViewSet):
     """
     permission_classes = [IsAuthenticated]
     queryset = SkiReview.objects.filter(approved=True)
-    # queryset = SkiReview.objects.filter(approved=True).exclude(text='').order_by('-add_at')
     serializer_class = SkireviewSerializer
     parser_classes = (JSONParser, MultiPartParser)
 
     def list(self, request):
         items = SkiReview.objects.filter(approved=True).exclude(text='').order_by('-add_at')
-        serializer = SkireviewSerializer(items, many=True)
+        page = self.paginate_queryset(items)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(items, many=True)
         return Response(serializer.data)
 
     def get_parsers(self):
