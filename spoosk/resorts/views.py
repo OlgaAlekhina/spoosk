@@ -23,6 +23,7 @@ from rest_framework import pagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework.decorators import action
 
 
 # endpoints for resorts
@@ -35,6 +36,9 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
     Поиск осуществляется по названию курорта.
 
     retrieve: В качестве параметра передается id курорта
+
+    reviews: Список всех отзывов для конкретного курорта, полученный по его id. Выводится по 6 отзывов на страницу, отсортированных по дате.
+    Для получения других страниц надо передать в запросе номер страницы: /api/resorts/1/reviews/?page=2
     """
     queryset = SkiResort.objects.prefetch_related(
         Prefetch(
@@ -62,6 +66,17 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
             return ResortSerializer
         if self.action == 'retrieve':
             return SkiResortSerializer
+
+    @action(detail=True)
+    def reviews(self, request, pk=None):
+        resort = self.get_object()
+        reviews = resort.resort_reviews.all().order_by('-add_at')
+        page = self.paginate_queryset(reviews)
+        if page is not None:
+            serializer = SkireviewSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = SkireviewSerializer(page, many=True)
+        return Response(serializer.data)
 
 
 # endpoint for list of regions
