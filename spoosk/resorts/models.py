@@ -1,7 +1,7 @@
 from decimal import Decimal
 from itertools import product
 from django.db import models
-from django.db.models import Sum, Max, Count
+from django.db.models import Sum, Max, Count, Avg
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -176,6 +176,17 @@ class SkiResort(models.Model):
     def number_bugelny(self):
         number_bugelny = self.skilifts_set.all().filter(bugelny='1')
         return len(number_bugelny)
+
+    @property
+    def resort_rating(self):
+        resort_rating = self.resort_reviews.filter(approved=True).aggregate(Avg('rating'))
+        average_rating = resort_rating['rating__avg']
+        if average_rating == 4.5:
+            return 5
+        elif average_rating == 2.5:
+            return 3
+        else:
+            return round(average_rating)
 
 
 class SkyTrail(models.Model):
