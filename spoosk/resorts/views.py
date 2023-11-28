@@ -15,7 +15,7 @@ from rest_framework import generics
 from django.db.models import Prefetch
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.db.models import Count, Sum
+from django.db.models import Count, Sum, Avg
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import OuterRef, Subquery
@@ -46,7 +46,7 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
             # get skireview objects which have been approved
             'resort_reviews', queryset=SkiReview.objects.filter(approved=True)
         )
-    )
+    ).annotate(rating=Avg("resort_reviews__rating")).order_by('-rating')
     filter_backends = [filters.SearchFilter]
     search_fields = ['name']
     # pagination_class = None
@@ -85,18 +85,19 @@ class ResortMainFilter(generics.ListAPIView):
     Если пользователь не выбрал никакого значения, то параметр в запросе передавать не нужно.
     Пример: /api/resorts/filter?resort_region=Алтай&resort_month=январь&resort_level=red&have_red_skitrails=red&have_gondola=1&airport_distance=100&ordering=skipass
     Такой запрос вернет все курорты в регионе Алтай с возможностью катания в январе на сложных трассах (для опытных туристов), в которых имеются трассы повышенной сложности, гондольные подъемники, и с расположением не далее 100 км от аэропорта. Курорты будут отсортированы по цене дневного скипасса (по возрастанию цены).
-    Сортировка может осуществляться по протяженности трасс и по цене дневного скипасса (позже добавлю по рейтингу). Для этого указывается параметр ordering, который может иметь следующие значения: 1) trail_length (сортировка в порядке возрастания) или -trail_length (в порядке убывания); 2) skipass (в порядке возрастания) или -skipass (в порядке убывания).
+    Сортировка может осуществляться по протяженности трасс, по цене дневного скипасса и по рейтингу. Для этого указывается параметр ordering, который может иметь следующие значения: 1) trail_length (сортировка в порядке возрастания) или -trail_length (в порядке убывания); 2) skipass (в порядке возрастания) или -skipass (в порядке убывания); 3) rating (в порядке возрастания) или -rating (в порядке убывания).
     Выводится по 6 курортов на страницу. Запрос может включать номер страницы в качестве параметра.
     В теле ответа передаются параметры next и previous, которые содержат ссылки на предыдущую и следующую страницы, и параметр account, содержащий общее количество найденных объектов.
     """
     # annotation of queryset with trails number and skipass price for ordering of the filtration result
     skipasses = SkiPass.objects.filter(id_resort=OuterRef("pk")).filter(mob_type="one_day")
-    queryset = SkiResort.objects.annotate(trail_length=Sum("skytrail__extent")). \
-        annotate(skipass=Subquery(skipasses.values("price")))
+    queryset = SkiResort.objects.annotate(trail_length=Sum("skytrail__extent", distinct=True)). \
+        annotate(skipass=Subquery(skipasses.values("price"))).annotate(rating=Avg("resort_reviews__rating"))
     serializer_class = ResortSerializer
     filterset_class = MainFilter
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     ordering_fields = '__all__'
+    ordering = 'name'
     # pagination_class = None
 
 
