@@ -108,7 +108,7 @@ class ResortMainFilter(generics.ListAPIView):
     # annotation of queryset with trails number, rating and skipass price for ordering of the filtration result
     skipasses = SkiPass.objects.filter(id_resort=OuterRef("pk")).filter(mob_type="one_day")
     skitrails = SkyTrail.objects.filter(id_resort=OuterRef("pk")).order_by().values('id_resort').annotate(length=Sum('extent', output_field=IntegerField())).values('length')[:1]
-    raitings = SkiReview.objects.filter(resort=OuterRef("pk")).annotate(resort_rating=Avg('rating', output_field=IntegerField())).values('resort_rating')[:1]
+    raitings = SkiReview.objects.filter(resort=OuterRef("pk")).order_by().values('resort').annotate(resort_rating=Avg('rating', output_field=IntegerField())).values('resort_rating')[:1]
     queryset = SkiResort.objects.annotate(trail_length=Coalesce(Subquery(skitrails), 0)). \
         annotate(skipass=Subquery(skipasses.values("price"))).annotate(rating=Coalesce(Subquery(raitings), 0))
     serializer_class = ResortSerializer
