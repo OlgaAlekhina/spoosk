@@ -6,7 +6,7 @@ from django.views.decorators.http import require_POST
 from django.views.generic import ListView
 from .filters import ResortFilter, MainFilter
 # from .forms import ReviewForm
-from .models import SkiResort, Month, RidingLevel, SkiPass, SkiReview
+from .models import SkiResort, Month, RidingLevel, SkiPass, SkiReview, SkyTrail
 from django.http import JsonResponse
 from .serializers import SkiResortSerializer, ResortSerializer, SkireviewSerializer
 from rest_framework import viewsets
@@ -18,12 +18,13 @@ from rest_framework.response import Response
 from django.db.models import Count, Sum, Avg
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
-from django.db.models import OuterRef, Subquery
+from django.db.models import OuterRef, Subquery, IntegerField
 from rest_framework import pagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import action
+from django.db.models.functions import Coalesce
 
 
 # endpoints for resorts
@@ -38,7 +39,7 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
     retrieve: В качестве параметра передается id курорта
 
     reviews: Список всех отзывов для конкретного курорта, полученный по его id. Выводится по 6 отзывов на страницу, отсортированных по дате.
-    Для получения других страниц надо передать в запросе номер страницы: /api/resorts/1/reviews/?page=2
+    Для получения других страниц надо передать в запросе номер страницы: /api/resorts/Gazprom/reviews/?page=2
     """
     queryset = SkiResort.objects.prefetch_related(
         Prefetch(
@@ -104,10 +105,12 @@ class ResortMainFilter(generics.ListAPIView):
     Выводится по 6 курортов на страницу. Запрос может включать номер страницы в качестве параметра.
     В теле ответа передаются параметры next и previous, которые содержат ссылки на предыдущую и следующую страницы, и параметр account, содержащий общее количество найденных объектов.
     """
-    # annotation of queryset with trails number and skipass price for ordering of the filtration result
+    # annotation of queryset with trails number, rating and skipass price for ordering of the filtration result
     skipasses = SkiPass.objects.filter(id_resort=OuterRef("pk")).filter(mob_type="one_day")
-    queryset = SkiResort.objects.annotate(trail_length=Sum("skytrail__extent", distinct=True)). \
-        annotate(skipass=Subquery(skipasses.values("price"))).annotate(rating=Avg("resort_reviews__rating"))
+    skitrails = SkyTrail.objects.filter(id_resort=OuterRef("pk")).order_by().values('id_resort').annotate(length=Sum('extent', output_field=IntegerField())).values('length')[:1]
+    raitings = SkiReview.objects.filter(resort=OuterRef("pk")).annotate(resort_rating=Avg('rating', output_field=IntegerField())).values('resort_rating')[:1]
+    queryset = SkiResort.objects.annotate(trail_length=Coalesce(Subquery(skitrails), 0)). \
+        annotate(skipass=Subquery(skipasses.values("price"))).annotate(rating=Coalesce(Subquery(raitings), 0))
     serializer_class = ResortSerializer
     filterset_class = MainFilter
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
@@ -151,7 +154,7 @@ class ResortMainFilter(generics.ListAPIView):
 # endpoints for reviews
 class SkiReviewViewset(viewsets.ModelViewSet):
     """
-    list: При получении списка выводится по 6 отзывов на страницу, отсортированных по дате создания. Запрос может включать номер страницы в качестве параметра. Пример: /api/reviews/?page=2
+    list: Эндпоинт для вывода всех последних отзывов на главный экран. Выводится по 6 отзывов на страницу, отсортированных по дате создания. Запрос может включать номер страницы в качестве параметра. Пример: /api/reviews/?page=2
     В теле ответа передаются параметры next и previous, которые содержат ссылки на предыдущую и следующую страницы, и параметр account, содержащий общее количество найденных объектов.
 
     """

@@ -179,14 +179,18 @@ class SkiResort(models.Model):
 
     @property
     def resort_rating(self):
-        resort_rating = self.resort_reviews.filter(approved=True).aggregate(Avg('rating'))
-        average_rating = resort_rating['rating__avg']
-        if average_rating == 4.5:
-            return 5
-        elif average_rating == 2.5:
-            return 3
+        if self.resort_reviews.exists():
+            resort_rating = self.resort_reviews.filter(approved=True).aggregate(Avg('rating'))
+            average_rating = resort_rating['rating__avg']
+            if average_rating == 4.5:
+                return 5
+            elif average_rating == 2.5:
+                return 3
+            else:
+                return round(average_rating)
         else:
-            return round(average_rating)
+            return 0
+
 
 
 class SkyTrail(models.Model):
