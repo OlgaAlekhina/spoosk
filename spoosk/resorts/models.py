@@ -94,12 +94,14 @@ class SkiResort(models.Model):
 
         return result[0]
 
-    # get skipass for resort's card in mob app (where unified=1 & has lowest price)
+    # get skipass for resort's card in mob app (where unified=1 & has minimal price)
     @property
     def skipass_min(self):
         skipass = self.resorts.filter(unified=1).order_by('price').first()
-        skipass_min = skipass.price
-
+        if skipass:
+            skipass_min = skipass.price
+        else:
+            skipass_min = 0
         return skipass_min
 
     @property
@@ -177,6 +179,7 @@ class SkiResort(models.Model):
         number_bugelny = self.skilifts_set.all().filter(bugelny='1')
         return len(number_bugelny)
 
+    # count resort's rating from reviews table
     @property
     def resort_rating(self):
         if self.resort_reviews.exists():

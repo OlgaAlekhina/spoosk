@@ -51,7 +51,7 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
             # get skireview objects which have been approved
             'resort_reviews', queryset=SkiReview.objects.filter(approved=True)
         )
-    ).annotate(rating=Avg("resort_reviews__rating")).order_by('-rating')
+    ).annotate(rating=Coalesce(Avg(("resort_reviews__rating"), output_field=IntegerField()), 0)).order_by('-rating')
     filter_backends = [filters.SearchFilter]
     search_fields = ['name']
     # pagination_class = None
@@ -67,16 +67,18 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
             return ResortSerializer
         if self.action == 'retrieve':
             return SkiResortSerializer
+        if self.action == 'reviews':
+            return SkireviewSerializer
 
-    @action(detail=True)
+    @action(detail=False)
     def reviews(self, request, pk=None):
         resort = self.get_object()
         reviews = resort.resort_reviews.all().order_by('-add_at')
         page = self.paginate_queryset(reviews)
         if page is not None:
-            serializer = SkireviewSerializer(page, many=True)
+            serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
-        serializer = SkireviewSerializer(page, many=True)
+        serializer = self.get_serializer(page, many=True)
         return Response(serializer.data)
 
 
@@ -108,9 +110,9 @@ class ResortMainFilter(generics.ListAPIView):
     # annotation of queryset with trails number, rating and skipass price for ordering of the filtration result
     skipasses = SkiPass.objects.filter(id_resort=OuterRef("pk")).filter(mob_type="one_day")
     skitrails = SkyTrail.objects.filter(id_resort=OuterRef("pk")).order_by().values('id_resort').annotate(length=Sum('extent', output_field=IntegerField())).values('length')[:1]
-    raitings = SkiReview.objects.filter(resort=OuterRef("pk")).order_by().values('resort').annotate(resort_rating=Avg('rating', output_field=IntegerField())).values('resort_rating')[:1]
+    ratings = SkiReview.objects.filter(resort=OuterRef("pk")).order_by().values('resort').annotate(resort_rating=Avg('rating', output_field=IntegerField())).values('resort_rating')[:1]
     queryset = SkiResort.objects.annotate(trail_length=Coalesce(Subquery(skitrails), 0)). \
-        annotate(skipass=Subquery(skipasses.values("price"))).annotate(rating=Coalesce(Subquery(raitings), 0))
+        annotate(skipass=Coalesce(Subquery(skipasses.values("price"), output_field=IntegerField()), 0)).annotate(rating=Coalesce(Subquery(ratings), 0))
     serializer_class = ResortSerializer
     filterset_class = MainFilter
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
