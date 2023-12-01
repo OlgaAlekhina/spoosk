@@ -32,6 +32,12 @@ document.getElementById("open-modal-profile-btn").addEventListener("click", func
 });
 
 // Привязка обработчика события "click" для кнопки "Оставить отзыв на странице курорта"
+document.getElementById("open-modal-advanced-filters-btn").addEventListener("click", function() {
+    openModal(document.getElementById("modal-advanced-filters"))
+});
+
+
+// Привязка обработчика события "click" для кнопки "Оставить отзыв на странице курорта"
 if (document.getElementById("open-modal-add-review")) {
 document.getElementById("open-modal-add-review").addEventListener("click", function() {
     openModal(document.getElementById("modal-add-review"))
@@ -51,6 +57,13 @@ modals.forEach((modal) => {
         }
     });
 });
+
+
+if (document.querySelector(".modal .modal_box")) {
+  document.querySelector(".modal_box").addEventListener('click', function (event) {
+    event._isClickWithInModal = true;
+  });
+}
 
 if (document.querySelector(".modal .form-register__box")) {
   document.querySelector(".modal .form-register__box").addEventListener('click', function (event) {
