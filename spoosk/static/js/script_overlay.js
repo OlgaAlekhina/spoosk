@@ -32,9 +32,11 @@ document.getElementById("open-modal-profile-btn").addEventListener("click", func
 });
 
 // Привязка обработчика события "click" для кнопки "Оставить отзыв на странице курорта"
+if (document.getElementById("open-modal-add-review")) {
 document.getElementById("open-modal-add-review").addEventListener("click", function() {
     openModal(document.getElementById("modal-add-review"))
 });
+}
 
 closeModalBtns.forEach((btn, i) => {
     btn.addEventListener("click", function () {
@@ -79,6 +81,8 @@ document.addEventListener("keydown", function (event) {
 });
 
 // Открыть модальное окно удаления аккаунта
+if (document.getElementById("btn-delete-account")) {
 document.getElementById("btn-delete-account").addEventListener("click", function() {
     openModal(document.getElementById("modal-account-delete"))
 });
+}

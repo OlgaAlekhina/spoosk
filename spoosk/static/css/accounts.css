@@ -415,6 +415,7 @@
     margin-bottom: 24px;
 }
 .review-item-account {
+    min-width: 744px;
     padding: 16px 10px 52px 20px;
 
     background-color: #ffff;
@@ -422,18 +423,19 @@
     box-shadow: 0px 6px 10px 2px #E9E9E9;
 }
 .review-content-account {
-    max-width: 714px;
     display: flex;
 }
 
 .review-content-account .img-foto {
     border-radius: 30px;
+    width: 207px;
+    height: 207px;
 }
 
 .review-content-text-account {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: start;
     margin-left: 22px;
 }
 

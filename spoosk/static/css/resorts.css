@@ -655,3 +655,26 @@
 .modal-add-review__close:hover svg path {
     fill: blue;
 }
+
+.rating {
+    margin: auto;
+}
+
+.rating__stars {
+    display: flex;
+    position: relative;
+}
+.rating__star{
+    display: block;
+    overflow: visible;
+	pointer-events: none;
+	/*width: 2em;
+	height: 2em;*/
+}
+.rating__label {
+	cursor: pointer;
+	margin-right: 20px;
+}
+.rating__star-body:hover {
+    fill: #005FF9;
+}

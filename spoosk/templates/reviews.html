@@ -1,53 +1,60 @@
-
+{% load custom_filters %}
 {% load static %}
 
     <div class="wrapper reviews-wrapper">
+        {% if reviews %}
         <div class="cards-wrapper">
             <h2 class="section-title section-title-reviews">Последние отзывы</h2>
         </div>
         <div class="swiper mySwiper container reviews-content">
                 <div class="swiper-wrapper content">
-                {% if reviews %}
                     {% for review in reviews %}
                         <div class="swiper-slide review-column">
                             <div class="review-item">
                                     <div class="review-content">
 
-                                        <img class="img-foto" src={{ review.resort.image.url }} width="348" height="240">
+                                        <img class="img-foto" src={{ review.resort.image.url }} width="207" height="207">
 
                                         <div class="review-content-text">
-                                            <div class="review-author-name">{{ review.author|capfirst }}</div>
-                                            <div class="review-author-subname">{{ review.riding_level }}</div>
+                                            <div class="review-author-name">
+                                                {% if review.author.first_name %}
+                                                    {{ review.author.first_name|capfirst }}
+                                                    {% if review.author.last_name %}
+                                                        {{ review.author.last_name.0|capfirst }}.
+                                                    {% endif %}
+                                                {% else %}
+                                                    @{{ review.author.userprofile.name }}
+                                                {% endif %}
+                                            </div>
+                                            <div class="review-author-date">{{ review.add_at|date:"d.m.Y"}}</div>
                                             <a href="{{ review.resort.get_absolute_url }}"><h3 class="review-resort-name">{{ review.resort.name }}</h3></a>
+                                            <span class="review-author-date">{{ review.resort.region }}</span>
                                             <ul class="stars-list">
-                                                <li class="stars-item">
-                                                    <img src="{% static 'image/reviews/reviews_rating.svg' %}" alt="звезда">
-                                                </li>
-                                                <li class="stars-item">
-                                                    <img src="{% static 'image/reviews/reviews_rating.svg' %}" alt="звезда">
-                                                </li>
-                                                <li class="stars-item">
-                                                    <img src="{% static 'image/reviews/reviews_rating.svg' %}" alt="звезда">
-                                                </li>
-                                                <li class="stars-item">
-                                                    <img src="{% static 'image/reviews/reviews_rating.svg' %}" alt="звезда">
-                                                </li>
-                                                <li class="stars-item">
-                                                    <img src="{% static 'image/reviews/reviews_rating.svg' %}" alt="звезда">
-                                                </li>
+                                                {% for i in review.rating|create_range %}
+                                                    <li class="stars-item">
+                                                        <img src="{% static 'image/reviews/reviews_rating.svg' %}" alt="желтая звезда">
+                                                    </li>
+                                                {% endfor %}
+
+                                                {% for i in review.rating|create_range_difference %}
+                                                    <li class="stars-item">
+                                                        <img src="{% static 'image/reviews/reviews_rating_grey.svg' %}" alt="серая звезда">
+                                                    </li>
+                                                {% endfor %}
+
                                             </ul>
-                                            <div class="rating rating-montains">
-                                                <img src="{% static 'image/reviews/mountains.svg' %}" alt="Горы">
-                                                <div> <span>10</span>/<span>10</span> </div>
-                                            </div>
-                                            <div class="rating rating-skier">
-                                                <img src="{% static 'image/reviews/snowboarding.svg' %}" alt="Лыжник">
-                                                <div> <span>10</span>/<span>10</span> </div>
-                                            </div>
-                                            <div class="rating rating-lift">
-                                                <img src="{% static 'image/reviews/lift.svg' %}" alt="Подъемник">
-                                                <div> <span>8</span>/<span>10</span> </div>
-                                            </div>
+<!--                                            <div class="rating rating-montains">-->
+<!--                                                <img src="{% static 'image/reviews/mountains.svg' %}" alt="Горы">-->
+<!--                                                <div> <span>10</span>/<span>10</span> </div>-->
+<!--                                            </div>-->
+<!--                                            <div class="rating rating-skier">-->
+<!--                                                <img src="{% static 'image/reviews/snowboarding.svg' %}" alt="Лыжник">-->
+<!--                                                <div> <span>10</span>/<span>10</span> </div>-->
+<!--                                            </div>-->
+<!--                                            <div class="rating rating-lift">-->
+<!--                                                <img src="{% static 'image/reviews/lift.svg' %}" alt="Подъемник">-->
+<!--                                                <div> <span>8</span>/<span>10</span> </div>-->
+<!--                                            </div>-->
                                         </div>
 
                                     </div>
@@ -55,22 +62,23 @@
                                     <div class="review-text">
                                         <div class="review-title">Отзыв:</div>
                                         <div class="review-title-text">
-                                            <p>{{ review.text }}</p>
+                                            <p>{{ review.text|truncatechars:150 }}</p>
                                         </div>
 
                                     </div>
 
-                                    <a class="btn-reviews" href="#">Подробнее</a>
 
+                                    <a class="btn-reviews" href="#">Подробнее</a>
                                 </div>
+
                         </div>
                     {% endfor %}
-                {% endif %}
                 </div>
         </div>
         <img  class="swiper-button-next" src="{% static 'image/reviews/chevron_right.svg' %}" alt="">
         <img  class="swiper-button-prev" src="{% static 'image/reviews/chevron_left.svg' %}" alt="">
         <div class="swiper-pagination"></div>
+        {% endif %}
     </div>
 
 
