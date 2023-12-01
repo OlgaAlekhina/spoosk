@@ -31,11 +31,11 @@ document.getElementById("open-modal-profile-btn").addEventListener("click", func
     openModal(document.getElementById("modal-signup-signin"))
 });
 
-// Привязка обработчика события "click" для кнопки "Оставить отзыв на странице курорта"
-document.getElementById("open-modal-advanced-filters-btn").addEventListener("click", function() {
-    openModal(document.getElementById("modal-advanced-filters"))
-});
-
+if (document.getElementById("open-modal-advanced-filters-btn")) {
+    document.getElementById("open-modal-advanced-filters-btn").addEventListener("click", function() {
+        openModal(document.getElementById("modal-advanced-filters"))
+    });
+}
 
 // Привязка обработчика события "click" для кнопки "Оставить отзыв на странице курорта"
 if (document.getElementById("open-modal-add-review")) {
