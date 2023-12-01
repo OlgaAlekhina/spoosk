@@ -43,3 +43,11 @@ def in_favorites(resort, user):
             return True
     else:
         return False
+
+@register.filter
+def create_range(value, start_index=0):
+    return range(start_index, value+start_index)
+
+@register.filter
+def create_range_difference(value, end_index=5):
+    return range(value, end_index)
