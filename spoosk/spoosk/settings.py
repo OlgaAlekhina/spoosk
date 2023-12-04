@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     'drf_yasg',
     'rest_framework.authtoken',
+    'accounts',
 ]
 
 SITE_ID = 1
