@@ -70,7 +70,7 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
         if self.action == 'reviews':
             return SkireviewSerializer
 
-    @action(detail=False)
+    @action(detail=True)
     def reviews(self, request, pk=None):
         resort = self.get_object()
         reviews = resort.resort_reviews.all().order_by('-add_at')
@@ -163,6 +163,7 @@ class SkiReviewViewset(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = SkiReview.objects.filter(approved=True)
     serializer_class = SkireviewSerializer
+    http_method_names = [m for m in viewsets.ModelViewSet.http_method_names if m not in ['put']]
     parser_classes = (JSONParser, MultiPartParser)
 
     def list(self, request):
