@@ -1,0 +1,39 @@
+from rest_framework import serializers
+from django.contrib.auth.models import User
+from .models import UserProfile
+from rest_framework.validators import UniqueValidator
+
+
+# serializer for UserProfile model
+class ProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserProfile
+        fields = ('name', 'country', 'city', 'avatar')
+
+
+# serializer for User model for registration endpoint
+class UserSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(validators=[UniqueValidator(queryset=User.objects.all(), message='Пользователь с таким email адресом уже существует')])
+
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'password')
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        email = validated_data['email']
+        password = validated_data['password']
+        user = User.objects.create_user(username=email, email=email, password=password)
+        user.is_active = False
+        user.save()
+        return user
+
+
+# serializer for User model with profile options
+class UserprofileSerializer(serializers.ModelSerializer):
+    profile = ProfileSerializer(source='userprofile', help_text="extra data on user", required=False)
+
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'password', 'first_name', 'last_name', 'date_joined', 'profile')

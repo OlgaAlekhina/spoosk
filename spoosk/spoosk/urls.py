@@ -19,7 +19,8 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from resorts import views
+from resorts.views import SkiResortViewset, SkiReviewViewset
+from accounts.views import UserViewset
 from rest_framework_swagger.views import get_swagger_view
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -37,8 +38,9 @@ schema_view = get_schema_view(
 )
 
 router = routers.DefaultRouter()
-router.register(r'resorts', views.SkiResortViewset)
-router.register(r'reviews', views.SkiReviewViewset)
+router.register(r'resorts', SkiResortViewset)
+router.register(r'reviews', SkiReviewViewset)
+router.register(r'users', UserViewset)
 
 
 urlpatterns = [
