@@ -57,7 +57,7 @@ urlpatterns = [
     # path('api/resorts/reviews', SkireviewView.as_view()),
     # path('api/resorts/reviews/add', SkireviewCreateView.as_view()),
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0),name='schema-swagger-ui'),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_IMAGE_URL, document_root=settings.STATIC_IMAGE_ROOT)
