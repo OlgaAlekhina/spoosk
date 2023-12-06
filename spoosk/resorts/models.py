@@ -214,7 +214,7 @@ class SkyTrail(models.Model):
 
 class ResortImage(models.Model):
     title = models.CharField(max_length=200, blank=True, null=True)
-    image = models.ImageField(upload_to="static/image/resorts")
+    image = models.ImageField(upload_to="resorts")
     resort = models.ForeignKey(SkiResort, on_delete=models.CASCADE, related_name='resort_images')
     add_at = models.DateTimeField(auto_now_add=True)
 
@@ -261,7 +261,7 @@ class SkiReview(models.Model):
 
 
 class ReviewImage(models.Model):
-    image = models.ImageField(upload_to="static/image/reviews")
+    image = models.ImageField(upload_to="reviews")
     review = models.ForeignKey(SkiReview, on_delete=models.CASCADE, related_name='review_images')
     add_at = models.DateTimeField(auto_now_add=True)
 

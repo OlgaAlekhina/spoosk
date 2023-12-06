@@ -6,7 +6,7 @@ import requests
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    avatar = models.ImageField(upload_to="static/image/avatars", blank=True)
+    avatar = models.ImageField(upload_to="avatars", blank=True)
     name = models.CharField(max_length=30, blank=True)
     country = models.CharField(max_length=30, blank=True)
     city = models.CharField(max_length=30, blank=True)
@@ -25,3 +25,8 @@ class UserProfile(models.Model):
         self.avatar.save(img_name, File(img_temp), save=True)
         return self.avatar
 
+
+class SignupCode(models.Model):
+    code = models.IntegerField()
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    code_time = models.DateTimeField(auto_now_add=True)

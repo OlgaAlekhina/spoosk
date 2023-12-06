@@ -1,7 +1,10 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import UserProfile
+from .models import UserProfile, SignupCode
 from rest_framework.validators import UniqueValidator
+from random import randint
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
 
 
 # serializer for UserProfile model
@@ -27,6 +30,19 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(username=email, email=email, password=password)
         user.is_active = False
         user.save()
+        code = SignupCode.objects.create(code=randint(1000, 9999), user=user)
+        msg = EmailMultiAlternatives(
+            subject='Регистрация в приложении Spoosk',
+            from_email='spoosk.info@gmail.com',
+            to=[user.email, ]
+        )
+        html_content = render_to_string(
+            'accounts/signup_code.html',
+            {'code': code.code}
+        )
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
+
         return user
 
 
@@ -36,4 +52,4 @@ class UserprofileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'password', 'first_name', 'last_name', 'date_joined', 'profile')
+        fields = ('id', 'email', 'first_name', 'last_name', 'date_joined', 'profile')
