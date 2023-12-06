@@ -19,14 +19,13 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from resorts.views import SkiResortViewset, SkiReviewViewset
-from accounts.views import UserViewset
+from resorts.views import SkiResortViewset, SkiReviewViewset, ResortMainFilter, get_regions
+from accounts.views import UserViewset, LoginAPIView
 from rest_framework_swagger.views import get_swagger_view
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
 from django.views.generic.base import RedirectView
-from resorts.views import ResortMainFilter, get_regions
 
 
 schema_view = get_schema_view(
@@ -53,6 +52,7 @@ urlpatterns = [
     path('api/resorts/filter', ResortMainFilter.as_view()),
     # path('api/resorts/advanced_filter', ResortAdvancedFilter.as_view()),
     path('api/resorts/regions', get_regions),
+    path('api/users/login', LoginAPIView.as_view()),
     # path('api/resorts/search', ResortSearchView.as_view()),
     # path('api/resorts/reviews', SkireviewView.as_view()),
     # path('api/resorts/reviews/add', SkireviewCreateView.as_view()),

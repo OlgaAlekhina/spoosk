@@ -15,6 +15,14 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ('name', 'country', 'city', 'avatar')
 
 
+class LoginSerializer(serializers.ModelSerializer):
+    username = serializers.CharField()
+
+    class Meta:
+        model = User
+        fields = ('username', 'password')
+
+
 # serializer for User model for registration endpoint
 class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(validators=[UniqueValidator(queryset=User.objects.all(), message='Пользователь с таким email адресом уже существует')])
