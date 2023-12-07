@@ -170,7 +170,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 # allow post requests on prod
-CSRF_TRUSTED_ORIGINS = ['https://spoosk.pnpl.tech']
+# CSRF_TRUSTED_ORIGINS = ['https://spoosk.pnpl.tech']
 
 # try:
 #     from .local_settings import *

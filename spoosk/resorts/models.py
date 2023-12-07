@@ -54,11 +54,12 @@ class SkiResort(models.Model):
     distance_airport = models.IntegerField(blank=True, null=True, help_text="km from airport")
     distance_railway = models.IntegerField(blank=True, null=True, help_text="km from railway station")
     info = models.TextField(blank=True, null=True, help_text="resort description")
-    image = models.ImageField('image', upload_to="static/image/card", null=True, help_text="url of small image for resort's card")
+    image = models.ImageField('image', upload_to="resorts/mini", null=True, help_text="url of small image for resort's card")
     list_month = models.TextField(blank=True, null=True, help_text="list of months which cover the ski season")
     link_ofsite = models.CharField(blank=True, null=True, help_text="url of resort's website")
     link_skipasses = models.CharField(blank=True, null=True, help_text="url of skipasses page on resort's website")
-    main_resort_img = models.ImageField('image', upload_to="static/image/resorts", null=True, help_text="url of large image for resort's page header")
+    link_map = models.CharField(blank=True, null=True, help_text="url of resort's map")
+    main_resort_img = models.ImageField('image', upload_to="resorts/maxi", null=True, help_text="url of large image for resort's page header")
     max_height = models.IntegerField(blank=True, null=True, help_text="maximum height of resort")
 
     class Meta:

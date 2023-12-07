@@ -10,11 +10,14 @@ from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
+from rest_framework import generics
 
 
-class LoginAPIView(APIView):
-    permission_classes = (AllowAny,)
+class LoginAPIView(generics.GenericAPIView):
     """This api will handle login and return token for authenticate user."""
+    permission_classes = (AllowAny,)
+    serializer_class = LoginSerializer
+
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
