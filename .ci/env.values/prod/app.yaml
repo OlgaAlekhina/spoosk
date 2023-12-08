@@ -20,6 +20,8 @@ env:
   ALLOWED_HOSTS: "*"
   DJANGO_DEBUG: "True"
   PYTHONUNBUFFERED: "1"
+  EMAIL_HOST_USER: "{{.Values.EMAIL_HOST_USER}}"
+  EMAIL_HOST_PASSWORD: "{{.Values.EMAIL_HOST_PASSWORD}}"
 
 imagePullSecrets:
   - name: gitlab-cr
