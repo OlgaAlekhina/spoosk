@@ -5,6 +5,7 @@ from django.db.models import Sum, Max, Count, Avg
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
+# from spoosk.yandex_s3_storage import ImagesStorage
 
 
 class SkiLifts(models.Model):
@@ -54,12 +55,12 @@ class SkiResort(models.Model):
     distance_airport = models.IntegerField(blank=True, null=True, help_text="km from airport")
     distance_railway = models.IntegerField(blank=True, null=True, help_text="km from railway station")
     info = models.TextField(blank=True, null=True, help_text="resort description")
-    image = models.ImageField('image', upload_to="resorts/mini", null=True, help_text="url of small image for resort's card")
+    image = models.ImageField(null=True, upload_to="resorts/mini", help_text="url of small image for resort's card")
     list_month = models.TextField(blank=True, null=True, help_text="list of months which cover the ski season")
     link_ofsite = models.CharField(blank=True, null=True, help_text="url of resort's website")
     link_skipasses = models.CharField(blank=True, null=True, help_text="url of skipasses page on resort's website")
     link_map = models.CharField(blank=True, null=True, help_text="url of resort's map")
-    main_resort_img = models.ImageField('image', upload_to="resorts/maxi", null=True, help_text="url of large image for resort's page header")
+    main_resort_img = models.ImageField(upload_to="resorts/maxi", null=True, help_text="url of large image for resort's page header")
     max_height = models.IntegerField(blank=True, null=True, help_text="maximum height of resort")
 
     class Meta:
@@ -215,7 +216,7 @@ class SkyTrail(models.Model):
 
 class ResortImage(models.Model):
     title = models.CharField(max_length=200, blank=True, null=True)
-    image = models.ImageField(upload_to="resorts")
+    image = models.ImageField(upload_to="resorts/extra")
     resort = models.ForeignKey(SkiResort, on_delete=models.CASCADE, related_name='resort_images')
     add_at = models.DateTimeField(auto_now_add=True)
 
