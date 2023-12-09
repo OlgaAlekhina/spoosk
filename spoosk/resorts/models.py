@@ -38,6 +38,9 @@ class SkiPass(models.Model):
         managed = True
         db_table = 'ski_pass'
 
+    def __str__(self):
+        return f'{self.id_resort} : {self.mob_type}'
+
 
 class SkiResort(models.Model):
     id_resort = models.CharField(db_column='ID_resort', primary_key=True, max_length=20, help_text="avalable: 'Sheregesh', 'Roza_hutor', 'Gazprom', 'Elbrus', 'Dombay', 'Big_wood', 'Arkhyz'")  # Field name made lowercase.
