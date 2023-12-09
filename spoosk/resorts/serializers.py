@@ -30,11 +30,12 @@ class ReviewImageSerializer(serializers.ModelSerializer):
 class SkireviewSerializer(serializers.ModelSerializer):
     author_name = serializers.ReadOnlyField(source='author.first_name')
     author_lastname = serializers.ReadOnlyField(source='author.last_name')
+    resort_name = serializers.ReadOnlyField(source='resort.name')
     images = ReviewImageSerializer(source='review_images', many=True, required=False, help_text="list of review's images")
 
     class Meta:
         model = SkiReview
-        fields = ('id', 'resort', 'author_name', 'author_lastname', 'text', 'rating', 'add_at', 'images')
+        fields = ('id', 'resort', 'resort_name', 'author_name', 'author_lastname', 'text', 'rating', 'add_at', 'images')
 
     def create(self, validated_data):
         resort = validated_data['resort']
