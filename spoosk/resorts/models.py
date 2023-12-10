@@ -199,6 +199,10 @@ class SkiResort(models.Model):
         else:
             return 0
 
+    @property
+    def reviews_count(self):
+        number_reviews = self.resort_reviews.filter(approved=True)
+        return len(number_reviews)
 
 
 class SkyTrail(models.Model):

@@ -68,6 +68,7 @@ class SkiResortSerializer(serializers.ModelSerializer):
     bugelny_skilift = serializers.ReadOnlyField(source='number_bugelny', help_text="number of bugelny skilifts of resort")
     skipasses = SkipassSerializer(source='resorts', many=True, help_text="list of resort's skipasses")
     rating = serializers.ReadOnlyField(source='resort_rating', help_text="average rating of the resort")
+    number_reviews = serializers.ReadOnlyField(source='reviews_count', help_text="number of reviews for the resort")
     images = ResortImageSerializer(source='resort_images', many=True, help_text="list of resort's additional images")
     # reviews = SkireviewSerializer(source='resort_reviews', many=True, help_text="list of resort's reviews")
 
@@ -82,9 +83,10 @@ class ResortSerializer(serializers.ModelSerializer):
     skipass = serializers.ReadOnlyField(source='skipass_min', help_text="minimal price of skipass")
     trail_number = serializers.ReadOnlyField(source='trail_number_count', help_text="number of all resort's trails")
     rating = serializers.ReadOnlyField(source='resort_rating', help_text="average rating of the resort")
+    number_reviews = serializers.ReadOnlyField(source='reviews_count', help_text="number of reviews for the resort")
 
     class Meta:
         model = SkiResort
-        fields = ['id_resort', 'name', 'region', 'rating', 'image', 'trail_length', 'height_difference', 'skipass', 'trail_number']
+        fields = ['id_resort', 'name', 'region', 'rating', 'number_reviews', 'image', 'trail_length', 'height_difference', 'skipass', 'trail_number']
 
 
