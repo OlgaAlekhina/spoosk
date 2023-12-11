@@ -15,12 +15,22 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ('name', 'country', 'city', 'avatar')
 
 
+# serializer for SignupCode model
+class CodeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SignupCode
+        fields = ('code', 'user')
+
+
+# serializer for User model for login endpoint
 class LoginSerializer(serializers.ModelSerializer):
     username = serializers.CharField()
 
     class Meta:
         model = User
         fields = ('username', 'password')
+
 
 
 # serializer for User model for registration endpoint
