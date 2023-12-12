@@ -150,23 +150,6 @@ AWS_S3_REGION_NAME = 'ru-central1'
 # custom storage for media files
 DEFAULT_FILE_STORAGE = 'yandex_s3_storage.ImagesStorage'
 
-
-# STORAGES = {
-#     "default": {
-#         "BACKEND": "yandex_s3_storage.ImagesStorage",
-#         "OPTIONS": {
-#             "bucket_name": YANDEX_CLIENT_DOCS_BUCKET_NAME,
-#             "region_name": AWS_S3_REGION_NAME,
-#             "cloudfront_key_id": AWS_ACCESS_KEY_ID,
-#             "cloudfront_key": AWS_SECRET_ACCESS_KEY,
-#             "custom_domain": AWS_S3_ENDPOINT_URL,
-#         },
-#     },
-#     "staticfiles": {
-#         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-#     },
-# }
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
