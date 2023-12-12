@@ -61,7 +61,7 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
     #    serializer = SkiResortSerializer(items, many=True)
     #    return Response(serializer.data)
 
-    # add different serializers to list and detail view
+    # add different serializers to different actions
     def get_serializer_class(self):
         if self.action == 'list':
             return ResortSerializer

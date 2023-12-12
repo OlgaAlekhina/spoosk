@@ -20,32 +20,50 @@ class CodeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SignupCode
-        fields = ('code', 'user')
+        fields = ('code', )
 
 
 # serializer for User model for login endpoint
 class LoginSerializer(serializers.ModelSerializer):
-    username = serializers.CharField()
+    email = serializers.EmailField(required=True)
 
     class Meta:
         model = User
-        fields = ('username', 'password')
+        fields = ('email', 'password')
 
+
+# serializer for User model for reset password request endpoint
+class ResetpasswordSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField()
+
+    class Meta:
+        model = User
+        fields = ('email', )
+
+
+# serializer for User model for change password endpoint
+class ChangepasswordSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('password', )
 
 
 # serializer for User model for registration endpoint
 class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(validators=[UniqueValidator(queryset=User.objects.all(), message='Пользователь с таким email адресом уже существует')])
+    first_name = serializers.CharField(required=True)
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'password')
+        fields = ('id', 'first_name', 'email', 'password')
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
         email = validated_data['email']
         password = validated_data['password']
-        user = User.objects.create_user(username=email, email=email, password=password)
+        first_name = validated_data['first_name']
+        user = User.objects.create_user(username=email, email=email, password=password, first_name=first_name)
         user.is_active = False
         user.save()
         code = SignupCode.objects.create(code=randint(1000, 9999), user=user)
