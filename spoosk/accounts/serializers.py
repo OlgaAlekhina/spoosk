@@ -5,6 +5,7 @@ from rest_framework.validators import UniqueValidator
 from random import randint
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
+from .validators import validate_password_length, validate_password_symbols, validate_email, email_exists
 
 
 # serializer for UserProfile model
@@ -25,7 +26,8 @@ class CodeSerializer(serializers.ModelSerializer):
 
 # serializer for User model for login endpoint
 class LoginSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(required=True)
+    email = serializers.CharField(required=True, validators=[validate_email])
+    password = serializers.CharField(required=True, validators=[validate_password_length, validate_password_symbols])
 
     class Meta:
         model = User
@@ -34,7 +36,7 @@ class LoginSerializer(serializers.ModelSerializer):
 
 # serializer for User model for reset password request endpoint
 class ResetpasswordSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField()
+    email = serializers.CharField(validators=[validate_email, email_exists])
 
     class Meta:
         model = User
@@ -51,8 +53,9 @@ class ChangepasswordSerializer(serializers.ModelSerializer):
 
 # serializer for User model for registration endpoint
 class UserSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(validators=[UniqueValidator(queryset=User.objects.all(), message='Пользователь с таким email адресом уже существует')])
+    email = serializers.CharField(validators=[UniqueValidator(queryset=User.objects.all(), message='Пользователь с таким email адресом уже существует'), validate_email])
     first_name = serializers.CharField(required=True)
+    password = serializers.CharField(validators=[validate_password_length, validate_password_symbols])
 
     class Meta:
         model = User
