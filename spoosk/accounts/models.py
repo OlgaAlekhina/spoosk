@@ -28,5 +28,5 @@ class UserProfile(models.Model):
 
 class SignupCode(models.Model):
     code = models.IntegerField()
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     code_time = models.DateTimeField(auto_now_add=True)

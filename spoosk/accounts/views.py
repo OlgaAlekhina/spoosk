@@ -136,10 +136,11 @@ class UserViewset(mixins.CreateModelMixin,
 
     @action(detail=False, methods=['post'])
     def reset_password_request(self, request):
-        data = request.data
-        email = data.get('email')
-        user = User.objects.filter(email=email).first()
-        if user:
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            data = request.data
+            email = data.get('email')
+            user = User.objects.filter(email=email).first()
             code = SignupCode.objects.create(code=randint(1000, 9999), user=user)
             msg = EmailMultiAlternatives(
                 subject='Восстановление пароля в приложении Spoosk',
@@ -161,12 +162,12 @@ class UserViewset(mixins.CreateModelMixin,
                 }
             }
             return Response(response, status=status.HTTP_200_OK)
-        else:
-            response = {
-                "status": status.HTTP_400_BAD_REQUEST,
-                "message": "Пользователь с таким email адресом не зарегистрирован в приложении",
-            }
-            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        response = {
+            "status": status.HTTP_400_BAD_REQUEST,
+            "message": "bad request",
+            "data": serializer.errors
+        }
+        return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=True, methods=['post'])
     def change_password(self, request, pk=None):
