@@ -31,38 +31,38 @@ def authenticate_user(email, password):
     return None
 
 
-class LoginAPIView(generics.GenericAPIView):
-    """ Эндпоинт для логина, принимает email и пароль пользователя и при успешной аутентификации возвращает его токен. """
-    serializer_class = LoginSerializer
+# class LoginAPIView(generics.GenericAPIView):
+#     """ Эндпоинт для логина, принимает email и пароль пользователя и при успешной аутентификации возвращает его токен. """
+#     serializer_class = LoginSerializer
 
-    def post(self, request):
-        serializer = LoginSerializer(data=request.data)
-        if serializer.is_valid():
-            email = serializer.validated_data["email"]
-            password = serializer.validated_data["password"]
-            user = authenticate_user(email=email, password=password)
-            if user is not None:
-                token = Token.objects.get(user=user)
-                response = {
-                       "status": status.HTTP_200_OK,
-                       "message": "Авторизация прошла успешно",
-                       "data": {
-                               "Token" : token.key
-                               }
-                       }
-                return Response(response, status=status.HTTP_200_OK)
-            else :
-                response = {
-                       "status": status.HTTP_401_UNAUTHORIZED,
-                       "message": "Неправильно введены учетные данные",
-                       }
-                return Response(response, status=status.HTTP_401_UNAUTHORIZED)
-        response = {
-             "status": status.HTTP_400_BAD_REQUEST,
-             "message": "bad request",
-             "data": serializer.errors
-             }
-        return Response(response, status=status.HTTP_400_BAD_REQUEST)
+    # def post(self, request):
+    #     serializer = LoginSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         email = serializer.validated_data["email"]
+    #         password = serializer.validated_data["password"]
+    #         user = authenticate_user(email=email, password=password)
+    #         if user is not None:
+    #             token = Token.objects.get(user=user)
+    #             response = {
+    #                    "status": status.HTTP_200_OK,
+    #                    "message": "Авторизация прошла успешно",
+    #                    "data": {
+    #                            "Token" : token.key
+    #                            }
+    #                    }
+    #             return Response(response, status=status.HTTP_200_OK)
+    #         else :
+    #             response = {
+    #                    "status": status.HTTP_401_UNAUTHORIZED,
+    #                    "message": "Неправильно введены учетные данные",
+    #                    }
+    #             return Response(response, status=status.HTTP_401_UNAUTHORIZED)
+    #     response = {
+    #          "status": status.HTTP_400_BAD_REQUEST,
+    #          "message": "bad request",
+    #          "data": serializer.errors
+    #          }
+    #     return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
 
 # endpoints for users
@@ -75,6 +75,8 @@ class UserViewset(mixins.CreateModelMixin,
     create: Эндпоинт для регистрации, принимает имя, email и пароль пользователя и при успешной регистрации возвращает его данные, включая id.
             Полученный id следует передать в эндпоинте api/users/verify_code для верификации введенного пользователем кода.
             При регистрации email проверяется на уникальность и в случае несоответствия выдается ошибка.
+    login: Эндпоинт для логина, принимает email и пароль пользователя и при успешной аутентификации возвращает его токен.
+    retrieve: Эндпоинт для получения личных данных пользователя по его id.
     verify_code: Эндпоинт для верификации высланного при регистрации кода, принимает id пользователя и код и при успешной проверке возвращает токен пользователя.
                  Код работает в течение 1 часа, после чего выдается ошибка "код устарел".
     reset_password_request: Эндпоинт для восстановления пароля, принимает email пользователя и при наличии такого объекта в БД возвращает его id.
@@ -96,8 +98,40 @@ class UserViewset(mixins.CreateModelMixin,
             return ResetpasswordSerializer
         elif self.action == 'change_password':
             return ChangepasswordSerializer
+        elif self.action == 'login':
+            return LoginSerializer
         else:
             return UserprofileSerializer
+
+    @action(detail=False, methods=['post'])
+    def login(self, request):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            email = serializer.validated_data["email"]
+            password = serializer.validated_data["password"]
+            user = authenticate_user(email=email, password=password)
+            if user is not None:
+                token = Token.objects.get(user=user)
+                response = {
+                    "status": status.HTTP_200_OK,
+                    "message": "Авторизация прошла успешно",
+                    "data": {
+                        "Token": token.key
+                    }
+                }
+                return Response(response, status=status.HTTP_200_OK)
+            else:
+                response = {
+                    "status": status.HTTP_401_UNAUTHORIZED,
+                    "message": "Неправильно введены учетные данные",
+                }
+                return Response(response, status=status.HTTP_401_UNAUTHORIZED)
+        response = {
+            "status": status.HTTP_400_BAD_REQUEST,
+            "message": "bad request",
+            "data": serializer.errors
+        }
+        return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=True, methods=['post'])
     def verify_code(self, request, pk=None):
@@ -138,8 +172,8 @@ class UserViewset(mixins.CreateModelMixin,
     def reset_password_request(self, request):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            data = request.data
-            email = data.get('email')
+            # data = request.data
+            email = serializer.validated_data['email']
             user = User.objects.filter(email=email).first()
             code = SignupCode.objects.create(code=randint(1000, 9999), user=user)
             msg = EmailMultiAlternatives(
@@ -171,20 +205,29 @@ class UserViewset(mixins.CreateModelMixin,
 
     @action(detail=True, methods=['post'])
     def change_password(self, request, pk=None):
-        data = request.data
-        password = data.get('password')
-        user = self.get_object()
-        user.set_password(password)
-        user.save()
-        token = Token.objects.get(user=user)
-        response = {
-            "status": status.HTTP_200_OK,
-            "message": "success",
-            "data": {
-                "Token": token.key
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            # data = request.data
+            password = serializer.validated_data['password']
+            user = self.get_object()
+            user.set_password(password)
+            user.save()
+            token = Token.objects.get(user=user)
+            response = {
+                "status": status.HTTP_200_OK,
+                "message": "success",
+                "data": {
+                    "Token": token.key
+                }
             }
+            return Response(response, status=status.HTTP_200_OK)
+
+        response = {
+            "status": status.HTTP_400_BAD_REQUEST,
+            "message": "bad request",
+            "data": serializer.errors
         }
-        return Response(response, status=status.HTTP_200_OK)
+        return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
 
 # временная функция для создания UserProfile для ранее созданных пользователей (удалить вместе с url после однократного использования на проде)

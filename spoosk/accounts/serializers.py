@@ -45,6 +45,7 @@ class ResetpasswordSerializer(serializers.ModelSerializer):
 
 # serializer for User model for change password endpoint
 class ChangepasswordSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(validators=[validate_password_length, validate_password_symbols])
 
     class Meta:
         model = User
@@ -55,12 +56,11 @@ class ChangepasswordSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     email = serializers.CharField(validators=[UniqueValidator(queryset=User.objects.all(), message='Пользователь с таким email адресом уже существует'), validate_email])
     first_name = serializers.CharField(required=True)
-    password = serializers.CharField(validators=[validate_password_length, validate_password_symbols])
+    password = serializers.CharField(write_only=True, validators=[validate_password_length, validate_password_symbols])
 
     class Meta:
         model = User
         fields = ('id', 'first_name', 'email', 'password')
-        extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
         email = validated_data['email']
@@ -87,8 +87,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 # serializer for User model with profile options
 class UserprofileSerializer(serializers.ModelSerializer):
-    profile = ProfileSerializer(source='userprofile', help_text="extra data on user", required=False)
+    avatar = serializers.FileField(source='userprofile.avatar')
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'first_name', 'last_name', 'date_joined', 'profile')
+        fields = ('id', 'email', 'first_name', 'last_name', 'date_joined', 'avatar')
