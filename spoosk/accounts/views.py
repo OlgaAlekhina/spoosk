@@ -116,6 +116,7 @@ class UserViewset(mixins.CreateModelMixin,
                     "status": status.HTTP_200_OK,
                     "message": "Авторизация прошла успешно",
                     "data": {
+                        "id": user.id,
                         "Token": token.key
                     }
                 }
