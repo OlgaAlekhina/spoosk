@@ -31,40 +31,6 @@ def authenticate_user(email, password):
     return None
 
 
-# class LoginAPIView(generics.GenericAPIView):
-#     """ Эндпоинт для логина, принимает email и пароль пользователя и при успешной аутентификации возвращает его токен. """
-#     serializer_class = LoginSerializer
-
-    # def post(self, request):
-    #     serializer = LoginSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         email = serializer.validated_data["email"]
-    #         password = serializer.validated_data["password"]
-    #         user = authenticate_user(email=email, password=password)
-    #         if user is not None:
-    #             token = Token.objects.get(user=user)
-    #             response = {
-    #                    "status": status.HTTP_200_OK,
-    #                    "message": "Авторизация прошла успешно",
-    #                    "data": {
-    #                            "Token" : token.key
-    #                            }
-    #                    }
-    #             return Response(response, status=status.HTTP_200_OK)
-    #         else :
-    #             response = {
-    #                    "status": status.HTTP_401_UNAUTHORIZED,
-    #                    "message": "Неправильно введены учетные данные",
-    #                    }
-    #             return Response(response, status=status.HTTP_401_UNAUTHORIZED)
-    #     response = {
-    #          "status": status.HTTP_400_BAD_REQUEST,
-    #          "message": "bad request",
-    #          "data": serializer.errors
-    #          }
-    #     return Response(response, status=status.HTTP_400_BAD_REQUEST)
-
-
 # endpoints for users
 class UserViewset(mixins.CreateModelMixin,
                    mixins.RetrieveModelMixin,
@@ -136,38 +102,44 @@ class UserViewset(mixins.CreateModelMixin,
 
     @action(detail=True, methods=['post'])
     def verify_code(self, request, pk=None):
-        data = request.data
-        code = data.get('code')
-        user = self.get_object()
-        if SignupCode.objects.filter(code=code, user=user).exists():
-            signup_code = SignupCode.objects.get(code=code, user=user)
-            if timezone.now() - signup_code.code_time < timedelta(minutes=60):
-                user.is_active = True
-                user.save()
-                signup_code.delete()
-                token = Token.objects.get(user=user)
-                response = {
-                    "status": status.HTTP_200_OK,
-                    "message": "Код подтвержден",
-                    "data": {
-                        "id": user.id,
-                        "Token": token.key
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            code = serializer.validated_data['code']
+            user = self.get_object()
+            if SignupCode.objects.filter(code=code, user=user).exists():
+                signup_code = SignupCode.objects.get(code=code, user=user)
+                if timezone.now() - signup_code.code_time < timedelta(minutes=60):
+                    user.is_active = True
+                    user.save()
+                    signup_code.delete()
+                    token = Token.objects.get(user=user)
+                    response = {
+                        "status": status.HTTP_200_OK,
+                        "message": "Код подтвержден",
+                        "data": {
+                            "id": user.id,
+                            "Token": token.key
+                        }
                     }
-                }
-                return Response(response, status=status.HTTP_200_OK)
+                    return Response(response, status=status.HTTP_200_OK)
+                else:
+                    response = {
+                        "status": status.HTTP_400_BAD_REQUEST,
+                        "message": "Код устарел",
+                    }
+                    return Response(response, status=status.HTTP_400_BAD_REQUEST)
             else:
                 response = {
                     "status": status.HTTP_400_BAD_REQUEST,
-                    "message": "Код устарел",
+                    "message": "Код введен неверно",
                 }
                 return Response(response, status=status.HTTP_400_BAD_REQUEST)
-        # except:
-        else:
-            response = {
-                "status": status.HTTP_400_BAD_REQUEST,
-                "message": "Код введен неверно",
-            }
-            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        response = {
+            "status": status.HTTP_400_BAD_REQUEST,
+            "message": "bad request",
+            "data": serializer.errors
+        }
+        return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=False, methods=['post'])
     def reset_password_request(self, request):
