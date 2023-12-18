@@ -25,6 +25,7 @@ from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import action
 from django.db.models.functions import Coalesce
+from spoosk.permissions import APIkey
 
 
 # endpoints for resorts
@@ -41,6 +42,7 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
     reviews: Список всех отзывов для конкретного курорта, полученный по его id. Выводится по 6 отзывов на страницу, отсортированных по дате.
     Для получения других страниц надо передать в запросе номер страницы: /api/resorts/Gazprom/reviews/?page=2
     """
+    # permission_classes = [APIkey]
     queryset = SkiResort.objects.prefetch_related(
         Prefetch(
             # get skipass objects which have mobile type
@@ -55,11 +57,6 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = ['name']
     # pagination_class = None
-
-    # def get(self, request):
-    #    items = SkiResort.objects.all()
-    #    serializer = SkiResortSerializer(items, many=True)
-    #    return Response(serializer.data)
 
     # add different serializers to different actions
     def get_serializer_class(self):

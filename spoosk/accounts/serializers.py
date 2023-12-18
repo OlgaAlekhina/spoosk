@@ -13,7 +13,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ('avatar', )
+        fields = ('name', 'country', 'city', 'avatar')
 
 
 # serializer for SignupCode model
@@ -88,9 +88,23 @@ class UserSerializer(serializers.ModelSerializer):
 
 # serializer for User model with profile options
 class UserprofileSerializer(serializers.ModelSerializer):
-    avatar = serializers.ImageField(source='userprofile.avatar', required=True)
-    # profile = ProfileSerializer(source='userprofile', required=False)
+    avatar = serializers.ImageField(source='userprofile.avatar')
+    userprofile = ProfileSerializer(required=False)
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'first_name', 'last_name', 'date_joined', 'avatar')
+        fields = ('id', 'email', 'first_name', 'last_name', 'date_joined', 'avatar', 'userprofile')
+
+    def update(self, instance, validated_data):
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.save()
+        profile_data = validated_data.pop('userprofile')
+        profile = instance.userprofile
+        profile.name = profile_data.get('name', profile.name)
+        profile.city = profile_data.get('city', profile.city)
+        profile.country = profile_data.get('country', profile.country)
+        profile.avatar = self.context['request'].FILES
+        profile.save()
+
+        return instance
