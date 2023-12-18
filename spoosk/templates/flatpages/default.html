@@ -439,7 +439,7 @@
                                             <img class="close-image" src="{% static 'image/overlay_filter/Vector.png' %}" title="При закрытии фильтры сохраняются" width="14" height="14">
                                         </button>
                                             <h1 class="filters">Фильтры</h1>
-                                                <form action="overlayFilters" method="post">
+                                                <form id="advanced-filter">
                                                     <div id="overlayFilters">
                                                         <h2 class="filters-track">Трассы</h2>
                                                             <div class="track-block">
@@ -513,7 +513,7 @@
                                                         <div class="filters-distance-block">
                                                             <h2 class="filters-distance">Расстояние от ближайшего аэропорта</h2>
                                                                 <div class="slider-box">
-                                                                    <input type="range" step="100" min="0" max="200" value="200" list="rangeList" class="slider">
+                                                                    <input type="range" step="100" min="0" max="200" value="200" list="rangeList" class="slider" id="distance">
                                                                 </div>
                                                                     <div class="slider-box-name">
                                                                         <div class="slider-name">Не более 50 км</div>
