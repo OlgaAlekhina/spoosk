@@ -21,6 +21,61 @@ forms.forEach(form => {
     })
 })
 
+// call AJAX to pass parameters to advanced filter
+$('#advanced-filter').on('submit', function(event){
+    event.preventDefault();
+	//resort_region = document.getElementById("resort_region").value;
+    const green_trails = document.getElementById("easy");
+    const blue_trails = document.getElementById("medium");
+	const red_trails = document.getElementById("increased-complexity");
+	const black_trails = document.getElementById("difficult");
+	const freeride = document.getElementById("freeride");
+	const snowpark = document.getElementById("snowpark");
+	const bygel = document.getElementById("bygel");
+	const chairlifts = document.getElementById("chairlifts");
+	const gandola = document.getElementById("gandola");
+	const travelators = document.getElementById("travelators");
+	const adults = document.getElementById("adults");
+	const children = document.getElementById("children");
+    const distance = document.getElementById("distance").value;
+    const rent = document.getElementById("rent");
+    const skating = document.getElementById("skating");
+	var jsonData = {};
+	//if (resort_region != 'Все регионы'){jsonData['resort_region'] = 'resort_region';}
+	if (green_trails.checked){jsonData['have_green_skitrails'] = 'green';}
+	if (blue_trails.checked){jsonData['have_blue_skitrails'] = 'blue';}
+	if (red_trails.checked){jsonData['have_red_skitrails'] = 'red';}
+	if (black_trails.checked){jsonData['have_black_skitrails'] = 'black';}
+	if (freeride.checked){jsonData['have_freeride'] = '1';}
+	if (snowpark.checked){jsonData['have_snowpark'] = '1';}
+	if (bygel.checked){jsonData['have_bugelny'] = '1';}
+	if (chairlifts.checked){jsonData['have_armchair'] = '1';}
+	if (gandola.checked){jsonData['have_gondola'] = '1';}
+	if (travelators.checked){jsonData['have_travelators'] = '1';}
+	if (adults.checked){jsonData['have_adult_school'] = '1';}
+	if (children.checked){jsonData['have_children_school'] = '1';}
+	if (distance === '0'){jsonData['airport_distance'] = '50';}
+	if (distance === '100'){jsonData['airport_distance'] = '100';}
+	if (rent.checked){jsonData['have_rental'] = '1';}
+	if (skating.checked){jsonData['have_evening_skiing'] = '1';}
+    get_filter(jsonData);
+});
+
+// AJAX for advanced resorts filter
+function get_filter(jsonData) {
+    origin = location.origin;
+    url = origin + "/resorts/filter/";
+    $.ajax({
+            url : url,
+            type : "GET",
+            data : jsonData,
+
+            success : function(response) {
+                $("html").html(response);
+            },
+        });
+};
+
 // call AJAX function when url includes token
 function get_param() {
         var href = window.location.href;

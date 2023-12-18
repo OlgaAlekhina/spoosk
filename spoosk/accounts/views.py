@@ -273,6 +273,7 @@ def favorites(request):
     html = render_to_string('accounts/favorites_resorts.html', context={'resorts': resorts})
     return JsonResponse(html, safe=False)
 
+
 # выводит отзывы пользователя и форму добавления отзыва на страницу личного кабинета
 @login_required
 def user_reviews(request):

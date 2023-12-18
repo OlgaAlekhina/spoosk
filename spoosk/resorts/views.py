@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.views import View
 from django.views.decorators.http import require_POST
 from django.views.generic import ListView
-from .filters import ResortFilter
+from .filters import ResortFilter, MainFilter
 from .forms import ReviewForm
 from .models import SkiResort, Month, RidingLevel, SkiReview
 from django.http import JsonResponse
@@ -13,6 +13,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse, Http404
+from django.template.loader import render_to_string
 
 
 class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
@@ -23,6 +24,15 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
        items = SkiResort.objects.all()
        serializer = SkiResortSerializer(items, many=True)
        return Response(serializer.data)
+
+
+# endpoint for advanced filter request
+def advanced_filter(request):
+    data = request.GET
+    filter_results = MainFilter(data).qs
+    print(data)
+    html = render_to_string('base_searching_results2.html', context={'resorts': filter_results, 'resorts_length': len(filter_results)}, request=request)
+    return JsonResponse(html, safe=False)
 
 
 class Region:
