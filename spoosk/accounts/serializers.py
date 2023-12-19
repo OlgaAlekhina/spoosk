@@ -99,12 +99,15 @@ class UserprofileSerializer(serializers.ModelSerializer):
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.save()
-        profile_data = validated_data.pop('userprofile')
         profile = instance.userprofile
-        profile.name = profile_data.get('name', profile.name)
-        profile.city = profile_data.get('city', profile.city)
-        profile.country = profile_data.get('country', profile.country)
-        profile.avatar = self.context['request'].FILES
+        request = self.context.get("request")
+        avatar = request.FILES.getlist("avatar")[0]
+        profile.avatar = avatar
+        # profile_data = validated_data.pop('userprofile')
+        # profile.name = profile_data.get('name', profile.name)
+        # profile.city = profile_data.get('city', profile.city)
+        # profile.country = profile_data.get('country', profile.country)
+        # profile.avatar = self.context['request'].FILES
         profile.save()
 
         return instance
