@@ -88,26 +88,35 @@ class UserSerializer(serializers.ModelSerializer):
 
 # serializer for User model with profile options
 class UserprofileSerializer(serializers.ModelSerializer):
-    avatar = serializers.ImageField(source='userprofile.avatar')
-    userprofile = ProfileSerializer(required=False)
+    avatar = serializers.ImageField(source='userprofile.avatar', allow_empty_file=True)
+    nickname = serializers.CharField(required=False, source='userprofile.name')
+    city = serializers.CharField(required=False, source='userprofile.city')
+    country = serializers.CharField(required=False, source='userprofile.country')
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'first_name', 'last_name', 'date_joined', 'avatar', 'userprofile')
+        fields = ('id', 'email', 'first_name', 'last_name', 'avatar', 'nickname', 'city', 'country')
+        extra_kwargs = {
+            'email': {'read_only': True}
+        }
 
     def update(self, instance, validated_data):
+        print(validated_data)
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.save()
         profile = instance.userprofile
-        request = self.context.get("request")
-        avatar = request.FILES.getlist("avatar")[0]
-        profile.avatar = avatar
-        # profile_data = validated_data.pop('userprofile')
-        # profile.name = profile_data.get('name', profile.name)
-        # profile.city = profile_data.get('city', profile.city)
-        # profile.country = profile_data.get('country', profile.country)
-        # profile.avatar = self.context['request'].FILES
+        profile_data = validated_data.pop('userprofile')
+        profile.name = profile_data.get('name', profile.name)
+        profile.city = profile_data.get('city', profile.city)
+        profile.country = profile_data.get('country', profile.country)
         profile.save()
+        request = self.context.get("request")
+        try:
+            avatar = request.FILES.getlist("avatar")[0]
+            profile.avatar = avatar
+            profile.save()
+        except:
+            print('no files')
 
         return instance
