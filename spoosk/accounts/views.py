@@ -17,6 +17,7 @@ from rest_framework.decorators import action
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from random import randint
+from django.shortcuts import get_object_or_404
 
 
 # user authentication by email and password
@@ -68,6 +69,11 @@ class UserViewset(mixins.CreateModelMixin,
             return LoginSerializer
         else:
             return UserprofileSerializer
+
+    def retrieve(self, request, pk=None):
+        user = get_object_or_404(User, pk=pk, is_active=True)
+        serializer = self.get_serializer(user)
+        return Response(serializer.data)
 
     @action(detail=False, methods=['post'])
     def login(self, request):
