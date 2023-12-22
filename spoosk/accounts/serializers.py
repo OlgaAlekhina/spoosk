@@ -88,9 +88,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 # serializer for User model with profile options
 class UserprofileSerializer(serializers.ModelSerializer):
-    first_name = serializers.CharField(max_length=20)
-    last_name = serializers.CharField(max_length=30)
-    avatar = serializers.ImageField(source='userprofile.avatar', allow_empty_file=True)
+    first_name = serializers.CharField(required=False, max_length=20)
+    last_name = serializers.CharField(required=False, max_length=30)
+    avatar = serializers.ImageField(required=False, source='userprofile.avatar', allow_empty_file=True)
     nickname = serializers.CharField(required=False, source='userprofile.name', max_length=30)
     city = serializers.CharField(required=False, source='userprofile.city', max_length=30)
     country = serializers.CharField(required=False, source='userprofile.country', max_length=30)
@@ -102,23 +102,23 @@ class UserprofileSerializer(serializers.ModelSerializer):
             'email': {'read_only': True}
         }
 
-    def update(self, instance, validated_data):
-        print(validated_data)
-        instance.first_name = validated_data.get('first_name', instance.first_name)
-        instance.last_name = validated_data.get('last_name', instance.last_name)
-        instance.save()
-        profile = instance.userprofile
-        profile_data = validated_data.pop('userprofile')
-        profile.name = profile_data.get('name', profile.name)
-        profile.city = profile_data.get('city', profile.city)
-        profile.country = profile_data.get('country', profile.country)
-        profile.save()
-        request = self.context.get("request")
-        try:
-            avatar = request.FILES.getlist("avatar")[0]
-            profile.avatar = avatar
-            profile.save()
-        except:
-            print('no files')
-
-        return instance
+    # def update(self, instance, validated_data):
+    #     print(validated_data)
+    #     instance.first_name = validated_data.get('first_name', instance.first_name)
+    #     instance.last_name = validated_data.get('last_name', instance.last_name)
+    #     instance.save()
+    #     profile = instance.userprofile
+    #     profile_data = validated_data.pop('userprofile')
+    #     profile.name = profile_data.get('name', profile.name)
+    #     profile.city = profile_data.get('city', profile.city)
+    #     profile.country = profile_data.get('country', profile.country)
+    #     profile.save()
+    #     request = self.context.get("request")
+    #     try:
+    #         avatar = request.FILES.getlist("avatar")[0]
+    #         profile.avatar = avatar
+    #         profile.save()
+    #     except:
+    #         print('no files')
+    #
+    #     return instance

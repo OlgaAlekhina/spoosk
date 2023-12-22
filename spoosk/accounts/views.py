@@ -75,6 +75,38 @@ class UserViewset(mixins.CreateModelMixin,
         serializer = self.get_serializer(user)
         return Response(serializer.data)
 
+    def partial_update(self, request, pk=None, *args, **kwargs):
+        data = request.data
+        user = get_object_or_404(User, pk=pk, is_active=True)
+        profile = user.userprofile
+        print("Данные: ", data)
+        if 'avatar' in data and data.get('avatar') == '':
+            profile.avatar = None
+            profile.save()
+            print('delete avatar')
+        serializer = self.get_serializer(data=data)
+        if serializer.is_valid():
+            print(serializer.validated_data)
+            user.first_name = serializer.validated_data.get('first_name', user.first_name)
+            user.last_name = serializer.validated_data.get('last_name', user.last_name)
+            user.save()
+            try:
+                profile_data = serializer.validated_data.pop('userprofile')
+                profile.name = profile_data.get('name', profile.name)
+                profile.city = profile_data.get('city', profile.city)
+                profile.country = profile_data.get('country', profile.country)
+                profile.save()
+            except:
+                print('no profile')
+            try:
+                avatar = request.FILES.getlist("avatar")[0]
+                profile.avatar = avatar
+                profile.save()
+            except:
+                print('no files')
+            return Response(serializer.validated_data)
+        return Response(serializer.errors)
+
     @action(detail=False, methods=['post'])
     def login(self, request):
         serializer = self.get_serializer(data=request.data)
