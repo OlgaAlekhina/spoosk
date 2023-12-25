@@ -2,13 +2,25 @@ const modals = Array.from(document.querySelectorAll('.modal'));
 const closeModalBtns = Array.from(document.querySelectorAll('.modal__close-btn'));
 
 function resetForms() {
-    document.getElementById("login-form").reset();
-    document.getElementById("signup-form").reset();
-    document.getElementById("reset-request").reset();
-    document.getElementById("reset-form").reset();
-    document.getElementById('signup-response').innerHTML = "";
-    document.getElementById('results').innerHTML = "";
-    document.getElementById('reset_results').innerHTML = "";
+    const loginForm = document.getElementById("login-form");
+    const signupForm = document.getElementById("signup-form");
+    const resetRequestForm = document.getElementById("reset-request");
+    const resetForm = document.getElementById("reset-form");
+    const signupResponse = document.getElementById('signup-response');
+    const results = document.getElementById('results');
+    const resetResults = document.getElementById('reset_results');
+    const addingReview = document.getElementById('adding_review');
+    const preview = document.querySelector('.preview');
+
+    if (loginForm) loginForm.reset();
+    if (signupForm) signupForm.reset();
+    if (resetRequestForm) resetRequestForm.reset();
+    if (resetForm) resetForm.reset();
+    if (signupResponse) signupResponse.innerHTML = "";
+    if (results) results.innerHTML = "";
+    if (resetResults) resetResults.innerHTML = "";
+    if (addingReview) addingReview.reset();
+    if (preview) preview.innerHTML = "";
 }
 
 function toggleScrollLock() {
@@ -39,9 +51,16 @@ if (document.getElementById("open-modal-advanced-filters-btn")) {
 
 // Привязка обработчика события "click" для кнопки "Оставить отзыв на странице курорта"
 if (document.getElementById("open-modal-add-review")) {
-document.getElementById("open-modal-add-review").addEventListener("click", function() {
-    openModal(document.getElementById("modal-add-review"))
-});
+    document.getElementById("open-modal-add-review").addEventListener("click", function() {
+        openModal(document.getElementById("modal-add-review"))
+    });
+}
+
+// Привязка обработчика события "click" для кнопки "Подробнее" на карточке отзыва
+if (document.getElementById("open-modal-review-full")) {
+    document.getElementById("open-modal-review-full").addEventListener("click", function() {
+        openModal(document.getElementById("modal-review-full"))
+    });
 }
 
 closeModalBtns.forEach((btn, i) => {

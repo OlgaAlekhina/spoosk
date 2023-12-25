@@ -1482,7 +1482,7 @@ body {
 }
 .review-item {
     position: relative;
-    min-height: 400px;
+    min-height: 380px;
     padding: 20px;
 
     background-color: #ffff;
@@ -1495,8 +1495,8 @@ body {
 
 .review-content .img-foto {
     border-radius: 30px;
-    width: 207px;
-    height: 207px;
+    width: 180px;
+    height: 180px;
 }
 
 .review-content-text {
@@ -1575,7 +1575,7 @@ body {
 } */
 .review-text {
     margin-top: 14px;
-    margin-bottom: 35px;
+    margin-bottom: 14px;
 }
 .review-title {
     font-size: 20px;
