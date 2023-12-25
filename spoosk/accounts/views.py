@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from .models import UserProfile, SignupCode
 from django.http import JsonResponse, HttpResponse, Http404
 from rest_framework import viewsets, mixins
-from .serializers import UserSerializer, UserprofileSerializer, LoginSerializer, CodeSerializer, ResetpasswordSerializer, ChangepasswordSerializer
+from .serializers import UserSerializer, UserprofileSerializer, LoginSerializer, CodeSerializer, ResetpasswordSerializer, ChangepasswordSerializer, EmptySerializer
 from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
@@ -50,6 +50,11 @@ class UserViewset(mixins.CreateModelMixin,
                             Полученный id следует передать в эндпоинте api/users/verify_code для верификации введенного пользователем кода.
                             Если email не найден в БД, выдается ошибка.
     change_password: Эндпоинт для смены пароля, принимает новый пароль и id пользователя и возвращает его токен.
+    send_code: Принимает id пользователя и высылает код подтверждения на его почтовый адрес.
+    partial_update: Эндпоинт для редактирования личных данных пользователя по его id. В теле запроса можно передавать только те поля, которые подлежат изменению.
+                    Загрузку файла (аватар) нет возможности протестировать в сваггере, пожалуйста, используйте postman для тестов.
+                    Поле "avatar" может содержать только объект файла (а не его url). Если пользователь хочет удалить свою аватарку, в запросе надо передать поле "avatar" без значения.
+    delete: Эндпоинт для удаления пользователя по его id.
     """
     queryset = User.objects.all()
     http_method_names = [m for m in viewsets.ModelViewSet.http_method_names if m not in ['put']]
@@ -67,6 +72,8 @@ class UserViewset(mixins.CreateModelMixin,
             return ChangepasswordSerializer
         elif self.action == 'login':
             return LoginSerializer
+        elif self.action == 'send_code':
+            return EmptySerializer
         else:
             return UserprofileSerializer
 
@@ -183,7 +190,6 @@ class UserViewset(mixins.CreateModelMixin,
     def reset_password_request(self, request):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            # data = request.data
             email = serializer.validated_data['email']
             user = User.objects.filter(email=email).first()
             code = SignupCode.objects.create(code=randint(1000, 9999), user=user)
@@ -218,7 +224,6 @@ class UserViewset(mixins.CreateModelMixin,
     def change_password(self, request, pk=None):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            # data = request.data
             password = serializer.validated_data['password']
             user = self.get_object()
             user.set_password(password)
@@ -239,6 +244,31 @@ class UserViewset(mixins.CreateModelMixin,
             "data": serializer.errors
         }
         return Response(response, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=True, methods=['post'])
+    def send_code(self, request, pk=None):
+        user = self.get_object()
+        code = SignupCode.objects.create(code=randint(1000, 9999), user=user)
+        msg = EmailMultiAlternatives(
+            subject='Регистрация в приложении Spoosk',
+            from_email='spoosk.info@gmail.com',
+            to=[user.email, ]
+        )
+        html_content = render_to_string(
+            'accounts/signup_code.html',
+            {'code': code.code}
+        )
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
+        response = {
+            "status": status.HTTP_200_OK,
+            "message": "Код подтверждения отправлен",
+            "data": {
+                "id": user.id,
+                "email": user.email
+            }
+        }
+        return Response(response, status=status.HTTP_200_OK)
 
 
 # временная функция для создания UserProfile для ранее созданных пользователей (удалить вместе с url после однократного использования на проде)
