@@ -25,6 +25,11 @@ class CodeSerializer(serializers.ModelSerializer):
         fields = ('code', )
 
 
+# empty serializer
+class EmptySerializer(serializers.Serializer):
+    pass
+
+
 # serializer for User model for login endpoint
 class LoginSerializer(serializers.ModelSerializer):
     email = serializers.CharField(required=True, max_length=50, validators=[validate_email])
