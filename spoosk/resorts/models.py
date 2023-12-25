@@ -158,7 +158,7 @@ class Month(models.Model):
         db_table = 'month'
 
     def __str__(self):
-        return {self.name}
+        return f'{self.name}'
 
     def count_m(self):
         m = Month.objects.filter(id__gte=1) & Month.objects.filter(id__lte=5)

@@ -22,9 +22,13 @@ forms.forEach(form => {
 })
 
 // call AJAX to pass parameters to advanced filter
-$('#advanced-filter').on('submit', function(event){
+$('.filter-submit').on('click', function(event){
     event.preventDefault();
-	//resort_region = document.getElementById("resort_region").value;
+    console.log('it works');
+	const region = document.getElementById("region").value;
+	const month = document.getElementById("month").value;
+	const level = document.getElementById("level").value;
+	console.log(level);
     const green_trails = document.getElementById("easy");
     const blue_trails = document.getElementById("medium");
 	const red_trails = document.getElementById("increased-complexity");
@@ -41,7 +45,12 @@ $('#advanced-filter').on('submit', function(event){
     const rent = document.getElementById("rent");
     const skating = document.getElementById("skating");
 	var jsonData = {};
-	//if (resort_region != 'Все регионы'){jsonData['resort_region'] = 'resort_region';}
+	if (region != 'Все регионы' && region != ''){jsonData['resort_region'] = region;}
+	if (month != 'Не важно' && month != ''){jsonData['resort_month'] = month;}
+	if (level === 'Ученик'){jsonData['resort_level'] = 'green';}
+	if (level === 'Новичок'){jsonData['resort_level'] = 'blue';}
+	if (level === 'Опытный'){jsonData['resort_level'] = 'red';}
+	if (level === 'Экстремал'){jsonData['resort_level'] = 'black';}
 	if (green_trails.checked){jsonData['have_green_skitrails'] = 'green';}
 	if (blue_trails.checked){jsonData['have_blue_skitrails'] = 'blue';}
 	if (red_trails.checked){jsonData['have_red_skitrails'] = 'red';}
@@ -58,6 +67,7 @@ $('#advanced-filter').on('submit', function(event){
 	if (distance === '100'){jsonData['airport_distance'] = '100';}
 	if (rent.checked){jsonData['have_rental'] = '1';}
 	if (skating.checked){jsonData['have_evening_skiing'] = '1';}
+	console.log(jsonData);
     get_filter(jsonData);
 });
 
@@ -71,6 +81,7 @@ function get_filter(jsonData) {
             data : jsonData,
 
             success : function(response) {
+                console.log('success');
                 $("html").html(response);
             },
         });
