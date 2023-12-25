@@ -371,7 +371,7 @@
             <section class="page-form">
                 <div class="wrapper">
                     <div class="form">
-                        <form action="{% url 'base_searching_results' %}" method="get">
+                        <form>
                             <div class="form-content">
 
                                 <div class="form-group">
@@ -383,7 +383,7 @@
                                             <li class="dropdown-list-item" data-value="{{ region.region }}">{{ region.region }}</li>
                                         {% endfor %}
                                             </ul>
-                                        <input type="text" name="where" value="{{ where }}" class="dropdown-input-hidden">
+                                        <input type="text" name="where" id="region" value="{{ where }}" class="dropdown-input-hidden">
                                     </div>
                                 </div>
 
@@ -396,7 +396,7 @@
                                             <li class="dropdown-list-item" data-value="{{ month.name }}">{{ month.name }}</li>
                                         {% endfor %}
                                             </ul>
-                                        <input type="text" name="when" value="{{ when }}" class="dropdown-input-hidden">
+                                        <input type="text" name="when" value="{{ when }}" id="month" class="dropdown-input-hidden">
                                     </div>
                                 </div>
 
@@ -410,7 +410,7 @@
 
                                         {% endfor %}
                                         </ul>
-                                        <input type="text" name="riding_level" value="{{ riding_level }}" class="dropdown-input-hidden">
+                                        <input type="text" name="riding_level" value="{{ riding_level }}" id="level" class="dropdown-input-hidden">
                                     </div>
                                 </div>
 
@@ -427,7 +427,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <button class="btn btn-result" type="submit">Подобрать</button>
+                                    <button class="btn btn-result filter-submit" type="submit">Подобрать</button>
                                 </div>
 
                             </div>
@@ -547,7 +547,7 @@
                                                                 <button class="button-clear" type="reset" >Очистить</button>
                                                             </div>
                                                             <div class="button-block2">
-                                                                <button class="button-pickup" type="submit">Подобрать</button>
+                                                                <button class="button-pickup filter-submit" type="submit">Подобрать</button>
                                                             </div>
                                                         </div>
                                                     </div>

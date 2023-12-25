@@ -26,15 +26,6 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
        return Response(serializer.data)
 
 
-# endpoint for advanced filter request
-def advanced_filter(request):
-    data = request.GET
-    filter_results = MainFilter(data).qs
-    print(data)
-    html = render_to_string('base_searching_results2.html', context={'resorts': filter_results, 'resorts_length': len(filter_results)}, request=request)
-    return JsonResponse(html, safe=False)
-
-
 class Region:
 
     @staticmethod
@@ -59,6 +50,31 @@ class Region:
     #     q = SkiResort.objects.values('begin_season').distinct('begin_season')
     #     b = [{'begin_season': 'Не важно'}]
     #     return b + list(q)
+
+# endpoint for advanced filter request
+def advanced_filter(request):
+    data = request.GET
+    filter_results = MainFilter(data).qs
+    print(data)
+    where = data.get('resort_region') if ('resort_region' in data) else 'Все регионы'
+    when = data.get('resort_month') if 'resort_month' in data else 'Не важно'
+    if 'resort_level' in data:
+        if data.get('resort_level') == 'green':
+            riding_level = 'Ученик'
+        elif data.get('resort_level') == 'blue':
+            riding_level = 'Новичок'
+        elif data.get('resort_level') == 'red':
+            riding_level = 'Опытный'
+        else:
+            riding_level = 'Экстремал'
+    else:
+        riding_level = 'Не важно'
+    level_list = ['Не важно', 'Ученик', 'Новичок', 'Опытный', 'Экстремал']
+    # level_list = RidingLevel.objects.all()
+    html = render_to_string('base_searching_results2.html', context={'resorts': filter_results, 'resorts_length': len(filter_results),
+                             'where': where, 'when': when, 'riding_level': riding_level, 'level_list': level_list}, request=request)
+    # html = render_to_string('base.html', context={'resorts': filter_results}, request=request)
+    return JsonResponse(html, safe=False)
 
 
 class SkiResortList(Region, ListView):
@@ -127,83 +143,83 @@ class SkiResortDetailView(View):
     #         return render(request, 'resort_detail.html', {"resort": resort, "reviews": reviews, "form": form})
 
 
-class FilterResortsView(Region, ListView):
-    queryset = SkiResort.objects.all()
-    template_name = 'base_searching_results.html'
-    context_object_name = 'resorts'
-
-    @staticmethod
-    def get_queryset_complexity(level):
-        if level == 'Ученик':
-            q = SkiResort.objects.filter(skytrail__complexity='green').distinct('name')
-        elif level == 'Новичок':
-            q = SkiResort.objects.filter(skytrail__complexity='blue').distinct('name')
-        elif level == 'Опытный':
-            q = SkiResort.objects.filter(skytrail__complexity='red').distinct('name')
-        elif level == 'Экстремал':
-            q = SkiResort.objects.filter(skytrail__complexity='black').distinct('name')
-        else:
-            q = SkiResort.objects.all()
-
-        return q
-
-    def get_queryset(self):
-        # queryset = super().queryset
-        where = self.request.GET.get('where')
-        when = self.request.GET.get('when')
-        riding_level = self.request.GET.get('riding_level')
-
-        qs1 = SkiResort.objects.filter(region__icontains=where).distinct('name')
-        # self.filterset = ResortFilter({'region': f1}, queryset=queryset).qs
-        qs2 = SkiResort.objects.filter(list_month__icontains=when).distinct('name')
-        qs3 = self.get_queryset_complexity(riding_level)
-
-
-        if where == '':
-            where = 'Все регионы'
-        if when == '':
-            when = 'Не важно'
-        if riding_level == '':
-            riding_level = 'Не важно'
-
-        if where == 'Все регионы':
-            if when == 'Не важно' and riding_level == 'Не важно':
-                self.filterset = SkiResort.objects.all()
-            elif when != 'Не важно' and riding_level == 'Не важно':
-                self.filterset = qs2
-            elif when == 'Не важно' and riding_level != 'Не важно':
-                self.filterset = qs3
-            elif when != 'Не важно' and riding_level != 'Не важно':
-                self.filterset = qs2 & qs3
-
-        else:
-            if when == 'Не важно' and riding_level == 'Не важно':
-                self.filterset = qs1
-            elif when != 'Не важно' and riding_level == 'Не важно':
-                self.filterset = qs1 & qs2
-            elif when == 'Не важно' and riding_level != 'Не важно':
-                self.filterset = qs1 & qs3
-            elif when != 'Не важно' and riding_level != 'Не важно':
-                self.filterset = qs2 & qs3 & qs1
-
-        return self.filterset
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        where = self.request.GET.get('where')
-        context['where'] = where
-
-        when = self.request.GET.get('when')
-        context['when'] = when
-
-        riding_level = self.request.GET.get('riding_level')
-        context['riding_level'] = riding_level
-
-        # context['filter'] = self.filterset.qs
-
-        context['resorts_length'] = len(self.filterset)
-        return context
+# class FilterResortsView(Region, ListView):
+#     queryset = SkiResort.objects.all()
+#     template_name = 'base_searching_results.html'
+#     context_object_name = 'resorts'
+#
+#     @staticmethod
+#     def get_queryset_complexity(level):
+#         if level == 'Ученик':
+#             q = SkiResort.objects.filter(skytrail__complexity='green').distinct('name')
+#         elif level == 'Новичок':
+#             q = SkiResort.objects.filter(skytrail__complexity='blue').distinct('name')
+#         elif level == 'Опытный':
+#             q = SkiResort.objects.filter(skytrail__complexity='red').distinct('name')
+#         elif level == 'Экстремал':
+#             q = SkiResort.objects.filter(skytrail__complexity='black').distinct('name')
+#         else:
+#             q = SkiResort.objects.all()
+#
+#         return q
+#
+#     def get_queryset(self):
+#         # queryset = super().queryset
+#         where = self.request.GET.get('where')
+#         when = self.request.GET.get('when')
+#         riding_level = self.request.GET.get('riding_level')
+#
+#         qs1 = SkiResort.objects.filter(region__icontains=where).distinct('name')
+#         # self.filterset = ResortFilter({'region': f1}, queryset=queryset).qs
+#         qs2 = SkiResort.objects.filter(list_month__icontains=when).distinct('name')
+#         qs3 = self.get_queryset_complexity(riding_level)
+#
+#
+#         if where == '':
+#             where = 'Все регионы'
+#         if when == '':
+#             when = 'Не важно'
+#         if riding_level == '':
+#             riding_level = 'Не важно'
+#
+#         if where == 'Все регионы':
+#             if when == 'Не важно' and riding_level == 'Не важно':
+#                 self.filterset = SkiResort.objects.all()
+#             elif when != 'Не важно' and riding_level == 'Не важно':
+#                 self.filterset = qs2
+#             elif when == 'Не важно' and riding_level != 'Не важно':
+#                 self.filterset = qs3
+#             elif when != 'Не важно' and riding_level != 'Не важно':
+#                 self.filterset = qs2 & qs3
+#
+#         else:
+#             if when == 'Не важно' and riding_level == 'Не важно':
+#                 self.filterset = qs1
+#             elif when != 'Не важно' and riding_level == 'Не важно':
+#                 self.filterset = qs1 & qs2
+#             elif when == 'Не важно' and riding_level != 'Не важно':
+#                 self.filterset = qs1 & qs3
+#             elif when != 'Не важно' and riding_level != 'Не важно':
+#                 self.filterset = qs2 & qs3 & qs1
+#
+#         return self.filterset
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#
+#         where = self.request.GET.get('where')
+#         context['where'] = where
+#
+#         when = self.request.GET.get('when')
+#         context['when'] = when
+#
+#         riding_level = self.request.GET.get('riding_level')
+#         context['riding_level'] = riding_level
+#
+#         # context['filter'] = self.filterset.qs
+#
+#         context['resorts_length'] = len(self.filterset)
+#         return context
 
 
 # def autocomplete(request):
