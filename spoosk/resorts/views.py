@@ -5,8 +5,8 @@ from django.views import View
 from django.views.decorators.http import require_POST
 from django.views.generic import ListView
 from .filters import ResortFilter, MainFilter
-from .forms import ReviewForm
-from .models import SkiResort, Month, RidingLevel, SkiReview
+from .forms import SkiReviewForm, ReviewImageForm
+from .models import SkiResort, Month, RidingLevel, SkiReview, ReviewImage
 from django.http import JsonResponse
 from .serializers import SkiResortSerializer
 from rest_framework import viewsets
@@ -86,44 +86,38 @@ class SkiResortList(Region, ListView):
 
 
 class SkiResortDetailView(View):
-    # model = SkiResort
-    # template_name = 'resort_detail.html'
-    # context_object_name = 'resort'
-    # slug_field = "name"
 
     def get(self, request, slug):
         resort = SkiResort.objects.get(name=slug)
-        # return render(request, 'resort_detail.html', {"resort": resort})
         reviews_list = SkiReview.objects.filter(resort=resort).order_by('-add_at')
         reviews = reviews_list
 
-        form = ReviewForm()
-        return render(request, 'resort_detail.html', {"resort": resort, "reviews": reviews, "form": form})
-
+        initial_data = {'resort': resort.id_resort}
+        review_form = SkiReviewForm(initial=initial_data, request=request)
+        image_form = ReviewImageForm()
+        return render(request, 'resort_detail.html', {"resort": resort, "reviews": reviews, "review_form": review_form, 'image_form': image_form})
 
     def post(self, request, slug):
         resort = SkiResort.objects.get(name=slug)
-        form = ReviewForm(request.POST)
-        if form.is_valid():
-            review = form.save(commit=False)
-            review.resort = resort
-            review.save()
-            return redirect('resort_detail', slug=slug)
+        review_form = SkiReviewForm(request.POST, request=request)
+        image_form = ReviewImageForm(request.POST, request.FILES)
+
+        if review_form.is_valid() and image_form.is_valid():
+            review_instance = review_form.save(commit=False)
+            review_instance.author = request.user
+            review_instance.save()
+
+            image_instances = []
+            for image in request.FILES.getlist('photo'):
+                image_instance = ReviewImage.objects.create(photo=image, review=review_instance)
+                image_instances.append(image_instance)
+
+            return redirect('resort_detail', slug=review_instance.resort.name)
         else:
             reviews = SkiReview.objects.filter(resort=resort)
-            return render(request, 'resort_detail.html', {"resort": resort, "reviews": reviews, "form": form})
-
-    # def post(self, request, slug):
-    #     resort = SkiResort.objects.get(name=slug)
-    #     form = Review(request.POST)
-    #     if form.is_valid():
-    #         review = form.save(commit=False)
-    #         review.resort = resort
-    #         review.save()
-    #         return redirect('resort_detail', slug=slug)
-    #     else:
-    #         reviews = Review.objects.filter(resort=resort)
-    #         return render(request, 'resort_detail.html', {"resort": resort, "reviews": reviews, "form": form})
+            review_form = SkiReviewForm(initial={'resort': resort.id_resort}, request=request)
+            image_form = ReviewImageForm()
+            return render(request, 'resort_detail.html', {"resort": resort, "reviews": reviews, 'review_form': review_form, 'image_form': image_form})
 
 
 # class FilterResortsView(Region, ListView):
