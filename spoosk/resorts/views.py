@@ -51,29 +51,12 @@ class Region:
     #     b = [{'begin_season': 'Не важно'}]
     #     return b + list(q)
 
+
 # endpoint for advanced filter request
 def advanced_filter(request):
     data = request.GET
     filter_results = MainFilter(data).qs
-    print(data)
-    where = data.get('resort_region') if ('resort_region' in data) else 'Все регионы'
-    when = data.get('resort_month') if 'resort_month' in data else 'Не важно'
-    if 'resort_level' in data:
-        if data.get('resort_level') == 'green':
-            riding_level = 'Ученик'
-        elif data.get('resort_level') == 'blue':
-            riding_level = 'Новичок'
-        elif data.get('resort_level') == 'red':
-            riding_level = 'Опытный'
-        else:
-            riding_level = 'Экстремал'
-    else:
-        riding_level = 'Не важно'
-    level_list = ['Не важно', 'Ученик', 'Новичок', 'Опытный', 'Экстремал']
-    # level_list = RidingLevel.objects.all()
-    html = render_to_string('base_searching_results2.html', context={'resorts': filter_results, 'resorts_length': len(filter_results),
-                             'where': where, 'when': when, 'riding_level': riding_level, 'level_list': level_list}, request=request)
-    # html = render_to_string('base.html', context={'resorts': filter_results}, request=request)
+    html = render_to_string('base_searching_results2.html', context={'resorts': filter_results, 'resorts_length': len(filter_results)}, request=request)
     return JsonResponse(html, safe=False)
 
 

@@ -24,11 +24,9 @@ forms.forEach(form => {
 // call AJAX to pass parameters to advanced filter
 $('.filter-submit').on('click', function(event){
     event.preventDefault();
-    console.log('it works');
 	const region = document.getElementById("region").value;
 	const month = document.getElementById("month").value;
 	const level = document.getElementById("level").value;
-	console.log(level);
     const green_trails = document.getElementById("easy");
     const blue_trails = document.getElementById("medium");
 	const red_trails = document.getElementById("increased-complexity");
@@ -67,7 +65,6 @@ $('.filter-submit').on('click', function(event){
 	if (distance === '100'){jsonData['airport_distance'] = '100';}
 	if (rent.checked){jsonData['have_rental'] = '1';}
 	if (skating.checked){jsonData['have_evening_skiing'] = '1';}
-	console.log(jsonData);
     get_filter(jsonData);
 });
 
@@ -81,8 +78,19 @@ function get_filter(jsonData) {
             data : jsonData,
 
             success : function(response) {
-                console.log('success');
-                $("html").html(response);
+                $(".page-banner").addClass("page_filters-banner");
+                $(".change-logo").html("<img src='/static/image/header/logo_blue.png' alt='Logo' width='190' height='57'>");
+                $("#tags").removeClass("search-input-white").addClass("search-input-blue");
+                $(".search-btn").addClass("menu-link-blue").html("<img src='/static/image/header/header_search_icon_blue.svg' alt='Поиск' width='28' height='28'><div class='name'>Поиск</div>");
+                $("#open-modal-comparison-btn").addClass("menu-link-blue").html("<img src='/static/image/header/header_comparison_icon_blue.svg' alt='Поиск' width='28' height='28'><div class='name'>Сравнить</div>");
+                $("#open-modal-profile-btn").addClass("menu-link-blue").html("<img src='/static/image/header/header_account_icon_blue.svg' alt='Поиск' width='28' height='28'><div class='name'>Профиль</div>");
+                $(".remove-elem").remove();
+                $(".banner-image").html("<img src='/static/image/header/_sport_.png' alt ='Горы' class='img-filters-banner'>");
+                $(".page-cards").html(response);
+                $(".page-reviews").remove();
+                $("#modal-advanced-filters").removeClass("open");
+                $("body").removeClass('no-scroll')
+                $("#advanced-filter").trigger("reset");
             },
         });
 };
