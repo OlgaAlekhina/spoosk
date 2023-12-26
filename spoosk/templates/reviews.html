@@ -13,7 +13,7 @@
                             <div class="review-item">
                                     <div class="review-content">
 
-                                        <img class="img-foto" src={{ review.resort.image.url }} width="207" height="207">
+                                        <img class="img-foto" src={{ review.resort.image.url }} width="180" height="180">
 
                                         <div class="review-content-text">
                                             <div class="review-author-name">
@@ -43,18 +43,6 @@
                                                 {% endfor %}
 
                                             </ul>
-<!--                                            <div class="rating rating-montains">-->
-<!--                                                <img src="{% static 'image/reviews/mountains.svg' %}" alt="Горы">-->
-<!--                                                <div> <span>10</span>/<span>10</span> </div>-->
-<!--                                            </div>-->
-<!--                                            <div class="rating rating-skier">-->
-<!--                                                <img src="{% static 'image/reviews/snowboarding.svg' %}" alt="Лыжник">-->
-<!--                                                <div> <span>10</span>/<span>10</span> </div>-->
-<!--                                            </div>-->
-<!--                                            <div class="rating rating-lift">-->
-<!--                                                <img src="{% static 'image/reviews/lift.svg' %}" alt="Подъемник">-->
-<!--                                                <div> <span>8</span>/<span>10</span> </div>-->
-<!--                                            </div>-->
                                         </div>
 
                                     </div>
@@ -64,11 +52,10 @@
                                         <div class="review-title-text">
                                             <p>{{ review.text|truncatechars:150 }}</p>
                                         </div>
-
                                     </div>
 
 
-                                    <a class="btn-reviews" href="#">Подробнее</a>
+                                    <a class="btn-reviews" href="#" id="open-modal-review-full">Подробнее</a>
                                 </div>
 
                         </div>
@@ -79,6 +66,30 @@
         <img  class="swiper-button-prev" src="{% static 'image/reviews/chevron_left.svg' %}" alt="">
         <div class="swiper-pagination"></div>
         {% endif %}
+    </div>
+
+    <div class="modal" id="modal-review-full">
+        <div class="form-register__box">
+            <button class="modal__close-btn">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M1.71507 0.280712C1.52693 0.0985542 1.27495 -0.00224062
+                        1.0134 3.78025e-05C0.751843 0.00231622 0.501645 0.107485 0.316692 0.292894C0.131738 0.478302 0.0268265
+                        0.729114 0.0245536 0.991311C0.0222808 1.25351 0.122829 1.50611 0.30454 1.69471L5.58457 6.98771L0.30454
+                        12.2807C0.209264 12.373 0.133268 12.4833 0.0809879 12.6053C0.0287073 12.7273 0.00118865 12.8585 3.76645e-05
+                        12.9913C-0.00111332 13.1241 0.0241262 13.2558 0.0742838 13.3787C0.124441 13.5016 0.198513 13.6132 0.292175
+                        13.7071C0.385838 13.801 0.497216 13.8753 0.619811 13.9255C0.742406 13.9758 0.873763 14.0011 1.00622 14C1.13867
+                        13.9988 1.26957 13.9712 1.39127 13.9188C1.51298 13.8664 1.62305 13.7902 1.71507 13.6947L6.9951 8.40171L12.2751
+                        13.6947C12.4633 13.8769 12.7153 13.9777 12.9768 13.9754C13.2384 13.9731 13.4886 13.8679 13.6735 13.6825C13.8585
+                        13.4971 13.9634 13.2463 13.9657 12.9841C13.9679 12.7219 13.8674 12.4693 13.6857 12.2807L8.40564 6.98771L13.6857
+                        1.69471C13.8674 1.50611 13.9679 1.25351 13.9657 0.991311C13.9634 0.729114 13.8585 0.478302 13.6735 0.292894C13.4886
+                        0.107485 13.2384 0.00231622 12.9768 3.78025e-05C12.7153 -0.00224062 12.4633 0.0985542 12.2751 0.280712L6.9951 5.57371L1.71507
+                        0.280712Z" fill="#2C2D2E"/>
+                </svg>
+            </button>
+            <div class="form-container form-container-small">
+                <h1 class="form-title">Полный отзыв</h1>
+            </div>
+        </div>
     </div>
 
 

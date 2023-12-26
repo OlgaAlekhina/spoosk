@@ -305,55 +305,32 @@
             </button>
         <div class="modal-content">
              <div class="modal-body">
-                <form method="POST" class="form" enctype="multipart/form-data">
+                <form method="POST" class="form" enctype="multipart/form-data" id="adding_review" action="{% url 'resort_detail' slug=resort.name %}">
                     <div class="resort-name-review">{{ resort.name }}</div>
                     <div class="resort-region-review">{{ resort.region }}</div>
 
 
-                    <div class="rating">
-	<div class="rating__stars">
-		<input id="rating-1" class="rating__input rating__input-1" type="radio" name="rating" value="1">
-		<input id="rating-2" class="rating__input rating__input-2" type="radio" name="rating" value="2">
-		<input id="rating-3" class="rating__input rating__input-3" type="radio" name="rating" value="3">
-		<input id="rating-4" class="rating__input rating__input-4" type="radio" name="rating" value="4">
-		<input id="rating-5" class="rating__input rating__input-5" type="radio" name="rating" value="5">
-		<label class="rating__label" for="rating-1">
-            <svg class="rating__star" width="30" height="29" viewBox="0 0 30 29" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path class="rating__star-body" fill-rule="evenodd" clip-rule="evenodd" d="M15.0007 0.332031C15.5082 0.332031 15.9717 0.620128 16.1963 1.0752L20.0064 8.79399L28.5269 10.0394C29.0289 10.1128 29.4459 10.4648 29.6024 10.9475C29.7589 11.4301 29.6278 11.9598 29.2643 12.3138L23.1001 18.3179L24.5548 26.8C24.6406 27.3002 24.435 27.8058 24.0243 28.1041C23.6137 28.4024 23.0693 28.4417 22.6201 28.2055L15.0007 24.1985L7.38129 28.2055C6.93207 28.4417 6.38768 28.4024 5.97705 28.1041C5.56641 27.8058 5.36075 27.3002 5.44655 26.8L6.90133 18.3179L0.737046 12.3138C0.373555 11.9598 0.242525 11.4301 0.399029 10.9475C0.555532 10.4648 0.972439 10.1128 1.47452 10.0394L9.99501 8.79399L13.8051 1.0752C14.0297 0.620128 14.4932 0.332031 15.0007 0.332031Z" fill="#E6E6E6"/>
-            </svg>
-		</label>
-		<label class="rating__label" for="rating-2">
-            <svg class="rating__star" width="30" height="29" viewBox="0 0 30 29" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path class="rating__star-body" fill-rule="evenodd" clip-rule="evenodd" d="M15.0007 0.332031C15.5082 0.332031 15.9717 0.620128 16.1963 1.0752L20.0064 8.79399L28.5269 10.0394C29.0289 10.1128 29.4459 10.4648 29.6024 10.9475C29.7589 11.4301 29.6278 11.9598 29.2643 12.3138L23.1001 18.3179L24.5548 26.8C24.6406 27.3002 24.435 27.8058 24.0243 28.1041C23.6137 28.4024 23.0693 28.4417 22.6201 28.2055L15.0007 24.1985L7.38129 28.2055C6.93207 28.4417 6.38768 28.4024 5.97705 28.1041C5.56641 27.8058 5.36075 27.3002 5.44655 26.8L6.90133 18.3179L0.737046 12.3138C0.373555 11.9598 0.242525 11.4301 0.399029 10.9475C0.555532 10.4648 0.972439 10.1128 1.47452 10.0394L9.99501 8.79399L13.8051 1.0752C14.0297 0.620128 14.4932 0.332031 15.0007 0.332031Z" fill="#E6E6E6"/>
-            </svg>
-		</label>
-		<label class="rating__label" for="rating-3">
-            <svg class="rating__star" width="30" height="29" viewBox="0 0 30 29" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path class="rating__star-body" fill-rule="evenodd" clip-rule="evenodd" d="M15.0007 0.332031C15.5082 0.332031 15.9717 0.620128 16.1963 1.0752L20.0064 8.79399L28.5269 10.0394C29.0289 10.1128 29.4459 10.4648 29.6024 10.9475C29.7589 11.4301 29.6278 11.9598 29.2643 12.3138L23.1001 18.3179L24.5548 26.8C24.6406 27.3002 24.435 27.8058 24.0243 28.1041C23.6137 28.4024 23.0693 28.4417 22.6201 28.2055L15.0007 24.1985L7.38129 28.2055C6.93207 28.4417 6.38768 28.4024 5.97705 28.1041C5.56641 27.8058 5.36075 27.3002 5.44655 26.8L6.90133 18.3179L0.737046 12.3138C0.373555 11.9598 0.242525 11.4301 0.399029 10.9475C0.555532 10.4648 0.972439 10.1128 1.47452 10.0394L9.99501 8.79399L13.8051 1.0752C14.0297 0.620128 14.4932 0.332031 15.0007 0.332031Z" fill="#E6E6E6"/>
-            </svg>
-		</label>
-		<label class="rating__label" for="rating-4">
-            <svg class="rating__star" width="30" height="29" viewBox="0 0 30 29" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path class="rating__star-body" fill-rule="evenodd" clip-rule="evenodd" d="M15.0007 0.332031C15.5082 0.332031 15.9717 0.620128 16.1963 1.0752L20.0064 8.79399L28.5269 10.0394C29.0289 10.1128 29.4459 10.4648 29.6024 10.9475C29.7589 11.4301 29.6278 11.9598 29.2643 12.3138L23.1001 18.3179L24.5548 26.8C24.6406 27.3002 24.435 27.8058 24.0243 28.1041C23.6137 28.4024 23.0693 28.4417 22.6201 28.2055L15.0007 24.1985L7.38129 28.2055C6.93207 28.4417 6.38768 28.4024 5.97705 28.1041C5.56641 27.8058 5.36075 27.3002 5.44655 26.8L6.90133 18.3179L0.737046 12.3138C0.373555 11.9598 0.242525 11.4301 0.399029 10.9475C0.555532 10.4648 0.972439 10.1128 1.47452 10.0394L9.99501 8.79399L13.8051 1.0752C14.0297 0.620128 14.4932 0.332031 15.0007 0.332031Z" fill="#E6E6E6"/>
-            </svg>
-		</label>
-		<label class="rating__label" for="rating-5">
-            <svg class="rating__star" width="30" height="29" viewBox="0 0 30 29" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path class="rating__star-body" fill-rule="evenodd" clip-rule="evenodd" d="M15.0007 0.332031C15.5082 0.332031 15.9717 0.620128 16.1963 1.0752L20.0064 8.79399L28.5269 10.0394C29.0289 10.1128 29.4459 10.4648 29.6024 10.9475C29.7589 11.4301 29.6278 11.9598 29.2643 12.3138L23.1001 18.3179L24.5548 26.8C24.6406 27.3002 24.435 27.8058 24.0243 28.1041C23.6137 28.4024 23.0693 28.4417 22.6201 28.2055L15.0007 24.1985L7.38129 28.2055C6.93207 28.4417 6.38768 28.4024 5.97705 28.1041C5.56641 27.8058 5.36075 27.3002 5.44655 26.8L6.90133 18.3179L0.737046 12.3138C0.373555 11.9598 0.242525 11.4301 0.399029 10.9475C0.555532 10.4648 0.972439 10.1128 1.47452 10.0394L9.99501 8.79399L13.8051 1.0752C14.0297 0.620128 14.4932 0.332031 15.0007 0.332031Z" fill="#E6E6E6"/>
-            </svg>
-		</label>
-	</div>
-</div>
-
-
-                  {% csrf_token %}
-                  {% for field in form %}
-                    <div class="form__group">
-                        <label class="form__label" for="{{ field.id_for_label }}">{{ field.label }}:</label>
-                        <div>{{field}}</div>
+                    <div class="stars">
+                        <input type="radio" name="rating" value="1"/>
+                        <input type="radio" name="rating" value="2"/>
+                        <input type="radio" name="rating" value="3"/>
+                        <input type="radio" name="rating" value="4"/>
+                        <input type="radio" name="rating" value="5"/>
                     </div>
-                  {% endfor %}
-                  {{ form.media }}
+
+                    <div class="foto-container">
+                        <label for="foto_review" class="foto-field" style="cursor: pointer;">
+                            <div class="user_foto_container">
+                                <img id="preview" class="user_foto" height="32px">
+                            </div>
+                        </label>
+                        <input type="file" name="photo" id="foto_review">
+                    </div>
+
+                    {% csrf_token %}
+                    {{ review_form.resort }}
+                    {{ review_form.text }}
+                    {{ review_form.author }}
 
                   <button class="form__button" type="submit" id="submit_review">Отправить отзыв</button>
                 </form>
@@ -365,5 +342,31 @@
 
 
  </main>
+
+<!-- <script>
+function handleFileSelect(evt) {
+    var file = evt.target.files; // FileList object
+    // Loop through the FileList and render image files as thumbnails.
+    for (var i = 0, f; f = files[i]; i++) {
+        // Only process image files.
+        if (!f.type.match('image.*')) {
+            alert("Image only please....");
+        }
+        var reader = new FileReader();
+        // Closure to capture the file information.
+        reader.onload = (function (theFile) {
+            return function (e) {
+                // Render thumbnail.
+                var span = document.createElement('span');
+                span.innerHTML = ['<img class="thumb" title="', escape(theFile.name), '" src="', e.target.result, '" />'].join('');
+                document.getElementById('outputMulti').insertBefore(span, null);
+            };
+        })(f);
+        // Read in the image file as a data URL.
+        reader.readAsDataURL(f);
+    }
+}
+document.getElementById('fileMulti').addEventListener('change', handleFileSelectMulti, false);
+</script> -->
 
 {% endblock content %}
