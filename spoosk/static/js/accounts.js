@@ -21,6 +21,37 @@ forms.forEach(form => {
     })
 })
 
+// get rating from review form
+var star_rating = 0;
+$(".get_value").click(function () {
+    if($(this).prop("checked")) {
+        star_rating = $(this).val();
+        $("#rating_value").val(star_rating);
+    }
+});
+
+// Review submit
+$('#adding_review').on('submit', function(event){
+    event.preventDefault();
+    review_submit();
+});
+
+// AJAX for review submit
+function review_submit() {
+    origin = location.origin;
+    console.log(origin);
+    $.ajax({
+        url : origin + "/review_submit/", // the endpoint
+        type : "POST", // http method
+        data : { text : $('#id_text').val(), id_resort : $('#id_resort').val(), rating : $('#rating_value').val() }, // data sent with the post request
+
+        // handle a successful response
+        success : function(json) {
+            console.log('success');
+        },
+    });
+};
+
 // call AJAX to pass parameters to advanced filter
 $('.filter-submit').on('click', function(event){
     event.preventDefault();
@@ -201,7 +232,6 @@ $('#login-form').on('submit', function(event){
 // AJAX for login
 function user_login() {
     origin = location.origin;
-    console.log(origin);
     $.ajax({
         url : origin + "/login_endpoint/", // the endpoint
         type : "POST", // http method
