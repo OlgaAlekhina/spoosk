@@ -60,6 +60,20 @@ def advanced_filter(request):
     return JsonResponse(html, safe=False)
 
 
+# endpoint for review form submit
+def review_submit(request):
+    if request.method == 'POST':
+        id_resort = request.POST.get('id_resort')
+        resort = SkiResort.objects.get(id_resort=id_resort)
+        author = request.user
+        rating = request.POST.get('rating')
+        text = request.POST.get('text')
+        review = SkiReview.objects.create(resort=resort, author=author, rating=rating, text=text)
+        return JsonResponse({"success": "Add new review"}, status=200)
+    else:
+        raise Http404
+
+
 class SkiResortList(Region, ListView):
     model = SkiResort
     template_name = 'resorts.html'
