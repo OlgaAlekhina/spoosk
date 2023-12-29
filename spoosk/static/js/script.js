@@ -82,11 +82,12 @@ function byteToSize(bytes) {
     return Math.round(bytes / Math.pow(1024, i)) + ' ' + sizes[i];
 }
 
+file_list = [];
+
 // uploading photos to preview in the review form
 function upload(selector, options = {}) {
 
     let files = []
-    console.log(files)
     const input = document.getElementById(selector)
     const maxImages = options.maxImages || 5;
     let currentImages = 0;
@@ -114,6 +115,8 @@ function upload(selector, options = {}) {
 
         for (let i = 0; i < Math.min(files.length, number); i++) {
             const file = files[i];
+            // add chosen file to the list
+            file_list.push(file);
 
             if (!file.type.match('image')) {
                 continue;

@@ -63,7 +63,7 @@ class SkiResort(models.Model):
         db_table = 'ski_resort'
 
     def __str__(self):
-        return f'{self.name} {self.region} {self.list_month}'
+        return f'{self.name}'
 
     def get_absolute_url(self):  # добавим абсолютный путь, чтобы после создания нас перебрасывало на страницу с товаром
         return reverse("resort_detail", kwargs={"slug": self.name})
@@ -196,17 +196,6 @@ class ReviewImage(models.Model):
     def __str__(self):
         return f'{self.review} : photo # {self.id}'
 
-
-# class Review(models.Model):
-#     author = models.CharField(max_length=20, blank=True, null=True, verbose_name='Ваше имя')
-#     riding_level = models.ForeignKey(RidingLevel, models.DO_NOTHING, verbose_name='Ваш уровень катания', blank=True, null=True, )
-#     resort = models.ForeignKey(SkiResort,  models.DO_NOTHING, db_column='ID_resort')
-#     text_review = models.TextField(blank=True, null=True, verbose_name='Ваш отзыв')
-#     # image_review = models.ImageField(upload_to="images/", null=True, blank=True)
-#
-#     class Meta:
-#         managed = True
-#         db_table = 'review'
 
 # python manage.py shell_plus --print-sql
 #  from django.db.models import *
