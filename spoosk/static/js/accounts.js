@@ -39,11 +39,22 @@ $('#adding_review').on('submit', function(event){
 // AJAX for review submit
 function review_submit() {
     origin = location.origin;
-    console.log(origin);
+    var form_data = new FormData();
+    form_data.append('text', $('#id_text').val());
+    form_data.append('id_resort', $('#id_resort').val());
+    form_data.append('rating', $('#rating_value').val());
+    for(var i = 0; i < file_list.length; i++){
+        var file = file_list[i];
+        form_data.append('images', file);
+    }
     $.ajax({
         url : origin + "/review_submit/", // the endpoint
         type : "POST", // http method
-        data : { text : $('#id_text').val(), id_resort : $('#id_resort').val(), rating : $('#rating_value').val() }, // data sent with the post request
+        processData: false,
+        contentType: false,
+        cache: false,
+        data: form_data,
+        enctype: 'multipart/form-data',
 
         // handle a successful response
         success : function(json) {

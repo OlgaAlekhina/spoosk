@@ -68,7 +68,10 @@ def review_submit(request):
         author = request.user
         rating = request.POST.get('rating')
         text = request.POST.get('text')
+        images = request.FILES.getlist('images')
         review = SkiReview.objects.create(resort=resort, author=author, rating=rating, text=text)
+        for image in images:
+            ReviewImage.objects.create(image=image, review=review)
         return JsonResponse({"success": "Add new review"}, status=200)
     else:
         raise Http404
