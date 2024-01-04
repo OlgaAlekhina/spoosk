@@ -56,13 +56,6 @@ if (document.getElementById("open-modal-add-review")) {
     });
 }
 
-// Привязка обработчика события "click" для кнопки "Подробнее" на карточке отзыва
-if (document.getElementById("open-modal-review-full")) {
-    document.getElementById("open-modal-review-full").addEventListener("click", function() {
-        openModal(document.getElementById("modal-review-full"))
-    });
-}
-
 closeModalBtns.forEach((btn, i) => {
     btn.addEventListener("click", function () {
         closeModal(modals[i]);
@@ -117,4 +110,51 @@ if (document.getElementById("btn-delete-account")) {
 document.getElementById("btn-delete-account").addEventListener("click", function() {
     openModal(document.getElementById("modal-account-delete"))
 });
+}
+
+
+// Привязка обработчика события "click" для кнопки "Подробнее" на карточке отзыва
+//if (document.getElementById("open-modal-review-full")) {
+//    document.getElementById("open-modal-review-full").addEventListener("click", function() {
+//        openModal(document.getElementById("modal-review-full"))
+//    });
+//}
+
+
+let openReview = document.querySelectorAll('.btn-reviews')
+openReview.forEach(function(button) {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+        var reviewId = e.target.getAttribute('data-id');
+        console.log(reviewId)
+        getReview(reviewId);
+//        updateModalContent(reviewId)
+    });
+});
+
+//function updateModalContent(reviewId) {
+//     var modal = document.getElementById('modal-review-full');
+//     var nameElement = modal.querySelector('.review-name');
+//     nameElement.textContent = reviewId;
+//     modal.classList.add("open");
+//}
+
+function updateModalContent(review) {
+     var modal = document.getElementById('modal-review-full');
+     var nameElement = modal.querySelector('.review-name');
+     nameElement.textContent = review.name;
+     modal.classList.add("open");
+}
+
+function getReview(reviewId) {
+    $.ajax({
+        url: "../get_review/", // путь к обработчику на сервере
+        type: "POST", // тип запроса: POST, так как мы отправляем данные
+        data: { reviewId: reviewId }, // данные, отправляемые на сервер
+
+        // обработка успешного ответа
+        success: function (response) {
+            updateModalContent(response.review);
+        }
+    });
 }
