@@ -63,21 +63,6 @@ function review_submit() {
     });
 };
 
-// AJAX request to get review data for modal window
-function reviewData(id) {
-    origin = location.origin;
-    console.log(id);
-    $.ajax({
-            url : origin + "/review_data/" + id + "/",
-            type : "GET",
-
-            success : function(data) {
-                console.log(data);
-                $("#some-test-id").prop("value", data.resort_name);
-            },
-        });
-};
-
 // call AJAX to pass parameters to advanced filter
 $('.filter-submit').on('click', function(event){
     event.preventDefault();
