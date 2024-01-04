@@ -28,3 +28,15 @@ def email_exists(email):
         return email
     else:
         raise serializers.ValidationError("Пользователь с таким email адресом не зарегистрирован в приложении")
+
+
+# on registration raise error if email exists and has been activated or delete account if email hasn't been activated
+def check_status(email):
+    user_inactive = User.objects.filter(email=email, is_active=False).first()
+    if user_inactive:
+        user_inactive.delete()
+    user_active = User.objects.filter(email=email, is_active=True).first()
+    if user_active:
+        raise serializers.ValidationError("Пользователь с таким email адресом уже зарегистрирован в приложении")
+    else:
+        return email

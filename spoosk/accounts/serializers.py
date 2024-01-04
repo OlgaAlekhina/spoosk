@@ -5,7 +5,7 @@ from rest_framework.validators import UniqueValidator
 from random import randint
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from .validators import validate_password_symbols, validate_email, email_exists
+from .validators import validate_password_symbols, validate_email, email_exists, check_status
 
 
 # serializer for UserProfile model
@@ -60,7 +60,7 @@ class ChangepasswordSerializer(serializers.ModelSerializer):
 
 # serializer for User model for registration endpoint
 class UserSerializer(serializers.ModelSerializer):
-    email = serializers.CharField(max_length=50, validators=[UniqueValidator(queryset=User.objects.all(), message='Пользователь с таким email адресом уже существует'), validate_email])
+    email = serializers.CharField(max_length=50, validators=[check_status, validate_email])
     first_name = serializers.CharField(required=True, max_length=20)
     password = serializers.CharField(write_only=True, min_length=8, max_length=128, validators=[validate_password_symbols])
 
@@ -83,7 +83,8 @@ class UserSerializer(serializers.ModelSerializer):
         )
         html_content = render_to_string(
             'accounts/signup_code.html',
-            {'code': code.code}
+            {'code': code.code,
+             'name': user.first_name}
         )
         msg.attach_alternative(html_content, "text/html")
         msg.send()

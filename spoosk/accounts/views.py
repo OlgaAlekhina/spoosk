@@ -200,7 +200,8 @@ class UserViewset(mixins.CreateModelMixin,
             )
             html_content = render_to_string(
                 'accounts/reset_password_code.html',
-                {'code': code.code}
+                {'code': code.code,
+                 'name': user.first_name}
             )
             msg.attach_alternative(html_content, "text/html")
             msg.send()
