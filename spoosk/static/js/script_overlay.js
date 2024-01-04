@@ -121,16 +121,16 @@ document.getElementById("btn-delete-account").addEventListener("click", function
 //}
 
 
-let openReview = document.querySelectorAll('.btn-reviews')
-openReview.forEach(function(button) {
-    button.addEventListener('click', function(e) {
-        e.preventDefault();
-        var reviewId = e.target.getAttribute('data-id');
-        console.log(reviewId)
-        getReview(reviewId);
-//        updateModalContent(reviewId)
-    });
-});
+//let openReview = document.querySelectorAll('.btn-reviews')
+//openReview.forEach(function(button) {
+//    button.addEventListener('click', function(e) {
+//        e.preventDefault();
+//        var reviewId = e.target.getAttribute('data-id');
+//        console.log(reviewId)
+//        getReview(reviewId);
+////        updateModalContent(reviewId)
+//    });
+//});
 
 //function updateModalContent(reviewId) {
 //     var modal = document.getElementById('modal-review-full');
@@ -146,15 +146,29 @@ function updateModalContent(review) {
      modal.classList.add("open");
 }
 
-function getReview(reviewId) {
+function getReview(id) {
+    var modal = document.getElementById('modal-review-full');
+    modal.classList.add("open");
+    origin = location.origin;
     $.ajax({
-        url: "/get_review/", // путь к обработчику на сервере
-        type: "POST", // тип запроса: POST, так как мы отправляем данные
-        data: { reviewId: reviewId }, // данные, отправляемые на сервер
+        url: origin + "/resorts/get_review/" + id + "/", // путь к обработчику на сервере
+        type: "GET",
 
         // обработка успешного ответа
-        success: function (response) {
-            updateModalContent(response.review);
+        success: function(response) {
+            console.log(response);
+            console.log(response.resort_name);
+            console.log(response.author_name);
+            console.log(response.review_text);
+            console.log(response.review_rating);
+            var images = response.review_images;
+            console.log(images);
+            for(var i = 0; i < images.length; i++){
+                console.log(images[i]);
+            }
+            // вставить полученные значения в форму можно так:
+            $("#some-test-id").prop("value", response.resort_name);
+//            updateModalContent(response.review);
         }
     });
 }
