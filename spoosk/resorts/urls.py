@@ -9,5 +9,5 @@ urlpatterns = [
     # path('base_searching_results/', FilterResortsView.as_view(), name='base_searching_results'),
     path('filter/', advanced_filter, name='filter'),
     path('<slug>/', SkiResortDetailView.as_view(), name='resort_detail'),
-    path('get_review/', get_review, name='get_review'),
+    path('get_review/<str:pk>/', get_review, name='get_review'),
 ]

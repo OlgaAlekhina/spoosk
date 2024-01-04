@@ -348,20 +348,31 @@ def add_resort(request, pk):
         )
 
 
+def get_review(request, pk):
+    review = SkiReview.objects.get(id=pk)
+    images = list(ReviewImage.objects.filter(review=review).values_list('image'))
+    author = review.author
+    if author.first_name == '':
+        author_name = author.userprofile.name
+    else:
+        if author.last_name != '':
+            last_name = author.last_name[:1] + '.'
+            author_name = author.first_name + ' ' + last_name
+        else:
+            author_name = author.first_name
+    response_data = {}
+    response_data['resort_name'] = review.resort.name
+    response_data['author_name'] = author_name
+    response_data['review_text'] = review.text
+    response_data['review_rating'] = review.rating
+    response_data['review_images'] = images
+    return HttpResponse(
+        json.dumps(response_data),
+        content_type='application/json'
+    )
 
-def get_review(request):
-    if request.method == 'POST':
-        review_id = request.POST.get('reviewId')
-        review = SkiReview.objects.get(id=review_id)
 
-        review_data = {
-            'name': review.name,
-            'text': review.text,
-        }
 
-        return JsonResponse({'review': review_data})
-
-    return JsonResponse({}, status=400) # Возвращаем ошибку, если метод запроса не POST
 
 
 
