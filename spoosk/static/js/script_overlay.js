@@ -148,7 +148,7 @@ function updateModalContent(review) {
 
 function getReview(reviewId) {
     $.ajax({
-        url: "../get_review/", // путь к обработчику на сервере
+        url: "/get_review/", // путь к обработчику на сервере
         type: "POST", // тип запроса: POST, так как мы отправляем данные
         data: { reviewId: reviewId }, // данные, отправляемые на сервер
 
