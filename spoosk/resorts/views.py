@@ -77,31 +77,6 @@ def review_submit(request):
         raise Http404
 
 
-# endpoint for review data
-def review_data(request, pk):
-    review = SkiReview.objects.get(id=pk)
-    images = list(ReviewImage.objects.filter(review=review).values_list('image'))
-    # author = review.author
-    # if author.first_name == '':
-    #     author_name = author.userprofile.name
-    # else:
-    #     if author.last_name != '':
-    #         last_name = author.last_name[:1] + '.'
-    #         author_name = author.first_name + last_name
-    #     else:
-    #         author_name = author.first_name
-    response_data = {}
-    response_data['resort_name'] = review.resort.name
-    response_data['author_name'] = review.author.first_name
-    response_data['review_text'] = review.text
-    response_data['review_rating'] = review.rating
-    response_data['review_images'] = images
-    return HttpResponse(
-        json.dumps(response_data),
-        content_type='application/json'
-    )
-
-
 class SkiResortList(Region, ListView):
     model = SkiResort
     template_name = 'resorts.html'
