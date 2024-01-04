@@ -349,3 +349,20 @@ def add_resort(request, pk):
 
 
 
+def get_review(request):
+    if request.method == 'POST':
+        review_id = request.POST.get('reviewId')
+        review = SkiReview.objects.get(id=review_id)
+
+        review_data = {
+            'name': review.name,
+            'text': review.text,
+        }
+
+        return JsonResponse({'review': review_data})
+
+    return JsonResponse({}, status=400) # Возвращаем ошибку, если метод запроса не POST
+
+
+
+
