@@ -6,7 +6,7 @@ from .serializers import UserSerializer, UserprofileSerializer, LoginSerializer,
 from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
-from django.contrib.auth import authenticate
+from resorts.serializers import SkireviewSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
@@ -74,6 +74,8 @@ class UserViewset(mixins.CreateModelMixin,
             return LoginSerializer
         elif self.action == 'send_code':
             return EmptySerializer
+        elif self.action == 'reviews':
+            return SkireviewSerializer
         else:
             return UserprofileSerializer
 
@@ -270,6 +272,17 @@ class UserViewset(mixins.CreateModelMixin,
             }
         }
         return Response(response, status=status.HTTP_200_OK)
+
+    @action(detail=True)
+    def reviews(self, request, pk=None):
+        user = self.get_object()
+        reviews = user.skireview_set.all().order_by('-add_at')
+        page = self.paginate_queryset(reviews)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(page, many=True)
+        return Response(serializer.data)
 
 
 # временная функция для создания UserProfile для ранее созданных пользователей (удалить вместе с url после однократного использования на проде)

@@ -137,19 +137,6 @@ class ResortMainFilter(generics.ListAPIView):
 #     pagination_class = None
 
 
-# endpoint for search resorts filter
-# class ResortSearchView(generics.ListAPIView):
-#     """
-#     Endpoint для поисковой строки. В качестве параметра передается текст, который пользователь ввел в поисковую строку.
-#     Поиск осуществляется по названию курорта.
-#     """
-#     queryset = SkiResort.objects.all()
-#     serializer_class = ResortSerializer
-#     filter_backends = [filters.SearchFilter]
-#     search_fields = ['name']
-#     pagination_class = None
-
-
 # endpoints for reviews
 class SkiReviewViewset(viewsets.ModelViewSet):
     """
