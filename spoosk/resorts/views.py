@@ -6,9 +6,9 @@ from django.views.decorators.http import require_POST
 from django.views.generic import ListView
 from .filters import ResortFilter, MainFilter
 # from .forms import ReviewForm
-from .models import SkiResort, Month, RidingLevel, SkiPass, SkiReview, SkyTrail
+from .models import SkiResort, Month, RidingLevel, SkiPass, SkiReview, SkyTrail, ReviewImage
 from django.http import JsonResponse
-from .serializers import SkiResortSerializer, ResortSerializer, SkireviewSerializer
+from .serializers import SkiResortSerializer, ResortSerializer, SkireviewSerializer, SkireviewUpdateSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import generics
@@ -118,37 +118,29 @@ class ResortMainFilter(generics.ListAPIView):
     # pagination_class = None
 
 
-# endpoint for advanced resorts filter
-# class ResortAdvancedFilter(generics.ListAPIView):
-#     """ Этот фильтр может использоваться с сортировкой результатов или без. Необходимо передавать параметры, которые указал пользователь, после url и вопросительного знака. Возможные значения параметров указаны в описании каждого параметра в Swagger.
-#     Пример: /api/resorts/advanced_filter?have_red_skitrails=red&have_gondola=1&airport_distance=100&ordering=skipass
-# Такой запрос будет отбирать курорты, в которых имеются трассы повышенной сложности, гондольные подъемники, и с расположением не далее 100 км от аэропорта. Курорты будут отсортированы по цене дневного скипасса (по возрастанию цены).
-# Если какие-то параметры не содержат смысловых значений, то их не следует включать в запрос.
-# Сортировка может осуществляться по протяженности трасс и по цене дневного скипасса (позже добавлю по рейтингу). Для этого указывается параметр ordering, который может иметь следующие значения: 1) trail_length (сортировка в порядке возрастания) или -trail_length (в порядке убывания); 2) skipass (в порядке возрастания) или -skipass (в порядке убывания).
-#  """
-#     # annotation of queryset with trails number and skipass price for ordering of the filtration result
-#     skipasses = SkiPass.objects.filter(id_resort=OuterRef("pk")).filter(mob_type="one_day")
-#     queryset = SkiResort.objects.annotate(trail_length=Sum("skytrail__extent")).\
-#                                 annotate(skipass=Subquery(skipasses.values("price")))
-#     serializer_class = ResortSerializer
-#     filterset_class = AdvancedFilter
-#     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
-#     ordering_fields = '__all__'
-#     pagination_class = None
-
-
 # endpoints for reviews
 class SkiReviewViewset(viewsets.ModelViewSet):
     """
     list: Эндпоинт для вывода всех последних отзывов на главный экран. Выводится по 6 отзывов на страницу, отсортированных по дате создания. Запрос может включать номер страницы в качестве параметра. Пример: /api/reviews/?page=2
-    В теле ответа передаются параметры next и previous, которые содержат ссылки на предыдущую и следующую страницы, и параметр account, содержащий общее количество найденных объектов.
-
+          В теле ответа передаются параметры next и previous, которые содержат ссылки на предыдущую и следующую страницы, и параметр account, содержащий общее количество найденных объектов.
+    retrieve: Эндпоинт для получения всех данных отзыва по его id.
+    create: Эндпоинт для создания отзыва. Параметр images должен содержать список всех загруженных фото (в виде объектов файлов). Загрузка фото в сваггере не работает, протестировать можно только в постмане.
+    partial_update: Эндпоинт для редактирования отзыва по его id. Передавать можно только те параметры, которые подлежат изменению.
+                    Параметр images должен содержать список вновь загруженных фото (в виде объектов файлов). Загрузка фото в сваггере не работает, протестировать можно только в постмане.
+                    Параметр deleted_images должен содержать список id (целые числа) фотографий, которые пользователь решил удалить при редактировании отзыва.
+    delete: Эндпоинт для удаления отзыва по его id.
     """
     permission_classes = [IsAuthenticated]
     queryset = SkiReview.objects.filter(approved=True)
-    serializer_class = SkireviewSerializer
     http_method_names = [m for m in viewsets.ModelViewSet.http_method_names if m not in ['put']]
     parser_classes = (JSONParser, MultiPartParser)
+
+    # add different serializers to different actions
+    def get_serializer_class(self):
+        if self.action == 'partial_update':
+            return SkireviewUpdateSerializer
+        else:
+            return SkireviewSerializer
 
     def list(self, request):
         items = SkiReview.objects.filter(approved=True).exclude(text='').order_by('-add_at')
@@ -166,10 +158,44 @@ class SkiReviewViewset(viewsets.ModelViewSet):
         return super().get_parsers()
 
     def create(self, request, *args, **kwargs):
-        serializer = SkireviewSerializer(data=request.data, context={'request': request, })
+        serializer = self.get_serializer(data=request.data, context={'request': request, })
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
+        return Response(serializer.errors)
+
+    def partial_update(self, request, pk=None):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            print(serializer.validated_data)
+            review = self.get_object()
+            review.text = serializer.validated_data.get('text', review.text)
+            review.rating = serializer.validated_data.get('rating', review.rating)
+            review.save()
+            image_number = len(review.review_images.all())
+            deleted_images = serializer.validated_data.get('deleted_images', [])
+            del_number = 0
+            for num in deleted_images:
+                image = ReviewImage.objects.filter(id=num, review=review).first()
+                if image:
+                    image.delete()
+                    del_number += 1
+            image_number = image_number - del_number
+            images = request.FILES.getlist('images')
+            list_images = list(images)
+            review_images = []
+            for index, image in enumerate(list_images):
+                im = ReviewImage(review=review, image=image)
+                im.save()
+                review_images.append(im.image.url)
+                if index == 9 - image_number:
+                    break
+            response = {
+                "message": "Отзыв успешно обновлен",
+                "data": serializer.validated_data,
+                "added_images": review_images
+                }
+            return Response(response)
         return Response(serializer.errors)
 
 # endpoint for skireviews list on main page
@@ -181,36 +207,6 @@ class SkiReviewViewset(viewsets.ModelViewSet):
 #     queryset = SkiReview.objects.filter(approved=True).order_by('-add_at')
 #     serializer_class = SkireviewSerializer
 #     pagination.PageNumberPagination.page_size = 2
-
-
-# endpoint to create skireview
-# class SkireviewCreateView(generics.CreateAPIView):
-#     permission_classes = [IsAuthenticated]
-#     queryset = SkiReview.objects.all()
-#     serializer_class = SkireviewSerializer
-#     parser_classes = (JSONParser, MultiPartParser)
-#
-#     def get_parsers(self):
-#         if getattr(self, 'swagger_fake_view', False):
-#             return []
-#
-#         return super().get_parsers()
-#
-#     def create(self, request, *args, **kwargs):
-#         serializer = SkireviewSerializer(data=request.data, context={'request': request, })
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         return Response(serializer.errors)
-
-    # def perform_create(self, serializer):
-    #     serializer.validated_data['author'] = self.request.user
-    #     return super(SkireviewCreateView, self).perform_create(serializer)
-
-
-# endpoint to get, update or delete of skireview
-# class ReviewView(generics.RetrieveUpdateDestroyAPIView):
-#     pass
 
 
 class Region:

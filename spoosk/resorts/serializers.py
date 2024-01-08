@@ -23,7 +23,10 @@ class ReviewImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ReviewImage
-        fields = ('image', )
+        fields = ('id', 'image')
+        extra_kwargs = {
+            'id': {'read_only': True}
+        }
 
 
 # serializer for SkiReview model
@@ -31,11 +34,12 @@ class SkireviewSerializer(serializers.ModelSerializer):
     author_name = serializers.ReadOnlyField(source='author.first_name')
     author_lastname = serializers.ReadOnlyField(source='author.last_name')
     resort_name = serializers.ReadOnlyField(source='resort.name')
+    resort_region = serializers.ReadOnlyField(source='resort.region')
     images = ReviewImageSerializer(source='review_images', many=True, required=False, help_text="list of review's images")
 
     class Meta:
         model = SkiReview
-        fields = ('id', 'resort', 'resort_name', 'author_name', 'author_lastname', 'text', 'rating', 'add_at', 'images')
+        fields = ('id', 'resort', 'resort_name', 'resort_region', 'author_name', 'author_lastname', 'text', 'rating', 'add_at', 'images')
 
     def create(self, validated_data):
         resort = validated_data['resort']
@@ -43,16 +47,29 @@ class SkireviewSerializer(serializers.ModelSerializer):
         text = validated_data['text']
         rating = validated_data['rating']
         images = self.context['request'].FILES.getlist('images')
+        images_list = list(images)
+        review = SkiReview(resort=resort, author=author, text=text, rating=rating)
+        review.save()
+        for index, image in enumerate(images_list):
+            im = ReviewImage(review=review, image=image)
+            im.save()
+            if index == 9:
+                break
+        return review
 
-        m1 = SkiReview(resort=resort, author=author, text=text, rating=rating)
-        m1.save()
-        for image in list(images):
-            m2 = ReviewImage(review=m1, image=image)
-            m2.save()
-        return m1
+
+# serializer for SkiReview update action
+class SkireviewUpdateSerializer(serializers.ModelSerializer):
+    deleted_images = serializers.ListField(child=serializers.IntegerField(), allow_empty=True, max_length=10, required=False, help_text="list of id (integer) of review's images deleted by user")
+    images = ReviewImageSerializer(source='review_images', many=True, required=False, help_text="list of review's images")
+    rating = serializers.IntegerField(required=False, min_value=1, max_value=5)
+
+    class Meta:
+        model = SkiReview
+        fields = ('text', 'rating', 'deleted_images', 'images')
 
 
-# serializer for SkiResort model for retrieve method
+# serializer for SkiResort model for retrieve action
 class SkiResortSerializer(serializers.ModelSerializer):
     trail_length = serializers.ReadOnlyField(source='total_length_calculation', help_text="summarized length of all resort's trails [km]")
     trail_number = serializers.ReadOnlyField(source='trail_number_count', help_text="number of all resort's trails")
