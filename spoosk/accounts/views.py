@@ -55,6 +55,8 @@ class UserViewset(mixins.CreateModelMixin,
                     Загрузку файла (аватар) нет возможности протестировать в сваггере, пожалуйста, используйте postman для тестов.
                     Поле "avatar" может содержать только объект файла (а не его url). Если пользователь хочет удалить свою аватарку, в запросе надо передать поле "avatar" без значения.
     delete: Эндпоинт для удаления пользователя по его id.
+    reviews: Эндпоинт для получения всех отзывов пользователя по его id. Выводится по 6 отзывов на страницу, отсортированных по дате создания. Запрос может включать номер страницы в качестве параметра.
+             Пример: /api/users/{id}/reviews/?page=2
     """
     queryset = User.objects.all()
     http_method_names = [m for m in viewsets.ModelViewSet.http_method_names if m not in ['put']]
@@ -84,7 +86,7 @@ class UserViewset(mixins.CreateModelMixin,
         serializer = self.get_serializer(user)
         return Response(serializer.data)
 
-    def partial_update(self, request, pk=None, *args, **kwargs):
+    def partial_update(self, request, pk=None):
         data = request.data
         user = get_object_or_404(User, pk=pk, is_active=True)
         profile = user.userprofile
@@ -95,25 +97,33 @@ class UserViewset(mixins.CreateModelMixin,
             print('delete avatar')
         serializer = self.get_serializer(data=data)
         if serializer.is_valid():
-            print(serializer.validated_data)
             user.first_name = serializer.validated_data.get('first_name', user.first_name)
             user.last_name = serializer.validated_data.get('last_name', user.last_name)
             user.save()
-            try:
+            if 'userprofile' in serializer.validated_data:
                 profile_data = serializer.validated_data.pop('userprofile')
                 profile.name = profile_data.get('name', profile.name)
                 profile.city = profile_data.get('city', profile.city)
                 profile.country = profile_data.get('country', profile.country)
                 profile.save()
-            except:
-                print('no profile')
-            try:
-                avatar = request.FILES.getlist("avatar")[0]
-                profile.avatar = avatar
+            avatar = request.FILES.getlist("avatar")
+            if len(avatar) != 0:
+                profile.avatar = avatar[0]
                 profile.save()
-            except:
-                print('no files')
-            return Response(serializer.validated_data)
+
+            response = {
+                "message": "Профиль успешно обновлен",
+                "data": {
+                            "id": user.id,
+                            "first_name": user.first_name,
+                            "last_name": user.last_name,
+                            "nickname": profile.name,
+                            "city": profile.city,
+                            "country": profile.country,
+                            "avatar": profile.avatar.name
+                        }
+            }
+            return Response(response)
         return Response(serializer.errors)
 
     @action(detail=False, methods=['post'])
