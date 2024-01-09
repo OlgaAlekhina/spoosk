@@ -5,7 +5,7 @@ from django.views import View
 from django.views.decorators.http import require_POST
 from django.views.generic import ListView
 from .filters import ResortFilter, MainFilter
-# from .forms import ReviewForm
+from rest_framework import status
 from .models import SkiResort, Month, RidingLevel, SkiPass, SkiReview, SkyTrail, ReviewImage
 from django.http import JsonResponse
 from .serializers import SkiResortSerializer, ResortSerializer, SkireviewSerializer, SkireviewUpdateSerializer
@@ -131,7 +131,7 @@ class SkiReviewViewset(viewsets.ModelViewSet):
     delete: Эндпоинт для удаления отзыва по его id.
     """
     permission_classes = [IsAuthenticated]
-    queryset = SkiReview.objects.filter(approved=True)
+    queryset = SkiReview.objects.all()
     http_method_names = [m for m in viewsets.ModelViewSet.http_method_names if m not in ['put']]
     parser_classes = (JSONParser, MultiPartParser)
 
@@ -165,10 +165,16 @@ class SkiReviewViewset(viewsets.ModelViewSet):
         return Response(serializer.errors)
 
     def partial_update(self, request, pk=None):
+        review = self.get_object()
+        if review.approved:
+            response = {
+                "status": status.HTTP_400_BAD_REQUEST,
+                "message": "Отзыв нельзя редактировать после размещения на сайте",
+            }
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             print(serializer.validated_data)
-            review = self.get_object()
             review.text = serializer.validated_data.get('text', review.text)
             review.rating = serializer.validated_data.get('rating', review.rating)
             review.save()
