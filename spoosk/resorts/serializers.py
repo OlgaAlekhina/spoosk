@@ -39,7 +39,10 @@ class SkireviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SkiReview
-        fields = ('id', 'resort', 'resort_name', 'resort_region', 'author_name', 'author_lastname', 'text', 'rating', 'add_at', 'images')
+        fields = ('id', 'resort', 'resort_name', 'resort_region', 'author_name', 'author_lastname', 'text', 'rating', 'add_at', 'images', 'approved')
+        extra_kwargs = {
+            'approved': {'read_only': True}
+        }
 
     def create(self, validated_data):
         resort = validated_data['resort']

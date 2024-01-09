@@ -235,10 +235,16 @@ class UserViewset(mixins.CreateModelMixin,
 
     @action(detail=True, methods=['post'])
     def change_password(self, request, pk=None):
+        user = self.get_object()
+        if user.is_superuser:
+            response = {
+                "status": status.HTTP_400_BAD_REQUEST,
+                "message": "Нельзя редактировать данные этого пользователя",
+            }
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             password = serializer.validated_data['password']
-            user = self.get_object()
             user.set_password(password)
             user.save()
             token = Token.objects.get(user=user)
