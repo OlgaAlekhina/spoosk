@@ -25,7 +25,7 @@ from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import action
 from django.db.models.functions import Coalesce
-from spoosk.permissions import APIkey
+from spoosk.permissions import AuthorEditOrReadOnly, APIkey
 
 
 # endpoints for resorts
@@ -130,7 +130,7 @@ class SkiReviewViewset(viewsets.ModelViewSet):
                     Параметр deleted_images должен содержать список id (целые числа) фотографий, которые пользователь решил удалить при редактировании отзыва.
     delete: Эндпоинт для удаления отзыва по его id.
     """
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AuthorEditOrReadOnly]
     queryset = SkiReview.objects.all()
     http_method_names = [m for m in viewsets.ModelViewSet.http_method_names if m not in ['put']]
     parser_classes = (JSONParser, MultiPartParser)
