@@ -370,10 +370,3 @@ def get_review(request, pk):
         json.dumps(response_data),
         content_type='application/json'
     )
-
-
-
-
-
-
-
