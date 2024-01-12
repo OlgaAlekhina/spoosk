@@ -139,11 +139,23 @@ document.getElementById("btn-delete-account").addEventListener("click", function
 //     modal.classList.add("open");
 //}
 
-function updateModalContent(review) {
+function updateModalContent(response) {
+    console.log(response)
      var modal = document.getElementById('modal-review-full');
-     var nameElement = modal.querySelector('.review-name');
-     nameElement.textContent = review.name;
-     modal.classList.add("open");
+
+     var nameElement = modal.querySelector('.resort-name-review');
+     nameElement.textContent = response.resort_name;
+
+      var textElement = modal.querySelector('.review-text');
+     textElement.textContent = response.review_text;
+
+     var authorElement = modal.querySelector('.review-author');
+     authorElement.textContent = response.author_name;
+
+     var ratingElement = modal.querySelector('.review-rating');
+     ratingElement.textContent = response.review_rating;
+
+     //modal.classList.add("open");
 }
 
 function getReview(id) {
@@ -167,8 +179,8 @@ function getReview(id) {
                 console.log(images[i]);
             }
             // вставить полученные значения в форму можно так:
-            $("#some-test-id").prop("value", response.resort_name);
-//            updateModalContent(response.review);
+            // $("#some-test-id").prop("value", response.resort_name);
+            updateModalContent(response);
         }
     });
 }
