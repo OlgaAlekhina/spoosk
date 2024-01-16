@@ -63,8 +63,10 @@ class SkiResort(models.Model):
     link_ofsite = models.CharField(blank=True, null=True, help_text="url of resort's website")
     link_skipasses = models.CharField(blank=True, null=True, help_text="url of skipasses page on resort's website")
     link_map = models.CharField(blank=True, null=True, help_text="url of resort's map")
+    resort_map = models.ImageField(null=True, upload_to="resorts/maps", help_text="url of image for resort's map")
     main_resort_img = models.ImageField(upload_to="resorts/maxi", null=True, help_text="url of large image for resort's page header")
     max_height = models.IntegerField(blank=True, null=True, help_text="maximum height of resort")
+    users = models.ManyToManyField(User, blank=True, related_name='user')
 
     class Meta:
         managed = True

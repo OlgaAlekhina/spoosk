@@ -95,11 +95,11 @@ class UserSerializer(serializers.ModelSerializer):
 # serializer for User model with profile options
 class UserprofileSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(required=False, max_length=20)
-    last_name = serializers.CharField(required=False, max_length=30)
+    last_name = serializers.CharField(required=False, allow_blank=True, max_length=30)
     avatar = serializers.ImageField(required=False, source='userprofile.avatar', allow_empty_file=True)
-    nickname = serializers.CharField(required=False, source='userprofile.name', max_length=30)
-    city = serializers.CharField(required=False, source='userprofile.city', max_length=30)
-    country = serializers.CharField(required=False, source='userprofile.country', max_length=30)
+    nickname = serializers.CharField(required=False, source='userprofile.name', allow_blank=True, max_length=30)
+    city = serializers.CharField(required=False, source='userprofile.city', allow_blank=True, max_length=30)
+    country = serializers.CharField(required=False, source='userprofile.country', allow_blank=True, max_length=30)
 
     class Meta:
         model = User

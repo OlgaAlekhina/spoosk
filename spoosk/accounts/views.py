@@ -264,7 +264,7 @@ class UserViewset(mixins.CreateModelMixin,
         }
         return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=True, methods=['post'])
+    @action(detail=True)
     def send_code(self, request, pk=None):
         user = self.get_object()
         code = SignupCode.objects.create(code=randint(1000, 9999), user=user)
