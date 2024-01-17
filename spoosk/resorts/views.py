@@ -13,7 +13,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import generics
 from django.db.models import Prefetch
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from django.db.models import Count, Sum, Avg
 from rest_framework import filters
@@ -42,7 +42,7 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
     reviews: Список всех отзывов для конкретного курорта, полученный по его id. Выводится по 6 отзывов на страницу, отсортированных по дате.
     Для получения других страниц надо передать в запросе номер страницы: /api/resorts/Gazprom/reviews/?page=2
     """
-    # permission_classes = [APIkey]
+    permission_classes = [APIkey]
     queryset = SkiResort.objects.prefetch_related(
         Prefetch(
             # get skipass objects which have mobile type
@@ -81,6 +81,7 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
 
 # endpoint for list of regions
 @api_view()
+@permission_classes([APIkey])
 def get_regions(request):
     """ Список всех регионов горнолыжных курортов, которые имеются в базе данных """
     regions = SkiResort.objects.values('region').distinct('region')
@@ -115,6 +116,7 @@ class ResortMainFilter(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     ordering_fields = '__all__'
     ordering = 'name'
+    permission_classes = [APIkey]
     # pagination_class = None
 
 
@@ -130,7 +132,7 @@ class SkiReviewViewset(viewsets.ModelViewSet):
                     Параметр deleted_images должен содержать список id (целые числа) фотографий, которые пользователь решил удалить при редактировании отзыва.
     delete: Эндпоинт для удаления отзыва по его id.
     """
-    permission_classes = [AuthorEditOrReadOnly]
+    permission_classes = [APIkey, AuthorEditOrReadOnly]
     queryset = SkiReview.objects.all()
     http_method_names = [m for m in viewsets.ModelViewSet.http_method_names if m not in ['put']]
     parser_classes = (JSONParser, MultiPartParser)
