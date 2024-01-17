@@ -18,7 +18,12 @@ class APIkey(permissions.BasePermission):
 class AuthorEditOrReadOnly(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        if request.user.is_authenticated:
+        if request.method == "POST":
+            if not request.user.is_authenticated:
+                return False
+            else:
+                return True
+        else:
             return True
 
     def has_object_permission(self, request, view, obj):

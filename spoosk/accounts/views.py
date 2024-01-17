@@ -10,7 +10,7 @@ from resorts.serializers import SkireviewSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
-from rest_framework import generics
+from spoosk.permissions import APIkey
 from datetime import timedelta
 from django.utils import timezone
 from rest_framework.decorators import action
@@ -61,6 +61,7 @@ class UserViewset(mixins.CreateModelMixin,
     queryset = User.objects.all()
     http_method_names = [m for m in viewsets.ModelViewSet.http_method_names if m not in ['put']]
     parser_classes = (JSONParser, MultiPartParser)
+    permission_classes = [APIkey]
 
     # add different serializers to different actions
     def get_serializer_class(self):
