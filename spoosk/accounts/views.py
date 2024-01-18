@@ -10,7 +10,7 @@ from resorts.serializers import SkireviewSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
-from spoosk.permissions import APIkey
+from spoosk.permissions import APIkey, UserPermission
 from datetime import timedelta
 from django.utils import timezone
 from rest_framework.decorators import action
@@ -61,7 +61,7 @@ class UserViewset(mixins.CreateModelMixin,
     queryset = User.objects.all()
     http_method_names = [m for m in viewsets.ModelViewSet.http_method_names if m not in ['put']]
     parser_classes = (JSONParser, MultiPartParser)
-    permission_classes = [APIkey]
+    permission_classes = [APIkey, UserPermission]
 
     # add different serializers to different actions
     def get_serializer_class(self):
@@ -82,6 +82,11 @@ class UserViewset(mixins.CreateModelMixin,
         else:
             return UserprofileSerializer
 
+    def get_active_user(self):
+        user = get_object_or_404(User, pk=self.kwargs["pk"], is_active=True)
+        self.check_object_permissions(self.request, user)
+        return user
+
     def retrieve(self, request, pk=None):
         user = get_object_or_404(User, pk=pk, is_active=True)
         serializer = self.get_serializer(user)
@@ -89,7 +94,7 @@ class UserViewset(mixins.CreateModelMixin,
 
     def partial_update(self, request, pk=None):
         data = request.data
-        user = get_object_or_404(User, pk=pk, is_active=True)
+        user = self.get_active_user()
         profile = user.userprofile
         print("Данные: ", data)
         if 'avatar' in data and data.get('avatar') == '':
