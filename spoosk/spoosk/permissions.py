@@ -7,7 +7,6 @@ class APIkey(permissions.BasePermission):
     def has_permission(self, request, view):
         try:
             api_key = request.META['HTTP_API_KEY']
-            print(api_key)
             if api_key == '6351f035a4db9598952a6705330b29a30ff5fb35':
                 return True
         except:
@@ -37,3 +36,16 @@ class AuthorEditOrReadOnly(permissions.BasePermission):
             return True
 
         return False
+
+
+# permissions for PATCH, DELETE and change_password endpoints in users viewset
+class UserPermission(permissions.BasePermission):
+
+    def has_object_permission(self, request, view, obj):
+        if request.user.is_superuser:
+            return True
+
+        if view.action in ['partial_update', 'destroy', 'change_password']:
+            return request.user.is_authenticated and obj == request.user
+
+        return True
