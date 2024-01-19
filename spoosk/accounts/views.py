@@ -9,7 +9,7 @@ from rest_framework.authtoken.models import Token
 from resorts.serializers import SkireviewSerializer
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticated
 from spoosk.permissions import APIkey, UserPermission
 from datetime import timedelta
 from django.utils import timezone
@@ -18,6 +18,8 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from random import randint
 from django.shortcuts import get_object_or_404
+from rest_framework.decorators import api_view, permission_classes
+from resorts.models import SkiResort
 
 
 # user authentication by email and password
@@ -305,6 +307,27 @@ class UserViewset(mixins.CreateModelMixin,
             return self.get_paginated_response(serializer.data)
         serializer = self.get_serializer(page, many=True)
         return Response(serializer.data)
+
+
+# endpoint for adding resort to user's favorites or removing it
+@api_view()
+@permission_classes([APIkey, IsAuthenticated])
+def favorites(request, pk):
+    """ Проверяет, есть ли курорт в избранном у пользователя и в зависимости от результата добавляет его в избранное или удаляет оттуда
+        Параметр id в url соответствует идентификатору курорта, пользователь определяется автоматически.
+    """
+    resort = SkiResort.objects.filter(id_resort=pk).first()
+    if resort:
+        user = request.user
+        if resort in SkiResort.objects.filter(users=user):
+            resort.users.remove(user)
+            message = 'Successfully delete resort from favorites!'
+        else:
+            resort.users.add(user)
+            message = 'Successfully add resort to favorites!'
+    else:
+        message = 'Resort does not exist'
+    return Response(message)
 
 
 # временная функция для создания UserProfile для ранее созданных пользователей (удалить вместе с url после однократного использования на проде)
