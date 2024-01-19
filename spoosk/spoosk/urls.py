@@ -20,7 +20,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from resorts.views import SkiResortViewset, SkiReviewViewset, ResortMainFilter, get_regions
-from accounts.views import UserViewset
+from accounts.views import UserViewset, favorites
 from rest_framework_swagger.views import get_swagger_view
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -49,12 +49,8 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('api/', include(router.urls)),
     path('api/resorts/filter', ResortMainFilter.as_view()),
-    # path('api/resorts/advanced_filter', ResortAdvancedFilter.as_view()),
     path('api/resorts/regions', get_regions),
-    # path('api/users/login', LoginAPIView.as_view()),
-    # path('api/resorts/search', ResortSearchView.as_view()),
-    # path('api/resorts/reviews', SkireviewView.as_view()),
-    # path('api/resorts/reviews/add', SkireviewCreateView.as_view()),
+    path('api/users/add_to_favorites/<str:pk>/', favorites),
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0),name='schema-swagger-ui'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
