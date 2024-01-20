@@ -206,15 +206,27 @@ class SkiReviewViewset(viewsets.ModelViewSet):
             return Response(response)
         return Response(serializer.errors)
 
-# endpoint for skireviews list on main page
-# class SkireviewView(generics.ListAPIView):
-#     """ Список всех одобренных отзывов, отсортированный по дате создания, необходимый для главной страницы приложения.
-#      Выводится по 2 отзыва на страницу. Запрос может включать номер страницы в качестве параметра.
-#      Пример: /api/resorts/reviews?page=2
-#      В теле ответа передаются параметры next и previous, которые содержат ссылки на предыдущую и следующую страницы. Возможно, их будет удобно использовать при разработке мобильного приложения."""
-#     queryset = SkiReview.objects.filter(approved=True).order_by('-add_at')
-#     serializer_class = SkireviewSerializer
-#     pagination.PageNumberPagination.page_size = 2
+
+# endpoint for adding resort to user's favorites or removing it
+@api_view()
+@permission_classes([APIkey, IsAuthenticated])
+def favorites(request, id_resort):
+    """
+        Проверяет, есть ли курорт в избранном у пользователя и в зависимости от результата добавляет его в избранное или удаляет оттуда.
+        Параметр id в url соответствует идентификатору курорта, пользователь определяется автоматически.
+    """
+    resort = SkiResort.objects.filter(id_resort=id_resort).first()
+    if resort:
+        user = request.user
+        if resort in SkiResort.objects.filter(users=user):
+            resort.users.remove(user)
+            message = 'Successfully delete resort from favorites!'
+        else:
+            resort.users.add(user)
+            message = 'Successfully add resort to favorites!'
+    else:
+        message = 'Resort does not exist'
+    return Response(message)
 
 
 class Region:
