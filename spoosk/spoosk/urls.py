@@ -19,8 +19,8 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from resorts.views import SkiResortViewset, SkiReviewViewset, ResortMainFilter, get_regions
-from accounts.views import UserViewset, favorites
+from resorts.views import SkiResortViewset, SkiReviewViewset, ResortMainFilter, get_regions, favorites
+from accounts.views import UserViewset
 from rest_framework_swagger.views import get_swagger_view
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -50,7 +50,7 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api/resorts/filter', ResortMainFilter.as_view()),
     path('api/resorts/regions', get_regions),
-    path('api/users/add_to_favorites/<str:pk>/', favorites),
+    path('api/resorts/<str:id_resort>/add_to_favorites/', favorites),
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0),name='schema-swagger-ui'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
