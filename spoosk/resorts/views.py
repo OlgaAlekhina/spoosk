@@ -18,7 +18,7 @@ from rest_framework.response import Response
 from django.db.models import Count, Sum, Avg
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
-from django.db.models import OuterRef, Subquery, IntegerField
+from django.db.models import OuterRef, Subquery, IntegerField, Exists
 from rest_framework import pagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
@@ -43,20 +43,26 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
     Для получения других страниц надо передать в запросе номер страницы: /api/resorts/Gazprom/reviews/?page=2
     """
     permission_classes = [APIkey]
-    queryset = SkiResort.objects.prefetch_related(
-        Prefetch(
-            # get skipass objects which have mobile type
-            'resorts', queryset=SkiPass.objects.exclude(mob_type__isnull=True)
-        )
-    ).prefetch_related(
-        Prefetch(
-            # get skireview objects which have been approved
-            'resort_reviews', queryset=SkiReview.objects.filter(approved=True)
-        )
-    ).annotate(rating=Coalesce(Avg(("resort_reviews__rating"), output_field=IntegerField()), 0)).order_by('-rating')
     filter_backends = [filters.SearchFilter]
     search_fields = ['name']
     # pagination_class = None
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = SkiResort.objects.prefetch_related(
+            Prefetch(
+                # get skipass objects which have mobile type
+                'resorts', queryset=SkiPass.objects.exclude(mob_type__isnull=True)
+            )
+        ).prefetch_related(
+            Prefetch(
+                # get skireview objects which have been approved
+                'resort_reviews', queryset=SkiReview.objects.filter(approved=True)
+            )
+        ).annotate(rating=Coalesce(Avg(("resort_reviews__rating"), output_field=IntegerField()), 0)).order_by('-rating')
+        if user.is_authenticated:
+                queryset = queryset.annotate(in_favorites=Exists(SkiResort.objects.filter(id_resort=OuterRef("pk"), users=user)))
+        return queryset
 
     # add different serializers to different actions
     def get_serializer_class(self):
@@ -105,12 +111,6 @@ class ResortMainFilter(generics.ListAPIView):
     Выводится по 6 курортов на страницу. Запрос может включать номер страницы в качестве параметра.
     В теле ответа передаются параметры next и previous, которые содержат ссылки на предыдущую и следующую страницы, и параметр account, содержащий общее количество найденных объектов.
     """
-    # annotation of queryset with trails number, rating and skipass price for ordering of the filtration result
-    skipasses = SkiPass.objects.filter(id_resort=OuterRef("pk")).filter(mob_type="one_day")
-    skitrails = SkyTrail.objects.filter(id_resort=OuterRef("pk")).order_by().values('id_resort').annotate(length=Sum('extent', output_field=IntegerField())).values('length')[:1]
-    ratings = SkiReview.objects.filter(resort=OuterRef("pk")).order_by().values('resort').annotate(resort_rating=Avg('rating', output_field=IntegerField())).values('resort_rating')[:1]
-    queryset = SkiResort.objects.annotate(trail_length=Coalesce(Subquery(skitrails), 0)). \
-        annotate(skipass=Coalesce(Subquery(skipasses.values("price"), output_field=IntegerField()), 0)).annotate(rating=Coalesce(Subquery(ratings), 0))
     serializer_class = ResortSerializer
     filterset_class = MainFilter
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
@@ -118,6 +118,21 @@ class ResortMainFilter(generics.ListAPIView):
     ordering = 'name'
     permission_classes = [APIkey]
     # pagination_class = None
+
+    def get_queryset(self):
+        user = self.request.user
+        # annotation of queryset with trails number, rating and skipass price for ordering of the filtration result
+        skipasses = SkiPass.objects.filter(id_resort=OuterRef("pk")).filter(mob_type="one_day")
+        skitrails = SkyTrail.objects.filter(id_resort=OuterRef("pk")).order_by().values('id_resort').annotate(
+            length=Sum('extent', output_field=IntegerField())).values('length')[:1]
+        ratings = SkiReview.objects.filter(resort=OuterRef("pk")).order_by().values('resort').annotate(
+            resort_rating=Avg('rating', output_field=IntegerField())).values('resort_rating')[:1]
+        queryset = SkiResort.objects.annotate(trail_length=Coalesce(Subquery(skitrails), 0)). \
+            annotate(skipass=Coalesce(Subquery(skipasses.values("price"), output_field=IntegerField()), 0)).annotate(
+            rating=Coalesce(Subquery(ratings), 0))
+        if user.is_authenticated:
+                queryset = queryset.annotate(in_favorites=Exists(SkiResort.objects.filter(id_resort=OuterRef("pk"), users=user)))
+        return queryset
 
 
 # endpoints for reviews
