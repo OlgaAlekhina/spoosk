@@ -36,7 +36,7 @@ schema_view = get_schema_view(
 )
 
 router = routers.DefaultRouter()
-router.register(r'resorts', SkiResortViewset)
+router.register(r'resorts', SkiResortViewset, basename='SkiResort')
 router.register(r'reviews', SkiReviewViewset)
 router.register(r'users', UserViewset)
 

@@ -103,9 +103,10 @@ class ResortSerializer(serializers.ModelSerializer):
     trail_number = serializers.ReadOnlyField(source='trail_number_count', help_text="number of all resort's trails")
     rating = serializers.ReadOnlyField(source='resort_rating', help_text="average rating of the resort")
     number_reviews = serializers.ReadOnlyField(source='reviews_count', help_text="number of reviews for the resort")
+    in_favorites = serializers.BooleanField(default=False)
 
     class Meta:
         model = SkiResort
-        fields = ['id_resort', 'name', 'region', 'rating', 'number_reviews', 'image', 'trail_length', 'height_difference', 'skipass', 'trail_number']
+        fields = ['id_resort', 'name', 'region', 'rating', 'number_reviews', 'image', 'trail_length', 'height_difference', 'skipass', 'trail_number', 'in_favorites']
 
 
