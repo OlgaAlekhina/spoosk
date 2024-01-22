@@ -56,6 +56,7 @@ class UserViewset(mixins.CreateModelMixin,
     delete: Эндпоинт для удаления пользователя по его id.
     reviews: Эндпоинт для получения всех отзывов пользователя по его id. Выводится по 6 отзывов на страницу, отсортированных по дате создания. Запрос может включать номер страницы в качестве параметра.
              Пример: /api/users/{id}/reviews/?page=2
+    favorites: Эндпоинт для получения списка курортов, добавленных в избранное пользователем, по его id.
     """
     queryset = User.objects.all()
     http_method_names = [m for m in viewsets.ModelViewSet.http_method_names if m not in ['put']]

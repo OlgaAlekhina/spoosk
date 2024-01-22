@@ -18,7 +18,7 @@ from rest_framework.response import Response
 from django.db.models import Count, Sum, Avg
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
-from django.db.models import OuterRef, Subquery, IntegerField, Exists
+from django.db.models import OuterRef, Subquery, IntegerField, Exists, FloatField
 from rest_framework import pagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
@@ -46,22 +46,9 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
     permission_classes = [APIkey]
     filter_backends = [filters.SearchFilter]
     search_fields = ['name']
-    queryset = queryset = SkiResort.objects.prefetch_related(
-            Prefetch(
-                # get skipass objects which have mobile type
-                'resorts', queryset=SkiPass.objects.exclude(mob_type__isnull=True)
-            )
-        ).prefetch_related(
-            Prefetch(
-                # get skireview objects which have been approved
-                'resort_reviews', queryset=SkiReview.objects.filter(approved=True)
-            )
-        ).annotate(rating=Coalesce(Avg(("resort_reviews__rating"), output_field=IntegerField()), 0)).order_by('-rating')
-    # pagination_class = None
-
-    # def get_queryset(self):
-    #     user = self.request.user
-    #     queryset = SkiResort.objects.prefetch_related(
+    # ratings = SkiReview.objects.filter(resort=OuterRef("pk"), approved=True).order_by().values('resort').annotate(
+    #     resort_rating=Avg('rating', output_field=FloatField())).values('resort_rating')[:1]
+    # queryset = SkiResort.objects.prefetch_related(
     #         Prefetch(
     #             # get skipass objects which have mobile type
     #             'resorts', queryset=SkiPass.objects.exclude(mob_type__isnull=True)
@@ -71,10 +58,27 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
     #             # get skireview objects which have been approved
     #             'resort_reviews', queryset=SkiReview.objects.filter(approved=True)
     #         )
-    #     ).annotate(rating=Coalesce(Avg(("resort_reviews__rating"), output_field=IntegerField()), 0)).order_by('-rating')
-    #     if user.is_authenticated:
-    #         queryset = queryset.annotate(in_favorites=Exists(SkiResort.objects.filter(id_resort=OuterRef("pk"), users=user)))
-    #     return queryset
+    #     ).annotate(rating=Coalesce(Subquery(ratings), 0, output_field=FloatField())).order_by('-rating')
+    # pagination_class = None
+
+    def get_queryset(self):
+        user = self.request.user
+        ratings = SkiReview.objects.filter(resort=OuterRef("pk"), approved=True).order_by().values('resort').annotate(
+            resort_rating=Avg('rating', output_field=FloatField())).values('resort_rating')[:1]
+        queryset = SkiResort.objects.prefetch_related(
+            Prefetch(
+                # get skipass objects which have mobile type
+                'resorts', queryset=SkiPass.objects.exclude(mob_type__isnull=True)
+            )
+        ).prefetch_related(
+            Prefetch(
+                # get skireview objects which have been approved
+                'resort_reviews', queryset=SkiReview.objects.filter(approved=True)
+            )
+        ).annotate(rating=Coalesce(Subquery(ratings), 0, output_field=FloatField())).order_by('-rating')
+        if user.is_authenticated:
+            queryset = queryset.annotate(in_favorites=Exists(SkiResort.objects.filter(id_resort=OuterRef("pk"), users=user)))
+        return queryset
 
     # add different serializers to different actions
     def get_serializer_class(self):
@@ -84,6 +88,18 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
             return SkiResortSerializer
         if self.action == 'reviews':
             return SkireviewSerializer
+
+    def retrieve(self, request, pk=None):
+        resort = SkiResort.objects.filter(id_resort=pk)
+        if resort.exists():
+            user = self.request.user
+            if user.is_authenticated:
+                resort = resort.annotate(in_favorites=Exists(SkiResort.objects.filter(id_resort=OuterRef("pk"), users=user)))
+        else:
+            return Response(dict(message='Resort not found.'),
+                            status=status.HTTP_404_NOT_FOUND)
+        serializer = self.get_serializer(resort[0])
+        return Response(serializer.data)
 
     @action(detail=True)
     def reviews(self, request, pk=None):
@@ -137,15 +153,13 @@ class ResortMainFilter(generics.ListAPIView):
         skipasses = SkiPass.objects.filter(id_resort=OuterRef("pk")).filter(mob_type="one_day")
         skitrails = SkyTrail.objects.filter(id_resort=OuterRef("pk")).order_by().values('id_resort').annotate(
             length=Sum('extent', output_field=IntegerField())).values('length')[:1]
-        ratings = SkiReview.objects.filter(resort=OuterRef("pk")).order_by().values('resort').annotate(
-            resort_rating=Avg('rating', output_field=IntegerField())).values('resort_rating')[:1]
+        ratings = SkiReview.objects.filter(resort=OuterRef("pk"), approved=True).order_by().values('resort').annotate(
+            resort_rating=Avg('rating', output_field=FloatField())).values('resort_rating')[:1]
         queryset = SkiResort.objects.annotate(trail_length=Coalesce(Subquery(skitrails), 0)). \
             annotate(skipass=Coalesce(Subquery(skipasses.values("price"), output_field=IntegerField()), 0)).annotate(
-            rating=Coalesce(Subquery(ratings), 0))
+            rating=Coalesce(Subquery(ratings), 0, output_field=FloatField()))
         if user.is_authenticated:
-            favorites = SkiResort.objects.filter(id_resort=OuterRef("pk"), users=user)
-            # queryset = queryset.annotate(in_favorites=Exists(SkiResort.objects.filter(id_resort=OuterRef("pk"), users=user)))
-            queryset = queryset.annotate(in_favorites=Coalesce(Exists(favorites), Value(False)))
+            queryset = queryset.annotate(in_favorites=Exists(SkiResort.objects.filter(id_resort=OuterRef("pk"), users=user)))
         return queryset
 
 
