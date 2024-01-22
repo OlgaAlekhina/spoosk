@@ -90,7 +90,12 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
             return SkireviewSerializer
 
     def retrieve(self, request, pk=None):
-        resort = SkiResort.objects.filter(id_resort=pk)
+        resort = SkiResort.objects.prefetch_related(
+            Prefetch(
+                # get skipass objects which have mobile type
+                'resorts', queryset=SkiPass.objects.exclude(mob_type__isnull=True)
+            )
+        ).filter(id_resort=pk)
         if resort.exists():
             user = self.request.user
             if user.is_authenticated:
