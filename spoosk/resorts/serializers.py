@@ -90,10 +90,11 @@ class SkiResortSerializer(serializers.ModelSerializer):
     rating = serializers.ReadOnlyField(source='resort_rating', help_text="average rating of the resort")
     number_reviews = serializers.ReadOnlyField(source='reviews_count', help_text="number of reviews for the resort")
     images = ResortImageSerializer(source='resort_images', many=True, help_text="list of resort's additional images")
+    in_favorites = serializers.BooleanField(default=False)
 
     class Meta:
         model = SkiResort
-        fields = '__all__'
+        exclude = ['users']
 
 # serializer for SkiResort model for list method
 class ResortSerializer(serializers.ModelSerializer):

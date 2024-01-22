@@ -26,6 +26,7 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import action
 from django.db.models.functions import Coalesce
 from spoosk.permissions import AuthorEditOrReadOnly, APIkey
+from django.db.models import Value
 
 
 # endpoints for resorts
@@ -45,11 +46,7 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
     permission_classes = [APIkey]
     filter_backends = [filters.SearchFilter]
     search_fields = ['name']
-    # pagination_class = None
-
-    def get_queryset(self):
-        user = self.request.user
-        queryset = SkiResort.objects.prefetch_related(
+    queryset = queryset = SkiResort.objects.prefetch_related(
             Prefetch(
                 # get skipass objects which have mobile type
                 'resorts', queryset=SkiPass.objects.exclude(mob_type__isnull=True)
@@ -60,9 +57,24 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
                 'resort_reviews', queryset=SkiReview.objects.filter(approved=True)
             )
         ).annotate(rating=Coalesce(Avg(("resort_reviews__rating"), output_field=IntegerField()), 0)).order_by('-rating')
-        if user.is_authenticated:
-                queryset = queryset.annotate(in_favorites=Exists(SkiResort.objects.filter(id_resort=OuterRef("pk"), users=user)))
-        return queryset
+    # pagination_class = None
+
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     queryset = SkiResort.objects.prefetch_related(
+    #         Prefetch(
+    #             # get skipass objects which have mobile type
+    #             'resorts', queryset=SkiPass.objects.exclude(mob_type__isnull=True)
+    #         )
+    #     ).prefetch_related(
+    #         Prefetch(
+    #             # get skireview objects which have been approved
+    #             'resort_reviews', queryset=SkiReview.objects.filter(approved=True)
+    #         )
+    #     ).annotate(rating=Coalesce(Avg(("resort_reviews__rating"), output_field=IntegerField()), 0)).order_by('-rating')
+    #     if user.is_authenticated:
+    #         queryset = queryset.annotate(in_favorites=Exists(SkiResort.objects.filter(id_resort=OuterRef("pk"), users=user)))
+    #     return queryset
 
     # add different serializers to different actions
     def get_serializer_class(self):
@@ -131,7 +143,9 @@ class ResortMainFilter(generics.ListAPIView):
             annotate(skipass=Coalesce(Subquery(skipasses.values("price"), output_field=IntegerField()), 0)).annotate(
             rating=Coalesce(Subquery(ratings), 0))
         if user.is_authenticated:
-                queryset = queryset.annotate(in_favorites=Exists(SkiResort.objects.filter(id_resort=OuterRef("pk"), users=user)))
+            favorites = SkiResort.objects.filter(id_resort=OuterRef("pk"), users=user)
+            # queryset = queryset.annotate(in_favorites=Exists(SkiResort.objects.filter(id_resort=OuterRef("pk"), users=user)))
+            queryset = queryset.annotate(in_favorites=Coalesce(Exists(favorites), Value(False)))
         return queryset
 
 
