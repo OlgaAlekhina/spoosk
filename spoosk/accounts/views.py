@@ -4,7 +4,7 @@ from django.http import JsonResponse, HttpResponse, Http404
 from rest_framework import viewsets, mixins
 from .serializers import UserSerializer, UserprofileSerializer, LoginSerializer, CodeSerializer, ResetpasswordSerializer, ChangepasswordSerializer, EmptySerializer
 from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
-from rest_framework.views import APIView
+from resorts.models import SkiResort
 from rest_framework.authtoken.models import Token
 from resorts.serializers import SkireviewSerializer, ResortSerializer
 from rest_framework import status
@@ -17,6 +17,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from random import randint
 from django.shortcuts import get_object_or_404
+from django.db.models import OuterRef, Exists
 
 
 # user authentication by email and password
@@ -311,7 +312,7 @@ class UserViewset(mixins.CreateModelMixin,
     @action(detail=True)
     def favorites(self, request, pk=None):
         user = self.get_object()
-        favorites = user.user.all().order_by('name')
+        favorites = user.user.all().annotate(in_favorites=Exists(SkiResort.objects.filter(id_resort=OuterRef("pk"), users=user))).order_by('name')
         page = self.paginate_queryset(favorites)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
