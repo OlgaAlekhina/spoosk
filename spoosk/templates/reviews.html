@@ -3,130 +3,180 @@
 
     <div class="wrapper reviews-wrapper">
         {% if reviews %}
-        <div class="cards-wrapper">
-            <h2 class="section-title section-title-reviews">Последние отзывы</h2>
-        </div>
-        <div class="swiper mySwiper container reviews-content">
+        <div class="cards-wrapper swiper mySwiper container reviews-content">
                 <div class="swiper-wrapper content">
                     {% for review in reviews %}
-                        <div class="swiper-slide review-column">
+                        <div class="swiper-slide">
                             <div class="review-item">
                                     <div class="review-content">
 
-                                        <img class="img-foto" src={{ review.resort.image.url }} width="180" height="180">
+                                        <div class="review-row">
 
-                                        <div class="review-content-text">
-                                            <div class="review-author-name">
-                                                {% if review.author.first_name %}
-                                                    {{ review.author.first_name|capfirst }}
-                                                    {% if review.author.last_name %}
-                                                        {{ review.author.last_name.0|capfirst }}.
+                                            <div class="info-author">
+                                                <div class="foto-container-review">
+                                                    <img {% if request.user.userprofile.avatar %} src="{{ request.user.userprofile.avatar.url }}" {% endif %} alt="" class="info-user__foto">
+                                                </div>
+        
+                                                <div class="review-author-name">
+                                                    {% if review.author.first_name %}
+                                                        {{ review.author.first_name|capfirst }}
+                                                        {% if review.author.last_name %}
+                                                            {{ review.author.last_name.0|capfirst }}.
+                                                        {% endif %}
+                                                    {% else %}
+                                                        @{{ review.author.userprofile.name }}
                                                     {% endif %}
-                                                {% else %}
-                                                    @{{ review.author.userprofile.name }}
-                                                {% endif %}
+                                                </div>
                                             </div>
+
                                             <div class="review-author-date">{{ review.add_at|date:"d.m.Y"}}</div>
-                                            <a href="{{ review.resort.get_absolute_url }}"><h3 class="review-resort-name">{{ review.resort.name }}</h3></a>
-                                            <span class="review-author-date">{{ review.resort.region }}</span>
+
+                                        </div>
+
+                                        <div class="review-row review-row__start">
+                        
+                                            <div class="info-resort">
+                                                <a href="{{ review.resort.get_absolute_url }}"><h3 class="review-resort-name">{{ review.resort.name }}</h3></a>
+                                                <span class="review-resort-region">{{ review.resort.region }}</span>
+                                            </div>
+
                                             <ul class="stars-list">
                                                 {% for i in review.rating|create_range %}
                                                     <li class="stars-item">
-                                                        <img src="{% static 'image/reviews/reviews_rating.svg' %}" alt="желтая звезда">
+                                                        <img src="{% static 'image/reviews/star_yellow.svg' %}" alt="желтая звезда">
                                                     </li>
                                                 {% endfor %}
 
                                                 {% for i in review.rating|create_range_difference %}
                                                     <li class="stars-item">
-                                                        <img src="{% static 'image/reviews/reviews_rating_grey.svg' %}" alt="серая звезда">
+                                                        <img src="{% static 'image/reviews/star_grey.svg' %}" alt="серая звезда">
                                                     </li>
                                                 {% endfor %}
 
                                             </ul>
                                         </div>
 
-                                    </div>
-
-                                    <div class="review-text">
-                                        <div class="review-title">Отзыв:</div>
-                                        <div class="review-title-text">
-                                            <p>{{ review.text|truncatechars:150 }}</p>
+                                        
+                                        <div class="review-row">
+                                            <div class="review-text">
+                                                <p>{{ review.text|truncatechars:200 }}</p>
+                                            </div>
                                         </div>
+                                        <div class="review-row review-row__btn">
+                                            <a class="btn-reviews" href="#" id="open-modal-review-full" onclick="getReview('{{ review.id }}')">Подробнее</a>
+                                        </div>
+                                        
+                                    
+                                        {% if review.review_images.all%}
+                                        <div class="image-container-reviews">
+                                            <div class="carusel">
+                                            {% for image in review.review_images.all %}
+                                                <div class="image-container">
+                                                    <img src="{{ image.image.url }}" alt="Review Image">
+                                                </div>
+                                            {% endfor %}
+                                            </div>
+                                        </div>
+                                        {% endif %}
                                     </div>
-
-
-                                    <a class="btn-reviews" href="#" id="open-modal-review-full" onclick="getReview('{{ review.id }}')">Подробнее</a>
-                                </div>
-
+                            </div>
                         </div>
                     {% endfor %}
                 </div>
         </div>
-        <img  class="swiper-button-next" src="{% static 'image/reviews/chevron_right.svg' %}" alt="">
-        <img  class="swiper-button-prev" src="{% static 'image/reviews/chevron_left.svg' %}" alt="">
-        <div class="swiper-pagination"></div>
+        <div class="cards-wrapper">
+            <img  class="swiper-button-next" src="{% static 'image/reviews/chevron_right.svg' %}" alt="">
+            <img  class="swiper-button-prev" src="{% static 'image/reviews/chevron_left.svg' %}" alt="">
+            <div class="swiper-pagination"></div>
+        </div>
         {% endif %}
     </div>
 
-<!--<div class="modal" id="modal-review-full">-->
-<!--    <div class="modal-add-review__box">-->
-<!--            <button class="modal__close-btn">-->
-<!--              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">-->
-<!--                    <path fill-rule="evenodd" clip-rule="evenodd" d="M2.70659 0.292919C2.51799 0.110761 2.26539 0.00996641-->
-<!--                    2.00319 0.0122448C1.74099 0.0145233 1.49018 0.119692 1.30477 0.305101C1.11937 0.490509 1.0142 0.741321-->
-<!--                    1.01192 1.00352C1.00964 1.26571 1.11044 1.51832 1.29259 1.70692L6.58559 6.99992L1.29259 12.2929C1.19708-->
-<!--                    12.3852 1.1209 12.4955 1.06849 12.6175C1.01608 12.7395 0.988496 12.8707 0.987342 13.0035C0.986189 13.1363-->
-<!--                    1.01149 13.268 1.06177 13.3909C1.11205 13.5138 1.18631 13.6254 1.2802 13.7193C1.37409 13.8132 1.48574 13.8875-->
-<!--                    1.60864 13.9377C1.73154 13.988 1.86321 14.0133 1.99599 14.0122C2.12877 14.011 2.25999 13.9834 2.382 13.931C2.504-->
-<!--                    13.8786 2.61435 13.8024 2.70659 13.7069L7.99959 8.41392L13.2926 13.7069C13.4812 13.8891 13.7338 13.9899 13.996-->
-<!--                    13.9876C14.2582 13.9853 14.509 13.8801 14.6944 13.6947C14.8798 13.5093 14.985 13.2585 14.9873 12.9963C14.9895-->
-<!--                    12.7341 14.8888 12.4815 14.7066 12.2929L9.41359 6.99992L14.7066 1.70692C14.8888 1.51832 14.9895 1.26571 14.9873-->
-<!--                    1.00352C14.985 0.741321 14.8798 0.490509 14.6944 0.305101C14.509 0.119692 14.2582 0.0145233 13.996 0.0122448C13.7338-->
-<!--                    0.00996641 13.4812 0.110761 13.2926 0.292919L7.99959 5.58592L2.70659 0.292919Z" fill="#2C2D2E"/>-->
-<!--                </svg>-->
-<!--            </button>-->
-<!--        <div class="modal-content">-->
-<!--             <div class="modal-body">-->
-<!--                <div class="form" id="adding_review">-->
-<!--                    <div class="resort-name-review"></div>-->
-<!--                    <div class="resort-region-review"></div>-->
 
-<!--                    <div class="stars">-->
-<!--                        <input type="radio" class="get_value" name="rating" value="1"/>-->
-<!--                        <input type="radio" class="get_value" name="rating" value="2"/>-->
-<!--                        <input type="radio" class="get_value" name="rating" value="3"/>-->
-<!--                        <input type="radio" class="get_value" name="rating" value="4"/>-->
-<!--                        <input type="radio" class="get_value" name="rating" value="5"/>-->
-<!--                        <input type="hidden" id="rating_value" value="0">-->
-<!--                    </div>-->
+    <div class="modal" id="modal-review-full">
+        <div class="modal-review__box">
+                <button class="modal__close-btn">
+                  <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M2.70659 0.292919C2.51799 0.110761 2.26539 0.00996641
+                        2.00319 0.0122448C1.74099 0.0145233 1.49018 0.119692 1.30477 0.305101C1.11937 0.490509 1.0142 0.741321
+                        1.01192 1.00352C1.00964 1.26571 1.11044 1.51832 1.29259 1.70692L6.58559 6.99992L1.29259 12.2929C1.19708
+                        12.3852 1.1209 12.4955 1.06849 12.6175C1.01608 12.7395 0.988496 12.8707 0.987342 13.0035C0.986189 13.1363
+                        1.01149 13.268 1.06177 13.3909C1.11205 13.5138 1.18631 13.6254 1.2802 13.7193C1.37409 13.8132 1.48574 13.8875
+                        1.60864 13.9377C1.73154 13.988 1.86321 14.0133 1.99599 14.0122C2.12877 14.011 2.25999 13.9834 2.382 13.931C2.504
+                        13.8786 2.61435 13.8024 2.70659 13.7069L7.99959 8.41392L13.2926 13.7069C13.4812 13.8891 13.7338 13.9899 13.996
+                        13.9876C14.2582 13.9853 14.509 13.8801 14.6944 13.6947C14.8798 13.5093 14.985 13.2585 14.9873 12.9963C14.9895
+                        12.7341 14.8888 12.4815 14.7066 12.2929L9.41359 6.99992L14.7066 1.70692C14.8888 1.51832 14.9895 1.26571 14.9873
+                        1.00352C14.985 0.741321 14.8798 0.490509 14.6944 0.305101C14.509 0.119692 14.2582 0.0145233 13.996 0.0122448C13.7338
+                        0.00996641 13.4812 0.110761 13.2926 0.292919L7.99959 5.58592L2.70659 0.292919Z" fill="#2C2D2E"/>
+                    </svg>
+                </button>
+    
+                 
+                        <div class="review-item-modal">
+                                <div class="review-content-modal">
+    
+                                    <div class="review-row review-row-modal">
+    
+                                        <div class="info-author">
+                                            <div class="foto-container-review">
+                                            
+                                            </div>
+    
+                                            <div class="review-author-name">
+                                                <div class="review-author"></div>
+                                            </div>
+                                        </div>
+    
+                                        <div class="review-author-date"></div>
+    
+                                    </div>
+    
+                                    <div class="review-row review-row-inline">
+                    
+                                        <div class="info-resort">
+                                            <a href=""><h3 class="review-resort-name"></h3></a>
+                                        </div>
+    
+                                        <ul class="stars-list-modal"></ul>
+    
+                                    </div>
+                                    <div class="review-row">
+                                        <div class="review-resort-region"></div>
+                                    </div>
+    
+                                    
+                                    <div class="review-row">
+                                        <div class="review-text">
+                                            <p></p>
+                                        </div>
+                                    </div>
+                                  
+                                    <div class="image-container-reviews image-container-reviews-modal">
+                                        <div class="carusel-modal">
+                                     
+                    
+                              
+                                        </div>
+                                    </div>
+                          
+                                </div>
+                        </div>
+        
+    
+    
+        </div>
+    </div>
 
-<!--                    <div class="foto-container">-->
-<!--                        <label for="foto_review" class="foto-field" style="cursor: pointer;">-->
-<!--                            <div class="user_foto_container">-->
-<!--                                <img id="preview" class="user_foto" height="32px">-->
-<!--                            </div>-->
-<!--                        </label>-->
-<!--                        <input type="file" name="photo" id="foto_review">-->
-<!--                    </div>-->
-
-<!--                    <div class="review-author"></div>-->
-<!--                    <div class="review-text"></div>-->
-
-<!--                </div>-->
-
-<!--              </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
 
 
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
 	<!-- Initialize Swiper -->
 <script>
     var swiper = new Swiper(".mySwiper", {
         slidesPerView: 2,
-        spaceBetween: 80,
+        spaceBetween: 108,
         slidesPerGroup: 2,
         loop: false,
         loopFillGroupWithBlank: true,

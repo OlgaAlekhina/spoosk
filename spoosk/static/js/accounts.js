@@ -32,8 +32,19 @@ $(".get_value").click(function () {
 
 // Review submit
 $('#adding_review').on('submit', function(event){
-    event.preventDefault();
-    review_submit();
+    
+    const ratingValue = document.querySelector('input[id="rating_value"]').value;
+    console.log(ratingValue)
+    if (ratingValue < 1) {
+        alert('Оцените курорт');
+        event.preventDefault();
+    } else {
+        event.preventDefault();
+        review_submit();
+        const modal = document.getElementById('modal-add-review');
+        closeModal(modal);
+
+    }
 });
 
 // AJAX for review submit

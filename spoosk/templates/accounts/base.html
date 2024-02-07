@@ -9,10 +9,9 @@
         <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap&subset=cyrillic-ext" rel="stylesheet">
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
         <link rel="stylesheet" href="{% static 'css/accounts.css' %}">
-
-        <script defer src="{% static 'js/script.js' %}"></script>
-        <script defer src="{% static 'js/script_overlay.js' %}"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+        <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/reviews.css' %}">
 
         <title>Иван Иванов - spoosk</title>
     </head>
@@ -153,11 +152,11 @@
 
                             <nav class="nav__accounts">
                                 <ul class="menu__list-accounts">
-                                    <li class="menu__item-accounts">
-                                        <a href="#" class="menu__link-accounts menu__link-favorites" onclick="loadFavorites()">Избранное</a>
+                                    <li class="menu__item-accounts menu__item-favorites" onclick="loadFavorites()" >
+                                        <a href="#" class="menu__link-accounts menu__link-favorites">Избранное</a>
                                     </li>
-                                    <li class="menu__item-accounts">
-                                        <a href="#" class="menu__link-accounts menu__link-reviews" onclick="loadReviews()">Отзывы</a>
+                                    <li class="menu__item-accounts menu__item-reviews" onclick="loadReviews()">
+                                        <a href="#" class="menu__link-accounts menu__link-reviews">Отзывы</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -175,6 +174,9 @@
 
 
 
+
+
+
             </main>
 
             <footer class="footer">
@@ -186,6 +188,31 @@
             </footer>
 
         </div>
-    <script src="{% static 'js/profile.js' %}"></script>
+
+ <script src="{% static 'js/script.js' %}"></script>
+ <script src="{% static 'js/script_overlay.js' %}"></script>
+ <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+ <script src="{% static 'js/profile.js' %}"></script>
+
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+ 
+
+<!-- Initialize Swiper -->
+<script>
+  var swiper1 = new Swiper(".accountReviewsSwiper", {
+    slidesPerView: 1,
+    grid: {
+      rows: 2,
+    },
+    navigation: {
+          nextEl: ".swiper-button-n",
+          prevEl: ".swiper-button-p",
+      },
+  });
+</script>
+
+
+
     </body>
 </html>

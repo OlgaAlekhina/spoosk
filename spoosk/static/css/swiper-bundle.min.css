@@ -26,7 +26,7 @@
     position: relative;
     overflow: hidden;
     list-style: none;
-    padding: 0;
+    padding: 10px 10px 20px 10px;
     z-index: 1;
     display: block
 }
@@ -257,10 +257,10 @@
 
 .swiper-button-next,.swiper-button-prev {
     position: absolute;
-    top: var(--swiper-navigation-top-offset,50%);
-    width: 73px;
-    height: 70px;
-    margin-top: calc(0px - (var(--swiper-navigation-size)/ 2));
+    top: var(--swiper-navigation-top-offset, 35px);
+    width: 52px;
+    height: 52px;
+    /*margin-top: calc(0px - (var(--swiper-navigation-size)/ 2));*/
     z-index: 10;
     cursor: pointer;
     display: flex;
@@ -269,7 +269,37 @@
     color: var(--swiper-navigation-color,var(--swiper-theme-color))
 }
 
+.swiper-button-n,.swiper-button-p {
+    position: absolute;
+    top: var(--swiper-navigation-top-offset, 35px);
+    width: 52px;
+    height: 52px;
+    /*margin-top: calc(0px - (var(--swiper-navigation-size)/ 2));*/
+    z-index: 10;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--swiper-navigation-color,var(--swiper-theme-color))
+}
+
+.swiper-navigation-container {
+    position: relative;
+    width: 1112px;
+    margin: 0 auto;
+    display: flex;
+}
+
+.swiper-button-container {
+    position: relative;
+}
+
 .swiper-button-next.swiper-button-disabled,.swiper-button-prev.swiper-button-disabled {
+    opacity: .35;
+    cursor: auto;
+    pointer-events: none
+}
+.swiper-button-n.swiper-button-disabled,.swiper-button-p.swiper-button-disabled {
     opacity: .35;
     cursor: auto;
     pointer-events: none
@@ -280,8 +310,16 @@
     cursor: auto;
     pointer-events: none
 }
+.swiper-button-n.swiper-button-hidden,.swiper-button-p.swiper-button-hidden {
+    opacity: 0;
+    cursor: auto;
+    pointer-events: none
+}
 
 .swiper-navigation-disabled .swiper-button-next,.swiper-navigation-disabled .swiper-button-prev {
+    display: none!important
+}
+.swiper-navigation-disabled .swiper-button-n,.swiper-navigation-disabled .swiper-button-p {
     display: none!important
 }
 
@@ -293,22 +331,44 @@
     font-variant: initial;
     line-height: 1
 }
+.swiper-button-n:after,.swiper-button-p:after {
+    font-family: swiper-icons;
+    font-size: var(--swiper-navigation-size);
+    text-transform: none!important;
+    letter-spacing: 0;
+    font-variant: initial;
+    line-height: 1
+}
 
 .swiper-button-prev,.swiper-rtl .swiper-button-next {
-    left: var(--swiper-navigation-sides-offset,0px);
-    right: auto
+    left: auto;
+    right: 78px;
+}
+.swiper-button-p,.swiper-rtl .swiper-button-n {
+    left: auto;
+    right: 78px;
 }
 
 .swiper-button-prev:after,.swiper-rtl .swiper-button-next:after {
     content: 'prev'
 }
+.swiper-button-p:after,.swiper-rtl .swiper-button-n:after {
+    content: 'prev'
+}
 
 .swiper-button-next,.swiper-rtl .swiper-button-prev {
-    right: var(--swiper-navigation-sides-offset,0px);
-    left: auto
+    right: 10px;
+    left: auto;
+}
+.swiper-button-n,.swiper-rtl .swiper-button-p {
+    right: 10px;
+    left: auto;
 }
 
 .swiper-button-next:after,.swiper-rtl .swiper-button-prev:after {
+    content: 'next'
+}
+.swiper-button-n:after,.swiper-rtl .swiper-button-p:after {
     content: 'next'
 }
 
@@ -337,7 +397,7 @@
     top: var(--swiper-pagination-top,auto);
     left: 0;
     width: 100%;
-    padding-top: 68px;
+    padding-top: 50px;
 }
 
 .swiper-pagination-bullets-dynamic {
@@ -379,8 +439,8 @@
     height: var(--swiper-pagination-bullet-height,var(--swiper-pagination-bullet-size,8px));
     display: inline-block;
     border-radius: var(--swiper-pagination-bullet-border-radius,50%);
-    background: var(--swiper-pagination-bullet-inactive-color,#000);
-    opacity: var(--swiper-pagination-bullet-inactive-opacity, .2)
+    background: var(--swiper-pagination-bullet-inactive-color,#696969);
+    /*opacity: var(--swiper-pagination-bullet-inactive-opacity, .2)*/
 }
 
 button.swiper-pagination-bullet {

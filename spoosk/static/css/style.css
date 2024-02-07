@@ -22,6 +22,12 @@
     font-weight: 700;
     font-style: normal;
 }
+@font-face {
+    src: url('../fonts/Raleway-ExtraBold.ttf');
+    font-family: 'Raleway';
+    font-weight: 800;
+    font-style: normal;
+}
 
 *,
 *::after,
@@ -59,6 +65,7 @@ h6 {
 
 html,
 body {
+    width: 100%;
     height: 100%;
     font-family: 'Raleway', 'Helvetica', 'Arial', sans-serif;
     font-feature-settings: "lnum";
@@ -191,7 +198,6 @@ body {
 
 .page-reviews {
     padding-top: 86px;
-    padding-bottom: 192px;
 }
 
 .section-title {
@@ -718,16 +724,6 @@ body {
   background: #fff;
   padding: 36px 74px;
 }*/
-.modal__close-btn {
-    position: absolute;
-    top: 22px;
-    right: 40px;
-    border: none;
-    border-color: transparent;
-    padding: 5px;
-    background-color: #fff;
-    cursor: pointer;
-}
 
 .modal.open {
     visibility: visible;
@@ -1187,11 +1183,22 @@ body {
     height: 240px;
 }
 
+.card-image a::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 70%, rgb(42, 99, 166) 100%);
+  }
+
 .card-title {
     position: absolute;
 	bottom: 8px;
 	left: 21px;
 	width: 100%;
+    z-index: 20;
 }
 
 .card-title-name span {
@@ -1235,6 +1242,8 @@ body {
     border-radius: 0px 0px 5px 5px;
 
     cursor: initial;
+
+    z-index: 20;
 }
 
 .rating-content {
@@ -1374,7 +1383,18 @@ body {
 
 .btn-white:hover {
     border: 2px solid #005FF9;
+}
 
+.compr-btn {
+    opacity: 0.3;
+    cursor: default;
+}
+.compr-btn:hover {
+    border: 2px solid #D9D9D9;
+}
+.compr-btn:hover svg path {
+    cursor: default;
+    opacity: 0.3;
 }
 
 .favorites-btn {
@@ -1399,255 +1419,10 @@ body {
 
     text-align: center;
     text-decoration: none;
-    /* font-size: 16px;
-    font-weight: 600;
-    line-height: 19px;
-    color: #FFFFFF; */
 }
-
-/* .form-button a {
-    line-height: 19px;
-    color: #FFFFFF;
-    font-size: 16px;
-    font-weight: 600;
-} */
-
 .cards-btn-blue:hover {
     opacity: 0.7;
     cursor: pointer;
-}
-
-/* .btn {
-    border: none;
-    border-radius: 11px;
-    text-align: center;
-
-    cursor: pointer;
-}
-
-.btn-blue {
-    background: #005FF9;
-    padding-top: 16px;
-    padding-bottom: 16px;
-    padding-left: 24px;
-    padding-right: 24px;
-}
-
-.btn:hover {
-    opacity: 0.7;
-    cursor: pointer;
-}
-
-.btn:focus {
-    opacity: 0.7;
-    outline: none;
-}
-
-} */
-
-/* -----REVIEWS------------------------------------------------------- */
-
-.swiper {
-	width: 1112px;
-}
-
-.reviews-wrapper {
-    position: relative;
-}
-.chevron-left {
-    position: absolute;
-    bottom: 278px;
-    left: 0;
-
-    cursor: pointer;
-    z-index: 5;
-}
-.chevron-right {
-    position: absolute;
-    bottom: 278px;
-    right: 0;
-
-    cursor: pointer;
-    z-index: 5;
-}
-
-.reviews-content {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0px -50px;
-    justify-content: center;
-}
-.review-column {
-    padding: 10px 10px 10px 10px;
-}
-.review-item {
-    position: relative;
-    min-height: 380px;
-    padding: 20px;
-
-    background-color: #ffff;
-    border-radius: 32px;
-    box-shadow: 0px 6px 10px 2px #E9E9E9;
-}
-.review-content {
-    max-width: 456px;
-}
-
-.review-content .img-foto {
-    border-radius: 30px;
-    width: 180px;
-    height: 180px;
-}
-
-.review-content-text {
-    display: inline-block;
-    margin-left: 22px;
-}
-
-.review-author-name {
-    font-size: 20px;
-    line-height: 32px;
-    font-weight: 600;
-}
-.review-author-subname {
-    margin-top: -7px;
-
-    font-size: 16px;
-    line-height: 19px;
-    font-weight: 400;
-    letter-spacing: 1%;
-
-    color: #B1B2B7;
-}
-
-.review-author-date {
-    margin-top: 0px;
-
-    font-size: 16px;
-    line-height: 19px;
-    font-weight: 400;
-
-    color: #B1B2B7;
-}
-
-.review-resort-name {
-    margin-top: 8px;
-
-    font-size: 20px;
-    line-height: 24px;
-    font-weight: 600;
-
-    color: #005FF9;
-}
-
-.stars-list {
-    display: flex;
-    margin-top: 8px;
-    margin-bottom: 10px;
-}
-
-.stars-item:not(:last-child) {
-    margin: 0px 9px 0px 0px;
-}
-
-.rating {
-    display: flex;
-    align-items: center;
-}
-
-.rating img{
-    margin-right: 8px;
-}
-
-.rating div span {
-    font-size: 20px;
-    line-height: 32px;
-    font-weight: 600;
-    color: #444444;
-}
-
-
-/* .rating-montains {
-}
-.rating-skier {
-}
-.rating-lift {
-} */
-.review-text {
-    margin-top: 14px;
-    margin-bottom: 14px;
-}
-.review-title {
-    font-size: 20px;
-    line-height: 32px;
-    font-weight: 600;
-}
-.review-title-text {
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 400;
-    min-width: 456px;
-}
-
-.review-title-text p {
-    text-align: justify;
-    word-wrap: break-word;
-}
-
-.btn-reviews {
-    /*display: none;*/
-    position: absolute;
-    right: 24px;
-    bottom: 24px;
-    /*margin-left: 350px;
-    margin-right: 24px;*/
-    font-size: 16px;
-    line-height: 19px;
-    font-weight: 500;
-
-    color: #005FF9;
-}
-
-.ellipse-list {
-    max-width: 102px;
-    display: flex;
-    justify-content: space-between;
-    margin: 48px auto 0px auto;
-}
-
-.blue--active svg circle {
-    fill:#005FF9;
-}
-
-.ellipse-item a svg circle:hover {
-    fill:#005FF9;
-}
-
-.ellipse-item {
-    cursor: pointer;
-}
-
-.up {
-    position: absolute;
-    bottom: -94px;
-    right: 10px;
-
-    font-size: 16px;
-    line-height: 19px;
-    font-weight: 500;
-
-    color: #005FF9;
-}
-
-.dot {
-    cursor: pointer;
-    height: 13px;
-    width: 13px;
-    margin: 2px;
-    background-color: #bbb;
-    border-radius: 50%;
-    display: inline-block;
-    transition: background-color 0.6s ease;
 }
 
 /* -----FOOTER------------------------------------------------------- */
@@ -1885,6 +1660,7 @@ body {
     height: 24px;
     top: 28px;
     right: 28px;
+    padding: 5px;
     border: none;
     background-color: transparent;
     z-index: 5;
