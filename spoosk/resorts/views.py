@@ -352,20 +352,27 @@ def get_review(request, pk):
     review = SkiReview.objects.get(id=pk)
     images = list(ReviewImage.objects.filter(review=review).values_list('image'))
     author = review.author
+    review_date = review.add_at.strftime("%d.%m.%Y")
     if author.first_name == '':
         author_name = author.userprofile.name
+        author_avatar = author.userprofile.avatar.url
     else:
         if author.last_name != '':
             last_name = author.last_name[:1] + '.'
             author_name = author.first_name + ' ' + last_name
+            author_avatar = author.userprofile.avatar.url
         else:
             author_name = author.first_name
+            author_avatar = author.userprofile.avatar.url
     response_data = {}
     response_data['resort_name'] = review.resort.name
+    response_data['resort_region'] = review.resort.region
     response_data['author_name'] = author_name
+    response_data['author_avatar'] = author_avatar
     response_data['review_text'] = review.text
     response_data['review_rating'] = review.rating
     response_data['review_images'] = images
+    response_data['review_data_at'] = review_date
     return HttpResponse(
         json.dumps(response_data),
         content_type='application/json'

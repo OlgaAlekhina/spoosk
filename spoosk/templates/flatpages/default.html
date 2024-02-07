@@ -6,10 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap&subset=cyrillic-ext" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&display=swap&subset=cyrillic-ext" rel="stylesheet">
+
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/resorts.css' %}">
+    <link rel="stylesheet" href="{% static 'css/reviews.css' %}">
 
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
@@ -416,7 +418,8 @@
                                 </div>
 
                                 <div class="form-group remove-elem">
-                                    <div class="btn btn-blue btn-advanced-filters container1" id="open-modal-advanced-filters-btn">
+                                    <!-- <div class="btn btn-blue btn-advanced-filters container1" id="open-modal-advanced-filters-btn"> -->
+                                    <div class="btn btn-blue" id="open-modal-advanced-filters-btn">
                                         <img src="{% static 'image/filter/btn_filter_icon.svg' %}" width="24" height="24" alt="Расширенные фильтры">
                                     </div>
                                 </div>
@@ -576,8 +579,14 @@
 
 
             <section class="page-reviews">
+                <div class="wrapper reviews-wrapper">
+                    <div class="cards-wrapper">
+                        <h2 class="section-title section-title-card">Последние отзывы</h2>
+                    </div>
+                </div>
                 {% include "reviews.html"  %}
             </section>
+
         </main>
 
         <div class="button-block-up">
