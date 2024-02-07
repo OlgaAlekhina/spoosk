@@ -185,3 +185,41 @@ upload('foto_review', {
 })
 
 
+const radioButtons = document.querySelectorAll('.get_value');
+const submitButton = document.getElementById('submit_review');
+
+radioButtons.forEach((button) => {
+  button.addEventListener('change', (event) => {
+    const rating = event.target.value;
+    if (rating > 0) {
+      submitButton.style.backgroundColor = "#005FF9"; 
+      submitButton.style.color= "#ffffff";
+      submitButton.style.cursor = "pointer";
+    } else {
+      submitButton.style.backgroundColor = '';  // Revert to the default color when no rating is selected
+    }
+  });
+});
+
+
+
+function showPopup(popupId) {
+    let popup = document.getElementById(popupId);
+    let btn = document.getElementById(`btn-review-edit-${popupId}`);
+    popup.style.display = "block"; // показываем попап при наведении курсора на кнопку
+    btn.style.display = "none";
+}
+
+function hidePopup(popupId) {
+    let popup = document.getElementById(popupId);
+    let btn = document.getElementById(`btn-review-edit-${popupId}`);
+    
+    popup.addEventListener('mouseout', function(event) {
+        event.preventDefault();
+        // Если курсор уходит с попапа, то скрываем попап
+        if (!event.relatedTarget || !popup.contains(event.relatedTarget)) {
+            popup.style.display = "none";
+            btn.style.display = "block";
+        }
+    });
+}

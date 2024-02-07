@@ -116,10 +116,34 @@
   border: none;
   border-radius: 12px;
   background: #fff;
+  cursor: pointer;
+
+  font-family: Raleway;
+  line-height: 30.5px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #B1B2B7;
+}
+
+.menu__item-favorites.active {
+  background: #005FF9;
+  color: #fff;
+}
+.menu__link-favorites.active {
+  color: #fff;
+}
+
+.menu__item-reviews.active {
+  background: #005FF9;
+  color: #fff;
+}
+.menu__link-reviews.active {
+  color: #fff;
 }
 
 .menu__item-accounts:hover {
   background: #005FF9;
+  color: #fff;
 }
 
 .menu__link-accounts {
@@ -145,8 +169,7 @@
 } */
 
 .editing_profile-container {
-  max-width: 771px;
-  margin-bottom: 266px;
+  margin-bottom: 200px;
 }
 
 .editing_profile-box {
@@ -399,51 +422,3 @@
 .cards-wrapper-favorites {
     padding-left: 0px;
 }
-
-/*------------*/
-.reviews-account-container {
-    margin-bottom: 17px;
-}
-.reviews-account-box {
-    padding: 0 10px 0 20px;
-}
-.reviews-content-account {
-    display: flex;
-    flex-wrap: wrap;
-}
-.review-column-account {
-    margin-bottom: 24px;
-}
-.review-item-account {
-    min-width: 744px;
-    padding: 16px 10px 52px 20px;
-
-    background-color: #ffff;
-    border-radius: 32px;
-    box-shadow: 0px 6px 10px 2px #E9E9E9;
-}
-.review-content-account {
-    display: flex;
-}
-
-.review-content-account .img-foto {
-    border-radius: 30px;
-    width: 207px;
-    height: 207px;
-}
-
-.review-content-text-account {
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    margin-left: 22px;
-}
-
-.review-resort-name-account {
-    font-size: 20px;
-    line-height: 24px;
-    font-weight: 600;
-
-    color: #005FF9;
-}
-
