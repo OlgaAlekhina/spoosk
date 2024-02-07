@@ -1,4 +1,5 @@
 const modals = Array.from(document.querySelectorAll('.modal'));
+console.log(modals)
 const closeModalBtns = Array.from(document.querySelectorAll('.modal__close-btn'));
 
 function resetForms() {
@@ -28,15 +29,41 @@ function toggleScrollLock() {
 }
 
 function openModal(modal) {
-  modal.classList.add("open");
-  toggleScrollLock();
+    scrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+
+    modal.classList.add("open");
+    toggleScrollLock();
 }
 
 function closeModal(modal) {
+    console.log(modal)
+    scrollY = window.scrollY;
+    document.body.style.position = 'static';
+    window.scrollTo(0, scrollY);
+
     modal.classList.remove("open");
     toggleScrollLock();
     resetForms();
 }
+
+closeModalBtns.forEach((btn, i) => {
+    console.log(btn)
+    console.log(i)
+    btn.addEventListener("click", function () {
+        console.log(modals[i])
+        closeModal(modals[i]);
+    });
+});
+
+modals.forEach((modal) => {
+    modal.addEventListener("click", function (event) {
+        if (!event._isClickWithInModal) {
+            closeModal(modal);
+        }
+    });
+});
 
 // Привязка обработчика события "click" для кнопки "Профиль", открытия модального окна авторизации/регистрации
 document.getElementById("open-modal-profile-btn").addEventListener("click", function() {
@@ -56,27 +83,18 @@ if (document.getElementById("open-modal-add-review")) {
     });
 }
 
-// Привязка обработчика события "click" для кнопки "Подробнее" на карточке отзыва
-if (document.getElementById("open-modal-review-full")) {
-    document.getElementById("open-modal-review-full").addEventListener("click", function() {
-        openModal(document.getElementById("modal-review-full"))
+// Открыть модальное окно удаления аккаунта
+if (document.getElementById("btn-delete-account")) {
+    document.getElementById("btn-delete-account").addEventListener("click", function() {
+        openModal(document.getElementById("modal-account-delete"))
     });
 }
 
-closeModalBtns.forEach((btn, i) => {
-    btn.addEventListener("click", function () {
-        closeModal(modals[i]);
+if (document.querySelector(".modal .modal-review__box")) {
+    document.querySelector(".modal-review__box").addEventListener('click', function (event) {
+      event._isClickWithInModal = true;
     });
-});
-
-modals.forEach((modal) => {
-    modal.addEventListener("click", function (event) {
-        if (!event._isClickWithInModal) {
-            closeModal(modal);
-        }
-    });
-});
-
+}
 
 if (document.querySelector(".modal .modal_box")) {
   document.querySelector(".modal_box").addEventListener('click', function (event) {
@@ -112,9 +130,186 @@ document.addEventListener("keydown", function (event) {
     }
 });
 
-// Открыть модальное окно удаления аккаунта
-if (document.getElementById("btn-delete-account")) {
-document.getElementById("btn-delete-account").addEventListener("click", function() {
-    openModal(document.getElementById("modal-account-delete"))
-});
+function clearModalContent() {
+    const nameElement = document.querySelector('.review-resort-name');
+    const regionElement = document.querySelector('.review-resort-region');
+    const textElement = document.querySelector('.review-text');
+    const authorElement = document.querySelector('.review-author');
+    const starsList = document.querySelector('.stars-list-modal');
+    const caruselModal = document.querySelector('.carusel-modal');
+
+    if (nameElement) nameElement.textContent = '';
+    if (regionElement) regionElement.textContent = '';
+    if (textElement) textElement.textContent = '';
+    if (authorElement) authorElement.textContent = '';
+    if (starsList) starsList.innerHTML = ''; 
+    if (caruselModal) caruselModal.innerHTML = '';
+
+    
+ }
+
+function getReviewModalContent(response) {
+
+    const modal = document.getElementById('modal-review-full');
+
+    const nameElement = modal.querySelector('.review-resort-name');
+    nameElement.textContent = response.resort_name;
+
+    const regionElement = modal.querySelector('.review-resort-region');
+    regionElement.textContent = response.resort_region;
+  
+    const data_at = modal.querySelector('.review-author-date');
+    data_at.textContent = response.review_data_at;
+
+    const textElement = modal.querySelector('.review-text').querySelector('p');
+    textElement.textContent = response.review_text;
+
+    const authorElement = modal.querySelector('.review-author');
+    authorElement.textContent = response.author_name;
+
+    const authorFoto = modal.querySelector('.foto-container-review');
+    const avatar = document.createElement('img');
+    avatar.classList.add('info-user__foto')
+    avatar.src = String(response.author_avatar);
+    avatar.alt = 'Аватар';
+    authorFoto.appendChild(avatar);
+
+    const rating = response.review_rating;
+    const starsList = document.querySelector('.stars-list-modal');
+    
+    for (let i = 1; i <= 5; i++) {
+        let starsItem = document.createElement('li');
+        starsItem.classList.add("stars-item");
+        let starImage = document.createElement('img');
+        if (i <= rating) {
+            starImage.src = '/static/image/reviews/star_yellow.svg';
+            starImage.alt = 'желтая звезда';
+        } else {
+            starImage.src = '/static/image/reviews/star_grey.svg';
+            starImage.alt = 'серая звезда';
+        }
+        starsItem.appendChild(starImage);
+        starsList.appendChild(starsItem);
+    }
+
+    const images = response.review_images
+    const caruselModal = document.querySelector('.carusel-modal');
+
+    for (let i = 0; i < images.length; i++) {
+        let imageContainer = document.createElement('div');
+        imageContainer.classList.add("image-container");
+
+        let image = document.createElement('img');
+        let src = images[i][0]
+        image.src = '/' + String(src);
+        image.alt = 'Фото курорта';
+
+        imageContainer.appendChild(image);
+        caruselModal.appendChild(imageContainer);
+    }
+     //modal.classList.add("open");
+}
+
+function getReviewEditModalContent(response) {
+
+    const modal = document.getElementById('modal-edit-review');
+
+    const form = document.querySelector('.form__editing_review');
+
+    const nameElement = modal.querySelector('.review-resort-name');
+    nameElement.textContent = response.resort_name;
+
+    const regionElement = modal.querySelector('.review-resort-region');
+    regionElement.textContent = response.resort_region;
+  
+    const textElement = modal.querySelector('.form__text');
+    textElement.textContent = response.review_text;
+
+    const rating = response.review_rating;
+    const starsList = document.querySelector('.stars');
+
+
+    for (let i = 1; i <= 5; i++) {
+        let starsItem = document.createElement('input');
+        starsItem.classList.add("get_value");
+        starsItem.type = "radio"
+        starsItem.name = "rating"
+        starsItem.value = i
+
+        if (i <= rating) {
+            starsItem.classList.add("get_value2");
+            starsItem.classList.remove("get_value");
+          }
+
+        starsList.appendChild(starsItem);
+    }
+
+    const images = response.review_images;
+
+    if(images.length > 0) {
+
+        let labelAdd = document.createElement('div');
+        labelAdd.classList.add('label__adding_review')
+
+        let imgCont = document.createElement('div');
+        imgCont.classList.add('image-container-reviews');
+        imgCont.classList.add('image-container-reviews-modal');
+
+        let caruselModal = document.createElement('div');
+        caruselModal.classList.add('carusel-modal');
+
+        for (let i = 0; i < images.length; i++) {
+            let imageContainer = document.createElement('div');
+            imageContainer.classList.add("image-container");
+    
+            let image = document.createElement('img');
+            let src = images[i][0]
+            image.src = '/' + String(src);
+            image.alt = 'Фото курорта';
+    
+            imageContainer.appendChild(image);
+            caruselModal.appendChild(imageContainer);
+        }
+        
+        imgCont.appendChild(caruselModal);
+
+        form.appendChild(labelAdd);
+        form.appendChild(imgCont);
+        
+    }
+
+
+}
+
+
+function getReview(id) {
+    clearModalContent();
+    var modal = document.getElementById('modal-review-full');
+    openModal(modal);
+    origin = location.origin;
+    $.ajax({
+        url: origin + "/resorts/get_review/" + id + "/", // путь к обработчику на сервере
+        type: "GET",
+
+        // обработка успешного ответа
+        success: function(response) {
+            getReviewModalContent(response);
+        }
+    });
+}
+
+function getEditReview(id) {
+    clearModalContent();
+    var modal = document.getElementById('modal-edit-review');
+    openModal(modal);
+    origin = location.origin;
+    $.ajax({
+        url: origin + "/resorts/get_review/" + id + "/", // путь к обработчику на сервере
+        type: "GET",
+
+        // обработка успешного ответа
+        success: function(response) {
+            getReviewEditModalContent(response);
+        }
+    });
 }

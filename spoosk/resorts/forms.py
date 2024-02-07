@@ -9,7 +9,7 @@ class SkiReviewForm(forms.ModelForm):
         model = SkiReview
         fields = ['resort', 'author', 'text']
         widgets = {
-            'text': forms.Textarea(attrs={'class': 'form__text', 'autocomplete': 'off', 'placeholder': 'Введите свой отзыв здесь', 'rows': "10", 'cols': "90", 'maxlength': "2000"})
+            'text': forms.Textarea(attrs={'class': 'form__text', 'autocomplete': 'off', 'placeholder': 'Напишите свой отзыв здесь', 'rows': "8", 'cols': "114", 'maxlength': "2000"})
         }
 
     def __init__(self, *args, **kwargs):
