@@ -369,13 +369,28 @@ function addtoFavorites(id_resort) {
 
         // handle a successful response
         success : function(data) {
+            button = $("#" + favorites_id);
             if (data.action === 'delete') {
-                $("#" + favorites_id).removeClass("favorites-btn");
-                $("#" + favorites_id).addClass("btn-white");
+                $('#resort-favorites-text').html("Добавить <br>в избранное");
+                if (button.hasClass("favorites-btn")) {
+                    button.removeClass("favorites-btn");
+                    button.addClass("btn-white");
+                }
+                if (button.hasClass("resort-btn-favorites")) {
+                    button.removeClass("resort-btn-favorites");
+                    button.addClass("resort-btn");
+                }
             }
             else {
-                $("#" + favorites_id).removeClass("btn-white");
-                $("#" + favorites_id).addClass("favorites-btn");
+                $('#resort-favorites-text').html("Добавлено <br>в избранное");
+                if (button.hasClass("btn-white")) {
+                    button.removeClass("btn-white");
+                    button.addClass("favorites-btn");
+                }
+                if (button.hasClass("resort-btn")) {
+                    button.removeClass("resort-btn");
+                    button.addClass("resort-btn-favorites");
+                }
             }
         },
     });

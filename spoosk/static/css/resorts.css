@@ -156,11 +156,15 @@
     fill-rule: nonzero;
     clip-rule: inherit;
     fill-opacity: 1;
-    fill: #fff; 
+    fill: #fff;
     stroke: #fff; 
 }
 
 .resort-btn-favorites {
+    border-radius: 8px;
+    user-select: none;
+    padding: 17px 43px;
+    border: 2px solid #FAA800;
     background: #FAA800;
 }
 .resort-btn-favorites svg path {
@@ -168,8 +172,8 @@
     fill-rule: nonzero;
     clip-rule: inherit;
     fill-opacity: 1;
-    fill: #fff; 
-    stroke: #fff; 
+    fill: #fff;
+    stroke: #fff;
 }
 
 .resort-btn-comparison:hover {

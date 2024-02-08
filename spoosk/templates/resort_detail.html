@@ -1,6 +1,6 @@
 {% extends 'flatpages/default_resort.html' %}
 {% load static %}
-
+{% load custom_filters %}
 {% block title %}
     <title>{{ resort.name }}</title>
 {% endblock title %}
@@ -34,20 +34,17 @@
                                     <div class="resort-button">
 
                                         <div class="resort-button-box left">
-                                            <button class="resort-btn">
+                                            <button class="{% if resort|in_favorites:request.user %} resort-btn-favorites {% else %} resort-btn {% endif %}" id="favorites-{{ resort.id_resort }}" {% if request.user.is_authenticated %} onclick="addtoFavorites('{{ resort.id_resort }}')" {% endif %}>
                                             <!-- <button class="resort-btn resort-btn-favorites"> -->
-                                                <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M15.5639 5.34489C17.1372 3.87263 19.0409 2.5 21.7512 2.5C23.8888 2.5 
-                                                    25.9861 3.36891 27.4974 4.88069C30.6016 7.9839 30.6338 13.2387 27.4976 16.3737L16.4476 27.4237C16.2131 27.6581 15.8952 
-                                                    27.7898 15.5637 27.7898C15.2322 27.7898 14.9142 27.6581 14.6798 27.4237L3.62979 16.3737C0.493194 13.2371 0.493194 8.0175 
-                                                    3.62979 4.8809C5.15383 3.35686 7.22086 2.50067 9.37617 2.50067C12.0914 2.50067 13.9902 3.87122 15.5639 5.34489ZM21.7512 
-                                                    5C19.6445 5 18.2178 6.20342 16.4476 7.97366C16.2131 8.20809 15.8952 8.33978 15.5637 8.33978C15.2322 8.33978 14.9142 8.20809 
-                                                    14.6798 7.97367C12.9061 6.2 11.4879 5.00067 9.37617 5.00067C7.8839 5.00067 6.45275 5.59347 5.39756 6.64867C3.23727 8.80895
-                                                     3.23727 12.4456 5.39756 14.6059L15.5637 24.772L25.7298 14.6059C27.8834 12.4533 27.8639 8.78176 25.73 6.64887C24.6875 5.60593 
-                                                     23.2258 5 21.7512 5Z" fill="#FAA800" fill-opacity="1"/>
+                                                <svg width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M 15.5639 5.3449 C 17.1372 3.8726 19.0409 2.5 21.7512 2.5 C 23.8888
+                                                    2.5 25.9861 3.3689 27.4974 4.8807 C 30.6016 7.9839 30.6338 13.2387 27.4976 16.3737 L 16.4476 27.4237 C 16.2131 27.6581
+                                                    15.8952 27.7898 15.5637 27.7898 C 15.2322 27.7898 14.9142 27.6581 14.6798 27.4237 L 3.6298 16.3737 C 0.4932 13.2371
+                                                    0.4932 8.0175 3.6298 4.8809 C 5.1538 3.3569 7.2209 2.5007 9.3762 2.5007 C 12.0914 2.5007 13.9902 3.8712 15.5639 5.3449
+                                                    Z Z" stroke="#FAA800" stroke-width="2px" fill-opacity="1"/>
                                                     </svg>
                                             </button>
-                                            <div class="resort-btn-text">Добавить <br>в избранное</div>
+                                            <div class="resort-btn-text" id="resort-favorites-text">{% if resort|in_favorites:request.user %} Добавлено {% else %} Добавить {% endif %}<br>в избранное</div>
                                             <!-- <div class="resort-btn-text">Добавлено <br>в избранное</div> -->
                                         </div>
 
