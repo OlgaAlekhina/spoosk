@@ -244,43 +244,52 @@ function getReviewEditModalContent(response) {
         starsList.appendChild(starsItem);
     }
 
+    const fotoContainer = modal.querySelector('.foto-container');
     const images = response.review_images;
+    console.log(images)
+
 
     if(images.length > 0) {
 
-        let labelAdd = document.createElement('div');
-        labelAdd.classList.add('label__adding_review')
-
-        let imgCont = document.createElement('div');
-        imgCont.classList.add('image-container-reviews');
-        imgCont.classList.add('image-container-reviews-modal');
-
-        let caruselModal = document.createElement('div');
-        caruselModal.classList.add('carusel-modal');
-
         for (let i = 0; i < images.length; i++) {
-            let imageContainer = document.createElement('div');
-            imageContainer.classList.add("image-container");
-    
+
+            let previewImage = document.createElement('div');
+            previewImage.classList.add('preview-image')
+
             let image = document.createElement('img');
             let src = images[i][0]
             image.src = '/' + String(src);
-            image.alt = 'Фото курорта';
-    
-            imageContainer.appendChild(image);
-            caruselModal.appendChild(imageContainer);
-        }
-        
-        imgCont.appendChild(caruselModal);
+            image.alt = getFileName(String(src));
 
-        form.appendChild(labelAdd);
-        form.appendChild(imgCont);
-        
+            let previewRemove = document.createElement('div');
+            previewRemove.classList.add('preview-remove');
+            previewRemove.setAttribute('data-name', getFileName(String(src)));
+            previewRemove.innerHTML = '&times;';
+
+            let previewInfo = document.createElement('div');
+            previewInfo.classList.add('preview-info')
+    
+            previewImage.appendChild(previewRemove);
+            previewImage.appendChild(image);
+            previewImage.appendChild(previewInfo);
+
+            fotoContainer.appendChild(previewImage);
+        }
     }
 
 
 }
 
+function getFileName(url) {
+  const regex = /\/([^\/]+\.jpg)$/i;
+  const result = url.match(regex);
+
+  if (result) {
+    return result[1];
+  } else {
+    return 'Файл не найден';
+  }
+}
 
 function getReview(id) {
     clearModalContent();

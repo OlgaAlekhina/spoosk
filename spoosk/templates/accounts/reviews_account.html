@@ -353,6 +353,17 @@
                 <textarea name="text" cols="114" rows="8" class="form__text" autocomplete="off" placeholder="Напишите свой отзыв здесь" maxlength="2000" id="id_text"></textarea>
                 {{ review_form.text }}
                 {{ review_form.author }}
+
+                <div class="label__adding_review">Дополни свой отзыв фотографиями</div>
+
+                <div class="foto-container">
+                    <label for="foto_review" class="foto-field" style="cursor: pointer;">
+                        <div class="">
+                            <img id="preview" class="user_foto" height="32px">
+                        </div>
+                    </label>
+                    <input type="file" name="photo" id="foto_review" multiple="true" accept=".png,.jpg,.jpeg">
+                </div>
  
 
                 <div class="review-row review-row__btn">
