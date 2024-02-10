@@ -155,6 +155,9 @@ function getReviewModalContent(response) {
     const nameElement = modal.querySelector('.review-resort-name');
     nameElement.textContent = response.resort_name;
 
+    const urlElement = modal.querySelector('#resort_link');
+    urlElement.href = response.resort_url;
+
     const regionElement = modal.querySelector('.review-resort-region');
     regionElement.textContent = response.resort_region;
   
@@ -302,6 +305,7 @@ function getReview(id) {
 
         // обработка успешного ответа
         success: function(response) {
+            console.log(response);
             getReviewModalContent(response);
         }
     });
