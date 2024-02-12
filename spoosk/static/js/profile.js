@@ -79,6 +79,29 @@ function loadReviews() {
     });
 };
 
+// Review edit
+function editReview() {
+    button = document.querySelector('.form__button');
+    id_resort = button.id;
+    console.log(id_resort);
+    origin = location.origin;
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    console.log(csrftoken);
+    $.ajax({
+        headers: {'X-CSRFToken': csrftoken},
+        url : origin + "/edit_review/" + id_resort + "/", // the endpoint
+        type : "PATCH", // http method
+        data: {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+        },
+
+        // handle a successful response
+        success : function(json) {
+            console.log('success');
+        },
+    });
+};
+
 // makes forms protected from CSRF
 $(function() {
 

@@ -280,3 +280,7 @@ def user_reviews(request):
     user = request.user
     reviews = SkiReview.objects.filter(author=user)
     return render(request, 'accounts/reviews_account.html', context={'reviews': reviews})
+
+
+def edit_review(request, pk):
+    return JsonResponse({"success": "Edit review successfully!"}, status=200)
