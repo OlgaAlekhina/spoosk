@@ -231,6 +231,9 @@ function getReviewEditModalContent(response) {
     const rating = response.review_rating;
     const starsList = document.querySelector('.stars');
 
+    const button = document.querySelector('.form__button');
+    button.id = response.resort_id;
+
 
     for (let i = 1; i <= 5; i++) {
         let starsItem = document.createElement('input');
