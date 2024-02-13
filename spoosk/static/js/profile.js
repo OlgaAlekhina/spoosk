@@ -80,20 +80,23 @@ function loadReviews() {
 };
 
 // Review edit
-function editReview() {
-    button = document.querySelector('.form__button');
-    id_resort = button.id;
-    console.log(id_resort);
+function editReview(id) {
     origin = location.origin;
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    console.log(csrftoken);
+    var form_data = new FormData();
+    form_data.append('text', $('#id_text').val());
+    for (var key of form_data.entries()) {
+        console.log(key[0] + ', ' + key[1]);
+    }
     $.ajax({
         headers: {'X-CSRFToken': csrftoken},
-        url : origin + "/edit_review/" + id_resort + "/", // the endpoint
-        type : "PATCH", // http method
-        data: {
-            csrfmiddlewaretoken: '{{ csrf_token }}',
-        },
+        url : origin + "/edit_review/" + id + "/", // the endpoint
+        type : "POST", // http method
+        processData: false,
+        contentType: false,
+        cache: false,
+        data: form_data,
+        enctype: 'multipart/form-data',
 
         // handle a successful response
         success : function(json) {

@@ -336,9 +336,9 @@
                     0.00996641 13.4812 0.110761 13.2926 0.292919L7.99959 5.58592L2.70659 0.292919Z" fill="#2C2D2E"/>
                 </svg>
             </button>
-                <form onsubmit="return false;">
+
+            <form onsubmit="return false;" method="POST" class="form__editing_review" enctype="multipart/form-data" id="editing_review">
                 {% csrf_token %}
-<!--            <form method="POST" class="form__editing_review" enctype="multipart/form-data" id="editing_review">-->
                 <div class="review-resort-name resort-name__adding_review"></div>
                 <div class="review-resort-region"></div>
 
@@ -367,10 +367,9 @@
  
 
                 <div class="review-row review-row__btn">
-                    <button class="form__button" type="submit" id="" onclick="editReview()">Сохранить отзыв</button>
+                    <button class="form__button" type="submit" id="" onclick="editReview(this.id)">Сохранить отзыв</button>
                 </div>
-                </form>
-<!--            </form>-->
+            </form>
 
 
     

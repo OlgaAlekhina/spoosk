@@ -232,7 +232,7 @@ function getReviewEditModalContent(response) {
     const starsList = document.querySelector('.stars');
 
     const button = document.querySelector('.form__button');
-    button.id = response.resort_id;
+    button.id = response.review_id;
 
 
     for (let i = 1; i <= 5; i++) {

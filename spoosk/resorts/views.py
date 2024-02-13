@@ -348,6 +348,7 @@ def add_resort(request, pk):
         )
 
 
+# get review data in modal
 def get_review(request, pk):
     review = SkiReview.objects.get(id=pk)
     images = list(ReviewImage.objects.filter(review=review).values_list('image'))
@@ -367,7 +368,7 @@ def get_review(request, pk):
             author_name = author.first_name
     response_data = {}
     response_data['resort_name'] = review.resort.name
-    response_data['resort_id'] = pk
+    response_data['review_id'] = pk
     response_data['resort_region'] = review.resort.region
     response_data['resort_url'] = review.resort.get_absolute_url()
     response_data['author_name'] = author_name
