@@ -142,7 +142,7 @@ function get_filter(jsonData) {
                 $(".page-cards").html(response);
                 $(".page-reviews").remove();
                 $("#modal-advanced-filters").removeClass("open");
-                $("body").removeClass('no-scroll')
+                $("body").removeClass('no-scroll');
                 $("#advanced-filter").trigger("reset");
             },
         });

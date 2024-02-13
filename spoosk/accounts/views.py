@@ -282,5 +282,17 @@ def user_reviews(request):
     return render(request, 'accounts/reviews_account.html', context={'reviews': reviews})
 
 
+# endpoint for editing review
 def edit_review(request, pk):
-    return JsonResponse({"success": "Edit review successfully!"}, status=200)
+    if request.method == "POST":
+        review = SkiReview.objects.get(id=pk)
+        review.text = request.POST.get('text')
+        review.save()
+        return JsonResponse({"success": "Edit review successfully!"}, status=200)
+    else:
+        raise Http404
+
+
+# delete review from database
+def delete_review(request, pk):
+    pass
