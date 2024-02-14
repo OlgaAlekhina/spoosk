@@ -142,8 +142,10 @@ function get_filter(jsonData) {
                 $(".page-cards").html(response);
                 $(".page-reviews").remove();
                 $("#modal-advanced-filters").removeClass("open");
+                $("#modal-advanced-filters").html("");
                 $("body").removeClass('no-scroll');
-                $("#advanced-filter").trigger("reset");
+                $("body").removeAttr("style");
+//                $("#advanced-filter").trigger("reset");
             },
         });
 };
