@@ -55,8 +55,29 @@ class Region:
 # endpoint for advanced filter request
 def advanced_filter(request):
     data = request.GET
+    easy = True if 'have_green_skitrails' in data else False
+    medium = True if 'have_blue_skitrails' in data else False
+    complex = True if 'have_red_skitrails' in data else False
+    difficult = True if 'have_black_skitrails' in data else False
+    freeride = True if 'have_freeride' in data else False
+    snowpark = True if 'have_snowpark' in data else False
+    bugel = True if 'have_bugelny' in data else False
+    chair = True if 'have_armchair' in data else False
+    gondola = True if 'have_gondola' in data else False
+    travelator = True if 'have_travelators' in data else False
+    adult = True if 'have_adult_school' in data else False
+    if 'airport_distance' in data:
+        distance = 0 if data.get('airport_distance') == '50' else 100
+    else:
+        distance = 200
+    child = True if 'have_children_school' in data else False
+    rental = True if 'have_rental' in data else False
+    evening = True if 'have_evening_skiing' in data else False
     filter_results = MainFilter(data).qs
-    html = render_to_string('base_searching_results2.html', context={'resorts': filter_results, 'resorts_length': len(filter_results)}, request=request)
+    html = render_to_string('base_searching_results2.html', context={'easy': easy, 'medium': medium, 'complex': complex, 'difficult': difficult, 'freeride': freeride,
+                                                                     'snowpark': snowpark, 'bugel': bugel, 'chair': chair, 'gondola': gondola, 'travelator': travelator,
+                                                                     'adult': adult, 'child': child, 'rental': rental, 'evening': evening, 'distance': distance,
+                                                                     'resorts': filter_results, 'resorts_length': len(filter_results)}, request=request)
     return JsonResponse(html, safe=False)
 
 

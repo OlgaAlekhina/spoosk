@@ -2094,3 +2094,32 @@ input[type="radio"]{
 .menu__link-logout::before {
   background: url(../image/accounts/tuiIconLogoutLarge.svg) no-repeat;
 }
+
+/* advanced filter on search results page */
+
+.filter-wrapper {
+    float: left;
+    width: 305px;
+}
+
+.search-header {
+    margin-left: 0px;
+    margin-top: 0px;
+}
+
+.pl-0 {
+    padding-left: 0px;
+}
+
+.ml-0 {
+    margin-left: 0px;
+}
+
+.mrl-15 {
+    margin-right: 15px;
+    margin-left: 15px;
+}
+
+.search-slider {
+    width: 250px;
+}

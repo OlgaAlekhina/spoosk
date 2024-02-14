@@ -1,5 +1,108 @@
 {% load custom_filters %}
 <div class="wrapper">
+    <div class="filter-wrapper">
+        <h1 class="filters search-header">Фильтры</h1>
+            <form id="advanced-filter">
+                <div id="overlayFilters">
+                    <h2 class="filters-track pl-0">Трассы</h2>
+                        <div class="track-block">
+                            <div class="track-block-name1 pl-0">
+                                <div class="checkbox-name">
+                                    <input type="checkbox" class="custom-checkbox" id="easy" name="trails" {% if easy %} checked {% endif %}>
+                                    <label class="line-green label1" for="easy">Легкие</label>
+                                </div>
+                                <div class="checkbox-name">
+                                    <input type="checkbox" class="custom-checkbox" id="medium" name="trails" {% if medium %} checked {% endif %}>
+                                    <label class="line-blue label1" for="medium">Средней сложности</label>
+                                </div>
+                                <div class="checkbox-name">
+                                    <input type="checkbox" class="custom-checkbox" id="increased-complexity" name="trails" {% if complex %} checked {% endif %}>
+                                    <label class="line-orange label1" for="increased-complexity">Повышенной сложности</label>
+                                </div>
+                                <div class="checkbox-name">
+                                    <input type="checkbox" class="custom-checkbox" id="difficult" name="trails" {% if difficult %} checked {% endif %}>
+                                    <label class="line-black label1" for="difficult">Сложные</label>
+                                </div>
+                            </div>
+                            <div class="track-block-name2 pl-0">
+                                <div class="checkbox-name">
+                                    <input type="checkbox" class="custom-checkbox" id="freeride" name="trails" {% if freeride %} checked {% endif %}>
+                                    <label class="line-none label1" for="freeride">Фрирайд</label>
+                                </div>
+                                <div class="checkbox-name">
+                                    <input type="checkbox" class="custom-checkbox" id="snowpark" name="trails" {% if snowpark %} checked {% endif %}>
+                                    <label class="line-none label1" for="snowpark">Сноупарк</label>
+                                </div>
+                            </div>
+                        </div>
+                    <h2 class="filters-lift pl-0">Подъемники</h2>
+                        <div class="lift-block">
+                            <div class="lift-block-name1 pl-0">
+                                <div class="checkbox-name">
+                                    <input type="checkbox" class="custom-checkbox" id="bygel" name="lifts" {% if bugel %} checked {% endif %}>
+                                    <label class="lift-name label1" for="bygel">Бугельные</label>
+                                </div>
+                                <div class="checkbox-name">
+                                    <input type="checkbox" class="custom-checkbox" id="chairlifts" name="lifts" {% if chair %} checked {% endif %}>
+                                    <label class="lift-name label1" for="chairlifts">Кресельные</label>
+                                </div>
+                            </div>
+                            <div class="lift-block-name2 pl-0">
+                                <div class="checkbox-name">
+                                    <input type="checkbox" class="custom-checkbox" id="gandola" name="lifts" {% if gondola %} checked {% endif %}>
+                                    <label class="lift-name label1" for="gandola">Гандолы</label>
+                                </div>
+                                <div class="checkbox-name">
+                                    <input type="checkbox" class="custom-checkbox" id="travelators" name="lifts" {% if travelator %} checked {% endif %}>
+                                    <label class="lift-name label1" for="travelators">Детские травалаторы</label>
+                                </div>
+                            </div>
+                        </div>
+                    <h2 class="filters-school pl-0">Горнолыжные школы/инструктора</h2>
+                        <div class="school-block">
+                            <div class="school-block-name1 pl-0">
+                                <div class="checkbox-name">
+                                    <input type="checkbox" class="custom-checkbox" id="adults" name="school" {% if adult %} checked {% endif %}>
+                                    <label class="school-name label1" for="adults">Для взрослых</label>
+                                </div>
+                            </div>
+                            <div class="school-block-name2 pl-0">
+                                <div class="checkbox-name">
+                                    <input type="checkbox" class="custom-checkbox" id="children" name="school" {% if child %} checked {% endif %}>
+                                    <label class="school-name label1" for="children">Для детей</label>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="filters-distance-block">
+                        <h2 class="filters-distance pl-0">Расстояние от ближайшего аэропорта</h2>
+                            <div class="slider-box mrl-15">
+                                <input type="range" step="100" min="0" max="200" value="{{ distance }}" list="rangeList" class="slider search-slider" id="distance">
+                            </div>
+                                <div class="slider-box-name ml-0">
+                                    <div class="slider-name">Не более 50 км</div>
+                                    <div class="slider-name">Не более 100 км</div>
+                                    <div class="slider-name">Не важно</div>
+                                </div>
+                    </div>
+                    <div>
+                        <div class="filters-additional-block">
+                            <div class="additional-block1 ml-0">
+                                <div>
+                                    <input type="checkbox" class="custom-checkbox2" id="rent" {% if rental %} checked {% endif %}>
+                                    <label for="rent" class="additional-name label2">Прокат оборудования</label>
+                                </div>
+                            </div>
+                            <div class="additional-block2 ml-0">
+                                <div>
+                                    <input type="checkbox" class="custom-checkbox2" id="skating" {% if evening %} checked {% endif %}>
+                                    <label for="skating" class="additional-name label2">Вечернее катание</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+    </div>
     <div class="cards-wrapper">
         <h2 class="section-title2">{{ '' |string_formatting:resorts_length }}</h2>
         <div class="cards-content">
