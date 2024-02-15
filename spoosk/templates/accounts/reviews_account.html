@@ -10,147 +10,12 @@
 
             <div class="reviews-content-account">
 
-                <!-- <div class="review-column-account">
-                    <div class="review-item-account">
-                        <button class="btn-review-edit" onmouseover="showPopup()">
-                            <svg width="20" height="4" viewBox="0 0 20 4" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="10" cy="2" r="2" fill="#696969"/>
-                                <circle cx="18" cy="2" r="2" fill="#696969"/>
-                                <circle cx="2" cy="2" r="2" fill="#696969"/>
-                            </svg>                                                                                      
-                          </button>
-
-                          <div class="review-edit-popup" id="reviewEditPopup" onmouseout="hidePopup()">
-                            <div class="review-popup-container">
-                                <nav class="nav-user">
-                                    <ul class="menu__list">
-                                        <li class="menu__item menu__item-review">
-                                            <a href="#" class="menu__link menu__link-edit">Редактировать отзыв</a>
-                                        </li>
-                                        <li class="menu__item menu__item-review">
-                                            <a href="#" class="menu__link menu__link-delete">Удалить</a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                             </div>
-                         </div>
-
-                        <div class="review-row review-row-account">
-                            <div class="info-author">
-                                <div class="foto-container-review">
-                                    <img alt="" class="info-user__foto">
-                                </div>
-                           <div class="review-author-name">Екатерина Р.</div>
-                            </div>
-                            <div class="review-author-date">25.05.2024</div>
-                        </div>
-                        <div class="review-row review-row-inline">
-                            <div class="info-resort">
-                                <a href=""><h3 class="review-resort-name">Роза хутор</h3></a>
-                            </div>
-                            <ul class="stars-list">
-                                    <li class="stars-item">
-                                        <img src="{% static 'image/reviews/star_yellow.svg' %}" alt="желтая звезда">
-                                    </li>
-                                    <li class="stars-item">
-                                        <img src="{% static 'image/reviews/star_grey.svg' %}" alt="серая звезда">
-                                    </li>
-                            </ul>
-                        </div>
-                        <div class="review-row">
-                            <div class="review-resort-region">Краснодарский край</div>
-                        </div>
-                        <div class="review-row">
-                            <div class="review-text-account"><p>Супер</p></div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="modal" id="modal-add-review">
-                    <div class="modal-add-review__box">
-                            <button class="modal__close-btn close-btn__adding_review">
-                              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M2.70659 0.292919C2.51799 0.110761 2.26539 0.00996641
-                                    2.00319 0.0122448C1.74099 0.0145233 1.49018 0.119692 1.30477 0.305101C1.11937 0.490509 1.0142 0.741321
-                                    1.01192 1.00352C1.00964 1.26571 1.11044 1.51832 1.29259 1.70692L6.58559 6.99992L1.29259 12.2929C1.19708
-                                    12.3852 1.1209 12.4955 1.06849 12.6175C1.01608 12.7395 0.988496 12.8707 0.987342 13.0035C0.986189 13.1363
-                                    1.01149 13.268 1.06177 13.3909C1.11205 13.5138 1.18631 13.6254 1.2802 13.7193C1.37409 13.8132 1.48574 13.8875
-                                    1.60864 13.9377C1.73154 13.988 1.86321 14.0133 1.99599 14.0122C2.12877 14.011 2.25999 13.9834 2.382 13.931C2.504
-                                    13.8786 2.61435 13.8024 2.70659 13.7069L7.99959 8.41392L13.2926 13.7069C13.4812 13.8891 13.7338 13.9899 13.996
-                                    13.9876C14.2582 13.9853 14.509 13.8801 14.6944 13.6947C14.8798 13.5093 14.985 13.2585 14.9873 12.9963C14.9895
-                                    12.7341 14.8888 12.4815 14.7066 12.2929L9.41359 6.99992L14.7066 1.70692C14.8888 1.51832 14.9895 1.26571 14.9873
-                                    1.00352C14.985 0.741321 14.8798 0.490509 14.6944 0.305101C14.509 0.119692 14.2582 0.0145233 13.996 0.0122448C13.7338
-                                    0.00996641 13.4812 0.110761 13.2926 0.292919L7.99959 5.58592L2.70659 0.292919Z" fill="#2C2D2E"/>
-                                </svg>
-                            </button>
-                
-                            <form method="POST" class="form__adding_review" enctype="multipart/form-data" id="adding_review">
-                                <div class="review-resort-name resort-name__adding_review">{{ resort.name }}</div>
-                                <div class="review-resort-region">{{ resort.region }}</div>
-                
-                                <div class="label__adding_review">Как бы вы оценили курорт?</div>
-                                <div class="stars">
-                                    <input type="radio" class="get_value" name="rating" value="1"/>
-                                    <input type="radio" class="get_value" name="rating" value="2"/>
-                                    <input type="radio" class="get_value" name="rating" value="3"/>
-                                    <input type="radio" class="get_value" name="rating" value="4"/>
-                                    <input type="radio" class="get_value" name="rating" value="5"/>
-                                    <input type="hidden" id="rating_value" value="0">
-                                </div>
-                
-                                {% csrf_token %}
-                                {{ review_form.resort }}
-                                <div class="label__adding_review">Ваш отзыв:</div>
-                                {{ review_form.text }}
-                                {{ review_form.author }}
-                
-                                <div class="label__adding_review">Дополни свой отзыв фотографиями</div>
-                                <div class="foto-container">
-                                    <label for="foto_review" class="foto-field" style="cursor: pointer;">
-                                        <div class="user_foto_container">
-                                            <img id="preview" class="user_foto" height="32px">
-                                        </div>
-                                    </label>
-                                    <input type="file" name="photo" id="foto_review">
-                                </div>
-                                <div class="review-row review-row__btn">
-                                    <button class="form__button" type="submit" id="submit_review">Отправить отзыв</button>
-                                </div>
-                            </form>
-                    </div>
-                </div> -->
-
             {% for review in reviews %}
 
                     <!-- <div class="swiper-slide"> -->
                         <div class="review-column-account">
                             <div class="review-item-account">
-                                {% if not review.approved %}
-                                <button class="btn-review-edit" id="btn-review-edit-{{ review.id }}" onmouseover="showPopup('{{ review.id }}')">
-                                    <svg width="20" height="4" viewBox="0 0 20 4" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="10" cy="2" r="2" fill="#696969"/>
-                                        <circle cx="18" cy="2" r="2" fill="#696969"/>
-                                        <circle cx="2" cy="2" r="2" fill="#696969"/>
-                                    </svg>                                                                                      
-                                </button>
-                                
-                                <div class="review-edit-popup" id="{{ review.id }}" onmouseout="hidePopup('{{ review.id }}')">
-                                    <div class="review-popup-container">
-                                        <nav class="nav-user">
-                                            <ul class="menu__list">
-                                                <li class="menu__item menu__item-review">
-                                                    <a href="#" class="menu__link menu__link-edit" onclick="getEditReview('{{ review.id }}')">Редактировать отзыв</a>
-                                                </li>
-                                                <li class="menu__item menu__item-review">
-                                                    <a href="#" class="menu__link menu__link-delete">Удалить</a>
-                                                </li>
-                                            </ul>
-                                        </nav>
-                                     </div>
-                                 </div>
-
-                                {% else %}
+                                {% if review.approved %}
 
                                 <button class="btn-review-delete">
                                     <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -166,6 +31,31 @@
                                         9.44771 13 10V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V10Z" fill="#696969"/>
                                         </svg>
                                 </button>
+
+                                {% else %}
+
+                                <button class="btn-review-edit" id="btn-review-edit-{{ review.id }}" onmouseover="showPopup('{{ review.id }}')">
+                                    <svg width="20" height="4" viewBox="0 0 20 4" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="10" cy="2" r="2" fill="#696969"/>
+                                        <circle cx="18" cy="2" r="2" fill="#696969"/>
+                                        <circle cx="2" cy="2" r="2" fill="#696969"/>
+                                    </svg>
+                                </button>
+
+                                <div class="review-edit-popup" id="{{ review.id }}" onmouseout="hidePopup('{{ review.id }}')">
+                                    <div class="review-popup-container">
+                                        <nav class="nav-user">
+                                            <ul class="menu__list">
+                                                <li class="menu__item menu__item-review">
+                                                    <a href="#" class="menu__link menu__link-edit" onclick="getEditReview('{{ review.id }}')">Редактировать отзыв</a>
+                                                </li>
+                                                <li class="menu__item menu__item-review">
+                                                    <a href="#" class="menu__link menu__link-delete">Удалить</a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                     </div>
+                                 </div>
 
                                 {% endif %}
 
@@ -189,6 +79,12 @@
                                     </div>
 
                                     <div class="review-author-date">{{ review.add_at|date:"d.m.Y"}}</div>
+
+                                    {% if review.approved %}
+                                    <div class="review-approved review-approved__true">Опубликован</div>
+                                    {% else %}
+                                    <div class="review-approved review-approved__false">Ожидает публикации</div>
+                                    {% endif %}
 
                                 </div>
 
@@ -237,94 +133,6 @@
                                 {% endif %}
                             </div>
                         </div>
-                        
-<!--                        <div class="review-column-account">-->
-<!--                            <div class="review-item-account">-->
-<!--                                <button class="btn-review-delete">-->
-<!--                                    <svg width="20" height="22" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">-->
-<!--                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8 2C7.73478 2 7.48043 2.10536 7.29289 2.29289C7.10536 -->
-<!--                                        2.48043 7 2.73478 7 3V4H13V3C13 2.73478 12.8946 2.48043 12.7071 2.29289C12.5196 2.10536 12.2652 2 12 -->
-<!--                                        2H8ZM5.87868 0.87868C6.44129 0.31607 7.20435 0 8 0H12C12.7956 0 13.5587 0.31607 14.1213 0.87868C14.6839 -->
-<!--                                        1.44129 15 2.20435 15 3V4H19C19.5523 4 20 4.44772 20 5C20 5.55228 19.5523 6 19 6H18V19C18 19.7957 17.6839 -->
-<!--                                        20.5587 17.1213 21.1213C16.5587 21.6839 15.7957 22 15 22H5C4.20435 22 3.44129 21.6839 2.87868 21.1213C2.31607 -->
-<!--                                        20.5587 2 19.7957 2 19V6H1C0.447715 6 0 5.55228 0 5C0 4.44772 0.447715 4 1 4H5V3C5 2.20435 5.31607 1.44129 -->
-<!--                                        5.87868 0.87868ZM4 6V19C4 19.2652 4.10536 19.5196 4.29289 19.7071C4.48043 19.8946 4.73478 20 5 20H15C15.2652 -->
-<!--                                        20 15.5196 19.8946 15.7071 19.7071C15.8946 19.5196 16 19.2652 16 19V6H4ZM8 9C8.55228 9 9 9.44771 9 10V16C9 16.5523 -->
-<!--                                        8.55228 17 8 17C7.44772 17 7 16.5523 7 16V10C7 9.44771 7.44772 9 8 9ZM11 10C11 9.44771 11.4477 9 12 9C12.5523 9 13 -->
-<!--                                        9.44771 13 10V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16V10Z" fill="#696969"/>-->
-<!--                                        </svg>-->
-<!--                                </button>-->
-<!--                                                                        -->
-<!--                                <div class="review-row review-row-account">-->
-
-<!--                                    <div class="info-author">-->
-<!--                                        <div class="foto-container-review">-->
-<!--                                            <img {% if request.user.userprofile.avatar %} src="{{ request.user.userprofile.avatar.url }}" {% endif %} alt="" class="info-user__foto">-->
-<!--                                        </div>-->
-
-<!--                                        <div class="review-author-name">-->
-<!--                                            {% if review.author.first_name %}-->
-<!--                                                {{ review.author.first_name|capfirst }}-->
-<!--                                                {% if review.author.last_name %}-->
-<!--                                                    {{ review.author.last_name.0|capfirst }}.-->
-<!--                                                {% endif %}-->
-<!--                                            {% else %}-->
-<!--                                                @{{ review.author.userprofile.name }}-->
-<!--                                            {% endif %}-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-
-<!--                                    <div class="review-author-date">{{ review.add_at|date:"d.m.Y"}}</div>-->
-
-<!--                                </div>-->
-
-<!--                                <div class="review-row review-row-inline">-->
-<!--                -->
-<!--                                    <div class="info-resort">-->
-<!--                                        <a href=""><h3 class="review-resort-name">{{ review.resort.name }}</h3></a>-->
-<!--                                    </div>-->
-<!--                                    -->
-<!--                                    -->
-<!--                                    <ul class="stars-list">-->
-<!--                                        {% for i in review.rating|create_range %}-->
-<!--                                            <li class="stars-item">-->
-<!--                                                <img src="{% static 'image/reviews/star_yellow.svg' %}" alt="желтая звезда">-->
-<!--                                            </li>-->
-<!--                                        {% endfor %}-->
-
-<!--                                        {% for i in review.rating|create_range_difference %}-->
-<!--                                            <li class="stars-item">-->
-<!--                                                <img src="{% static 'image/reviews/star_grey.svg' %}" alt="серая звезда">-->
-<!--                                            </li>-->
-<!--                                        {% endfor %}-->
-
-<!--                                    </ul>-->
-<!--                                -->
-<!--                                </div>-->
-
-<!--                                <div class="review-row">-->
-<!--                                    <div class="review-resort-region">{{ review.resort.region }}</div>-->
-<!--                                </div>-->
-
-<!--                                <div class="review-row">-->
-<!--                                    <div class="review-text-account"><p>{{ review.text }}</p></div>-->
-<!--                                </div>-->
-<!--                            -->
-<!--                                {% if review.review_images.all%}-->
-<!--                                <div class="image-container-reviews-account">-->
-<!--                                    <div class="carusel">-->
-<!--                                    {% for image in review.review_images.all %}-->
-<!--                                        <div class="image-container">-->
-<!--                                            <img src="{{ image.image.url }}" alt="Review Image">-->
-<!--                                        </div>-->
-<!--                                    {% endfor %}-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                                {% endif %}-->
-<!--                    -->
-<!--                            </div>-->
-<!--                        </div>-->
-                    <!-- </div> -->
 
             {% endfor %}
             </div>

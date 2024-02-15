@@ -125,14 +125,32 @@
 
 
   .review-author-date {
-    margin-top: 0px;
-    padding-top: 5px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     font-size: 16px;
     line-height: 20px;
     font-weight: 400;
   
     color: #696969;
   }
+
+  .review-approved {
+    margin-left: 80px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 400;
+
+    color: #696969;
+ }
+
+ .review-approved__true {
+    color: #005FF9;
+ }
+  .review-approved__false {
+    color: red;
+ }
   
   .review-resort-name {
     text-align: start;

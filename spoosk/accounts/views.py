@@ -278,7 +278,7 @@ def favorites(request):
 @login_required
 def user_reviews(request):
     user = request.user
-    reviews = SkiReview.objects.filter(author=user)
+    reviews = SkiReview.objects.filter(author=user).order_by('approved', 'add_at')
     return render(request, 'accounts/reviews_account.html', context={'reviews': reviews})
 
 
