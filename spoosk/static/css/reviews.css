@@ -342,7 +342,14 @@
     z-index: 1;
     background-color: white;
     border-radius: 26px;
-  }
+
+    transform: scale(0.5);
+    transition: transform .8s;
+}
+
+.modal.open .modal-review__box{
+    transform: scale(1);
+}
   
   /*-----------account-----------------*/
 
@@ -583,6 +590,13 @@
     z-index: 1;
     background-color: white;
     border-radius: 11px;
+
+    transform: scale(0.5);
+    transition: transform .8s;
+}
+
+.modal.open .modal-add-review__box{
+    transform: scale(1);
 }
 
 .modal-add-review.open {

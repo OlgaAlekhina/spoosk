@@ -727,20 +727,10 @@ body {
     background-color: #fff;
     border-radius: 32px;
     box-shadow: 0 10px 15px rgba(0, 0, 0, .4);
+    transform: scale(0.5);
+    transition: transform .8s;
 }
 
-/*
-.form-register__box {
-  position: relative;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  z-index: 1;
-  overflow: hidden;
-  text-align: center;
-  max-width: 610px;
-  background: #fff;
-  padding: 36px 74px;
-}*/
 
 .modal.open {
     visibility: visible;
@@ -1644,6 +1634,12 @@ body {
   padding: 36px 74px;
   border-radius: 20px;
   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+
+  transform: scale(0.5);
+  transition: transform .8s;
+}
+.modal.open .form-register__box-rec {
+    transform: scale(1);
 }
 .account-recovery {
   margin-top: 32px;
@@ -1698,6 +1694,12 @@ body {
   padding: 36px 74px;
   border-radius: 20px;
   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+
+  transform: scale(0.5);
+  transition: transform .8s;
+}
+.modal.open .form-register__box {
+    transform: scale(1);
 }
 
 .form-register__box  .slide-controls{
