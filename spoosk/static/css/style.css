@@ -2124,6 +2124,7 @@ input[type="radio"]{
 .search-header {
     margin-left: 0px;
     margin-top: 0px;
+    text-align: left;
 }
 
 .pl-0 {
@@ -2134,6 +2135,10 @@ input[type="radio"]{
     margin-left: 0px;
 }
 
+.mr-20 {
+    margin-right: 20px;
+}
+
 .mrl-15 {
     margin-right: 15px;
     margin-left: 15px;
@@ -2141,4 +2146,13 @@ input[type="radio"]{
 
 .search-slider {
     width: 250px;
+}
+
+.hidden {
+    width: 0;
+}
+
+.search-cards {
+    float: right;
+    width: 800px;
 }

@@ -78,23 +78,23 @@
                             <div class="slider-box mrl-15">
                                 <input type="range" step="100" min="0" max="200" value="{{ distance }}" list="rangeList" class="slider search-slider" id="distance">
                             </div>
-                                <div class="slider-box-name ml-0">
-                                    <div class="slider-name">Не более 50 км</div>
-                                    <div class="slider-name">Не более 100 км</div>
-                                    <div class="slider-name">Не важно</div>
+                                <div class="slider-box-name ml-0 mr-20">
+                                    <div class="slider-name">Не более<br/>50 км</div>
+                                    <div class="slider-name">Не более<br/>100 км</div>
+                                    <div class="slider-name">Не<br/>важно</div>
                                 </div>
                     </div>
                     <div>
                         <div class="filters-additional-block">
                             <div class="additional-block1 ml-0">
                                 <div>
-                                    <input type="checkbox" class="custom-checkbox2" id="rent" {% if rental %} checked {% endif %}>
+                                    <input type="checkbox" class="custom-checkbox2 hidden" id="rent" {% if rental %} checked {% endif %}>
                                     <label for="rent" class="additional-name label2">Прокат оборудования</label>
                                 </div>
                             </div>
                             <div class="additional-block2 ml-0">
                                 <div>
-                                    <input type="checkbox" class="custom-checkbox2" id="skating" {% if evening %} checked {% endif %}>
+                                    <input type="checkbox" class="custom-checkbox2 hidden" id="skating" {% if evening %} checked {% endif %}>
                                     <label for="skating" class="additional-name label2">Вечернее катание</label>
                                 </div>
                             </div>
@@ -103,7 +103,7 @@
                 </div>
             </form>
     </div>
-    <div class="cards-wrapper">
+    <div class="cards-wrapper search-cards">
         <h2 class="section-title2">{{ '' |string_formatting:resorts_length }}</h2>
         <div class="cards-content cards-content__start ">
             {% if resorts %}
