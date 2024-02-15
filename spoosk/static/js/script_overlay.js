@@ -329,3 +329,63 @@ function getEditReview(id) {
         }
     });
 }
+
+function showPopup(popupId) {
+    let popup = document.getElementById(`review-edit-popup-${popupId}`);
+    let btn = document.getElementById(`btn-review-edit-${popupId}`);
+    popup.style.display = "block";
+    btn.style.display = "none";
+}
+
+function hidePopup(popupId) {
+    let popup = document.getElementById(`review-edit-popup-${popupId}`);
+    let btn = document.getElementById(`btn-review-edit-${popupId}`);
+
+    popup.addEventListener('mouseout', function(event) {
+        event.preventDefault();
+        // Если курсор уходит с попапа, то скрываем попап
+        if (!event.relatedTarget || !popup.contains(event.relatedTarget)) {
+            popup.style.display = "none";
+            btn.style.display = "block";
+        }
+    });
+}
+
+
+function showPopupDeleteReview(event, reviewId) {
+    // Закрываем все открытые попапы
+    let popups = document.querySelectorAll(".review-delete-popup");
+    popups.forEach(function(popup) {
+        popup.style.display = "none";
+    });
+
+    // Открываем попап с нужным отзывом
+    let popup = document.querySelector("#review-delete-popup-" + reviewId);
+    popup.style.display = "block";
+
+    // Предотвращаем всплытие события, чтобы попап не закрылся сразу после открытия
+    event.stopPropagation();
+    // Предотвращаем переход по ссылке внутри кнопки "удалить"
+    event.preventDefault();
+}
+
+// Функция закрытия попапа
+function closePopup(reviewId) {
+    let popup = document.querySelector("#review-delete-popup-" + reviewId);
+    popup.style.display = "none";
+}
+
+document.addEventListener('click', function(event) {
+    let popups = document.querySelectorAll(".review-delete-popup");
+    popups.forEach(function(popup) {
+        if (event.target !== popup && !popup.contains(event.target)) {
+            popup.style.display = "none";
+        }
+    });
+});
+
+
+
+
+
+

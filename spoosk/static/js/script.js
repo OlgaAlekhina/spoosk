@@ -202,24 +202,3 @@ radioButtons.forEach((button) => {
 });
 
 
-
-function showPopup(popupId) {
-    let popup = document.getElementById(popupId);
-    let btn = document.getElementById(`btn-review-edit-${popupId}`);
-    popup.style.display = "block"; // показываем попап при наведении курсора на кнопку
-    btn.style.display = "none";
-}
-
-function hidePopup(popupId) {
-    let popup = document.getElementById(popupId);
-    let btn = document.getElementById(`btn-review-edit-${popupId}`);
-    
-    popup.addEventListener('mouseout', function(event) {
-        event.preventDefault();
-        // Если курсор уходит с попапа, то скрываем попап
-        if (!event.relatedTarget || !popup.contains(event.relatedTarget)) {
-            popup.style.display = "none";
-            btn.style.display = "block";
-        }
-    });
-}
