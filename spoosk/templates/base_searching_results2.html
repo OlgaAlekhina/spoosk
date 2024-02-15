@@ -105,7 +105,7 @@
     </div>
     <div class="cards-wrapper">
         <h2 class="section-title2">{{ '' |string_formatting:resorts_length }}</h2>
-        <div class="cards-content">
+        <div class="cards-content cards-content__start ">
             {% if resorts %}
                 {% for resort in resorts %}
                     <div class="card-column">
@@ -153,6 +153,23 @@
                                             <path d="M12 20.5V4.5" stroke="#D9D9D9" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                             <path d="M6 20.5V14.5" stroke="#D9D9D9" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
+                                    </button>
+                                    <button class="cards-btn {% if resort|in_favorites:request.user %} favorites-btn {% else %} btn-white {% endif %}" id="favorites-{{ resort.id_resort }}" {% if request.user.is_authenticated %} onclick="addtoFavorites('{{ resort.id_resort }}')" {% endif %}>
+                                                <svg viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12.0119 6.07196L10.9249 4.98496C10.4155 4.46862 9.80891 4.05816
+                                                    9.14015 3.7772C8.4714 3.49625 7.75368 3.35036 7.02831 3.34793C6.30295 3.3455 5.58426 3.48658 4.91364 3.76304C4.24302
+                                                    4.03951 3.63372 4.4459 3.1208 4.95881C2.60789 5.47173 2.2015 6.08104 1.92503 6.75166C1.64857 7.42228 1.50749 8.14096
+                                                    1.50992 8.86633C1.51235 9.59169 1.65824 10.3094 1.93919 10.9782C2.22014 11.6469 2.63061 12.2535 3.14695 12.763L11.9859
+                                                    21.602L11.9879 21.6L12.0139 21.626L20.8529 12.787C21.3693 12.2775 21.7797 11.6709 22.0607 11.0022C22.3417 10.3334 22.4875
+                                                    9.61569 22.49 8.89033C22.4924 8.16496 22.3513 7.44628 22.0749 6.77566C21.7984 6.10504 21.392 5.49573 20.8791 4.98281C20.3662
+                                                    4.4699 19.7569 4.06351 19.0862 3.78704C18.4156 3.51058 17.6969 3.3695 16.9716 3.37193C16.2462 3.37436 15.5285 3.52025 14.8597
+                                                    3.8012C14.191 4.08216 13.5844 4.49262 13.0749 5.00896L12.0119 6.07196ZM11.9879 18.772L16.9239 13.835L18.3739 12.435H18.3759L19.4389
+                                                    11.373C20.0954 10.7165 20.4641 9.82626 20.4641 8.89796C20.4641 7.96965 20.0954 7.07937 19.4389 6.42296C18.7825 5.76655 17.8923
+                                                    5.39778 16.9639 5.39778C16.0356 5.39778 15.1454 5.76655 14.4889 6.42296L12.0129 8.89996L12.0059 8.89296L9.51095 6.39996C8.85453
+                                                    5.74355 7.96425 5.37478 7.03594 5.37478C6.10764 5.37478 5.21736 5.74355 4.56095 6.39996C3.90453 7.05637 3.53577 7.94665 3.53577
+                                                    8.87496C3.53577 9.80326 3.90453 10.6935 4.56095 11.35L7.10094 13.89L7.10195 13.887L11.9879 18.773V18.772Z"
+                                                    fill="#D9D9D9" fill-opacity="1"/>
+                                                </svg>
                                     </button>
                                     <!-- <button class="cards-btn cards-btn-blue"><a href="pages/resorts.html">Подробнее</a></button> -->
                                     <a href="{{ resort.get_absolute_url }}"><button class="cards-btn cards-btn-blue">Подробнее</button></a>

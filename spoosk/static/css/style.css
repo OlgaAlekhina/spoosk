@@ -696,7 +696,7 @@ body {
     opacity: 0;
     transform: opasity .4s visibility .4s;
 }
-
+/*
 .modal_box {
     position: absolute;
     left: 50%;
@@ -712,6 +712,23 @@ body {
     transform: scale(0);
     transition: transform .8s;
 }
+*/
+
+.modal_box {
+    position: relative;
+    margin-top: 200px;
+    margin-bottom: 20px;
+    z-index: 25;
+    overflow: hidden;
+    min-height: 1152px;
+
+    padding: 28px 40px;
+    min-width: 816px;
+    background-color: #fff;
+    border-radius: 32px;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, .4);
+}
+
 /*
 .form-register__box {
   position: relative;
@@ -753,17 +770,15 @@ body {
 
 
 .filters {
-    position: relative;
     font-family: 'Raleway';
     font-style: normal;
     font-weight: 700;
     font-size: 24px;
     color: #0042AD;
     line-height: 28px;
-    margin-left: 339px;
     margin-top: 24px;
     margin-bottom: 15px;
-    height: 0;
+    text-align: center;
 }
 
 .filters-track {
@@ -1167,6 +1182,10 @@ body {
     justify-content: center;
 }
 
+.cards-content__start {
+    justify-content: start;
+}
+
 .card-column {
     padding: 0px 19.25px 80px 19.25px;
 }
@@ -1198,7 +1217,7 @@ body {
 	bottom: 8px;
 	left: 21px;
 	width: 100%;
-    z-index: 20;
+    z-index: 1;
 }
 
 .card-title-name span {
@@ -1243,7 +1262,7 @@ body {
 
     cursor: initial;
 
-    z-index: 20;
+    z-index: 0;
 }
 
 .rating-content {
