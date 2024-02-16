@@ -166,6 +166,12 @@ function clearModalContent() {
             imageContainer.parentNode.removeChild(imageContainer);
         });
     }
+
+    if (document.querySelector('.foto-field')) {
+        document.querySelector('.foto-field').style.display = 'block';
+        document.querySelector('#foto_review').setAttribute('disabled', true);
+    }
+
 }
 
 function getReviewModalContent(response) {
