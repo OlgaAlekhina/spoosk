@@ -6,14 +6,14 @@
     {% if reviews %}
     <div class="reviews-account-box">
         <!-- <div class="swiper accountReviewsSwiper"> -->
-            <h1 class="section-title-accounts">Отзывы   <span>{{ reviews|length }}</span></h1>
+            <h1 class="section-title-accounts">Отзывы   <span id="review_number">{{ reviews|length }}</span></h1>
 
             <div class="reviews-content-account">
 
             {% for review in reviews %}
 
                     <!-- <div class="swiper-slide"> -->
-                        <div class="review-column-account">
+                        <div class="review-column-account" id="review-{{ review.id }}">
                             <div class="review-item-account">
 
                                 <div class="review-delete-popup" id="review-delete-popup-{{ review.id }}">
@@ -39,7 +39,7 @@
                                             <p class="review-popup-text">Если вы удалите отзыв, восстановить его будет невозможно</p>
                                             <div class="review-button-container">
                                                 <button type="submit" class="button-review-delete" onclick="closePopup('{{ review.id }}')">Отменить</button>
-                                                <button type="submit" class="button-review-delete button-review-delete__blue">Удалить</button>
+                                                <button type="submit" class="button-review-delete button-review-delete__blue" onclick="deleteReview('{{ review.id }}')">Удалить</button>
                                             </div>
                                         </div>
                                      </div>

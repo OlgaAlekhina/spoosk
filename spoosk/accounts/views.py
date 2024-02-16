@@ -295,4 +295,8 @@ def edit_review(request, pk):
 
 # delete review from database
 def delete_review(request, pk):
-    pass
+    if request.method == "DELETE":
+        SkiReview.objects.filter(id=pk).delete()
+        return JsonResponse({"success": "Delete review successfully!"}, status=200)
+    else:
+        raise Http404
