@@ -169,7 +169,7 @@ function clearModalContent() {
 
     if (document.querySelector('.foto-field')) {
         document.querySelector('.foto-field').style.display = 'block';
-        document.querySelector('#foto_review').setAttribute('disabled', true);
+        document.querySelector('#foto_review').removeAttribute('disabled');
     }
 
 }
@@ -318,9 +318,6 @@ function getReviewEditModalContent(response) {
             fotoContainer.appendChild(previewImage);
         }
     }
-
-
-
 
     const button = document.querySelector('.form__button');
     button.id = response.review_id;
