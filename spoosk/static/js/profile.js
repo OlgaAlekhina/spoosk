@@ -79,7 +79,7 @@ function loadReviews() {
     });
 };
 
-// Review edit
+// Edit review
 function editReview(id) {
     origin = location.origin;
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
@@ -101,6 +101,27 @@ function editReview(id) {
         // handle a successful response
         success : function(json) {
             console.log('success');
+        },
+    });
+};
+
+// Delete review
+function deleteReview(id) {
+    origin = location.origin;
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    $.ajax({
+        headers: {'X-CSRFToken': csrftoken},
+        url : origin + "/delete_review/" + id + "/", // the endpoint
+        type : "DELETE", // http method
+
+        // handle a successful response
+        success : function(json) {
+            console.log('success');
+            $("#review-delete-popup-" + id).hide();
+            $('#review-' + id).hide();
+            number = parseInt($("#review_number").text());
+            new_number = number - 1;
+            $("#review_number").text(new_number);
         },
     });
 };

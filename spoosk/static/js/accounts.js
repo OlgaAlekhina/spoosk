@@ -145,7 +145,6 @@ function get_filter(jsonData) {
                 $("#modal-advanced-filters").html("");
                 $("body").removeClass('no-scroll');
                 $("body").removeAttr("style");
-//                $("#advanced-filter").trigger("reset");
             },
         });
 };
