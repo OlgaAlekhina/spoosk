@@ -14,7 +14,7 @@
 
                                             <div class="info-author">
                                                 <div class="foto-container-review">
-                                                    <img {% if request.user.userprofile.avatar %} src="{{ request.user.userprofile.avatar.url }}" {% endif %} alt="" class="info-user__foto">
+                                                    <img {% if review.author.userprofile.avatar %} src="{{ review.author.userprofile.avatar.url }}" {% endif %} alt="" class="info-user__foto">
                                                 </div>
         
                                                 <div class="review-author-name">
