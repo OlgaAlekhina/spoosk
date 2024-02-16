@@ -22,35 +22,49 @@ function resetForms() {
     if (resetResults) resetResults.innerHTML = "";
     if (addingReview) addingReview.reset();
     if (preview) preview.innerHTML = "";
+
+    if (document.querySelectorAll('.preview-image')) {
+        document.querySelectorAll('.preview-image').forEach(imageContainer => {
+            imageContainer.parentNode.removeChild(imageContainer);
+        });
+    }
+
+    if (document.getElementById('submit_review')) {
+        document.getElementById('submit_review').style.background = '#e6e6e6';
+        document.getElementById('submit_review').style.color = '#696969';
+    }
+
+    if (document.getElementById('rating_value')) {
+        document.getElementById('rating_value').value= 0;
+    }
 }
 
-function toggleScrollLock() {
-  document.body.classList.toggle("no-scroll");
-}
+//function toggleScrollLock() {
+//  document.body.classList.toggle("no-scroll");
+//}
+
+let scrollY = 0; // Инициализация переменной для хранения значения скролла
 
 function openModal(modal) {
-    scrollY = window.scrollY;
+    scrollY = window.scrollY; // Сохранение текущего значения скролла
     document.body.style.position = 'fixed';
     document.body.style.top = `-${scrollY}px`;
 
     modal.classList.add("open");
-    toggleScrollLock();
+    document.body.classList.add("no-scroll"); // Блокирование скролла
 }
 
 function closeModal(modal) {
-    console.log(modal)
-    scrollY = window.scrollY;
-    document.body.style.position = 'static';
-    window.scrollTo(0, scrollY);
-
-    modal.classList.remove("open");
-    toggleScrollLock();
     resetForms();
+    modal.classList.remove("open");
+    document.body.classList.remove("no-scroll"); // Разблокирование скролла
+
+    document.body.style.position = '';
+    document.body.style.top = '';
+    window.scrollTo(0, scrollY); // Возврат к сохраненной позиции скролла
 }
 
 closeModalBtns.forEach((btn, i) => {
-    console.log(btn)
-    console.log(i)
     btn.addEventListener("click", function () {
         console.log(modals[i])
         closeModal(modals[i]);
@@ -142,11 +156,17 @@ function clearModalContent() {
     if (regionElement) regionElement.textContent = '';
     if (textElement) textElement.textContent = '';
     if (authorElement) authorElement.textContent = '';
-    if (starsList) starsList.innerHTML = ''; 
+    if (starsList) starsList.innerHTML = '';
     if (caruselModal) caruselModal.innerHTML = '';
 
-    
- }
+    if (document.querySelector('.stars')) document.querySelector('.stars').innerHTML = '';
+
+    if (document.querySelectorAll('.preview-image')) {
+        document.querySelectorAll('.preview-image').forEach(imageContainer => {
+            imageContainer.parentNode.removeChild(imageContainer);
+        });
+    }
+}
 
 function getReviewModalContent(response) {
 
@@ -179,7 +199,7 @@ function getReviewModalContent(response) {
 
     const rating = response.review_rating;
     const starsList = document.querySelector('.stars-list-modal');
-    
+
     for (let i = 1; i <= 5; i++) {
         let starsItem = document.createElement('li');
         starsItem.classList.add("stars-item");
@@ -231,10 +251,6 @@ function getReviewEditModalContent(response) {
     const rating = response.review_rating;
     const starsList = document.querySelector('.stars');
 
-    const button = document.querySelector('.form__button');
-    button.id = response.review_id;
-
-
     for (let i = 1; i <= 5; i++) {
         let starsItem = document.createElement('input');
         starsItem.classList.add("get_value");
@@ -243,19 +259,33 @@ function getReviewEditModalContent(response) {
         starsItem.value = i
 
         if (i <= rating) {
-            starsItem.classList.add("get_value2");
-            starsItem.classList.remove("get_value");
+            starsItem.checked = true;
           }
 
         starsList.appendChild(starsItem);
     }
 
+    let inputHidden = document.createElement('input');
+    inputHidden.type = "hidden"
+    inputHidden.id = "rating_value"
+    inputHidden.value = 0
+
+    starsList.appendChild(inputHidden);
+
     const fotoContainer = modal.querySelector('.foto-container');
     const images = response.review_images;
     console.log(images)
 
+    console.log(images.length)
 
-    if(images.length > 0) {
+    if (images.length >= 5) {
+        const label = fotoContainer.querySelector('.foto-field');
+        const input = fotoContainer.querySelector('#foto_review')
+        input.setAttribute('disabled', true);
+        label.style.display = 'none';
+    }
+
+    if( 0 < images.length < 5) {
 
         for (let i = 0; i < images.length; i++) {
 
@@ -274,7 +304,7 @@ function getReviewEditModalContent(response) {
 
             let previewInfo = document.createElement('div');
             previewInfo.classList.add('preview-info')
-    
+
             previewImage.appendChild(previewRemove);
             previewImage.appendChild(image);
             previewImage.appendChild(previewInfo);
@@ -282,6 +312,12 @@ function getReviewEditModalContent(response) {
             fotoContainer.appendChild(previewImage);
         }
     }
+
+
+
+
+    const button = document.querySelector('.form__button');
+    button.id = response.review_id;
 
 
 }

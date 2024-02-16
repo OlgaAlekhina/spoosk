@@ -741,24 +741,6 @@
 	scale: .8;
 }
 
-.stars .get_value2::after {
-	transition:
-		color 300ms,
-		-webkit-text-stroke-color 300ms,
-		scale 500ms cubic-bezier(0.5, -4, 0.5, 4);
-	content: '';
-    background-image: url('../image/reviews/star_blue.svg');
-    width: 30px;
-    height: 30px;
-    background-size: cover;
-    left: 0px;
-
-
-	display: block;
-	-webkit-text-stroke-width: 1px;
-	-webkit-text-stroke-color: #005FF9;
-}
-
 .foto-field {
     position: relative;
     width: 90px;

@@ -166,6 +166,7 @@
     padding: 17px 43px;
     border: 2px solid #FAA800;
     background: #FAA800;
+    cursor: pointer;
 }
 .resort-btn-favorites svg path {
     stroke-opacity: 1;
