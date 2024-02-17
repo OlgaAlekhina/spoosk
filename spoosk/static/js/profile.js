@@ -85,6 +85,7 @@ function editReview(id) {
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     var form_data = new FormData();
     form_data.append('text', $('#id_text').val());
+    form_data.append('rating', $('#rating_value').val());
     for (var key of form_data.entries()) {
         console.log(key[0] + ', ' + key[1]);
     }
@@ -100,7 +101,9 @@ function editReview(id) {
 
         // handle a successful response
         success : function(json) {
-            console.log('success');
+            $('#modal-edit-review').removeClass("open");
+            $("body").removeClass('no-scroll').removeAttr("style");
+            loadReviews();
         },
     });
 };
