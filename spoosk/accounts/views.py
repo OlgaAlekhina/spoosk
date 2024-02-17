@@ -278,7 +278,7 @@ def favorites(request):
 @login_required
 def user_reviews(request):
     user = request.user
-    reviews = SkiReview.objects.filter(author=user).order_by('approved', 'add_at')
+    reviews = SkiReview.objects.filter(author=user).order_by('approved', '-add_at')
     return render(request, 'accounts/reviews_account.html', context={'reviews': reviews})
 
 
@@ -287,6 +287,7 @@ def edit_review(request, pk):
     if request.method == "POST":
         review = SkiReview.objects.get(id=pk)
         review.text = request.POST.get('text')
+        review.rating = request.POST.get('rating')
         review.save()
         return JsonResponse({"success": "Edit review successfully!"}, status=200)
     else:

@@ -257,12 +257,20 @@ function getReviewEditModalContent(response) {
     const rating = response.review_rating;
     const starsList = document.querySelector('.stars');
 
+    let inputHidden = document.createElement('input');
+    inputHidden.type = "hidden"
+    inputHidden.id = "rating_value"
+    inputHidden.value = 0
+
+    starsList.appendChild(inputHidden);
+
     for (let i = 1; i <= 5; i++) {
         let starsItem = document.createElement('input');
         starsItem.classList.add("get_value");
-        starsItem.type = "radio"
-        starsItem.name = "rating"
-        starsItem.value = i
+        starsItem.type = "radio";
+        starsItem.name = "rating";
+        starsItem.value = i;
+        starsItem.onclick = function() {inputHidden.value = this.value;};
 
         if (i <= rating) {
             starsItem.checked = true;
@@ -270,13 +278,6 @@ function getReviewEditModalContent(response) {
 
         starsList.appendChild(starsItem);
     }
-
-    let inputHidden = document.createElement('input');
-    inputHidden.type = "hidden"
-    inputHidden.id = "rating_value"
-    inputHidden.value = 0
-
-    starsList.appendChild(inputHidden);
 
     const fotoContainer = modal.querySelector('.foto-container');
     const images = response.review_images;
