@@ -229,8 +229,8 @@ function getReviewModalContent(response) {
         imageContainer.classList.add("image-container");
 
         let image = document.createElement('img');
-        let src = images[i][0]
-        image.src = '/' + String(src);
+        let src = images[i].url
+        image.src = String(src);
         image.alt = 'Фото курорта';
 
         imageContainer.appendChild(image);
@@ -258,9 +258,9 @@ function getReviewEditModalContent(response) {
     const starsList = document.querySelector('.stars');
 
     let inputHidden = document.createElement('input');
-    inputHidden.type = "hidden"
-    inputHidden.id = "rating_value"
-    inputHidden.value = 0
+    inputHidden.type = "hidden";
+    inputHidden.id = "rating_value";
+    inputHidden.value = rating;
 
     starsList.appendChild(inputHidden);
 
@@ -281,9 +281,7 @@ function getReviewEditModalContent(response) {
 
     const fotoContainer = modal.querySelector('.foto-container');
     const images = response.review_images;
-    console.log(images)
-
-    console.log(images.length)
+    console.log(images);
 
     if (images.length >= 5) {
         const label = fotoContainer.querySelector('.foto-field');
@@ -300,13 +298,15 @@ function getReviewEditModalContent(response) {
             previewImage.classList.add('preview-image')
 
             let image = document.createElement('img');
-            let src = images[i][0]
-            image.src = '/' + String(src);
+            let src = images[i].url
+            let image_id = images[i].id
+            image.src = String(src);
             image.alt = getFileName(String(src));
 
             let previewRemove = document.createElement('div');
             previewRemove.classList.add('preview-remove');
             previewRemove.setAttribute('data-name', getFileName(String(src)));
+            previewRemove.setAttribute('data-id', image_id);
             previewRemove.innerHTML = '&times;';
 
             let previewInfo = document.createElement('div');

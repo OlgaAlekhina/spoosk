@@ -372,7 +372,13 @@ def add_resort(request, pk):
 # get review data in modal
 def get_review(request, pk):
     review = SkiReview.objects.get(id=pk)
-    images = list(ReviewImage.objects.filter(review=review).values_list('image'))
+    images_list = ReviewImage.objects.filter(review=review)
+    images = []
+    for im in images_list:
+        img = {}
+        img['id'] = im.id
+        img['url'] = im.image.url
+        images.append(img)
     author = review.author
     review_date = review.add_at.strftime("%d.%m.%Y")
     try:
