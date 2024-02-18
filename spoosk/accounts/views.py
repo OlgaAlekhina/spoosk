@@ -14,7 +14,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.conf import settings
 import requests
-from resorts.models import SkiReview
+from resorts.models import SkiReview, ReviewImage
 
 
 # обработка запроса на регистрацию
@@ -289,6 +289,10 @@ def edit_review(request, pk):
         review.text = request.POST.get('text')
         review.rating = request.POST.get('rating')
         review.save()
+        for image in request.POST.getlist('images_del'):
+            ReviewImage.objects.filter(id=int(image)).delete()
+        for image in request.FILES.getlist('images'):
+            ReviewImage.objects.create(image=image, review=review)
         return JsonResponse({"success": "Edit review successfully!"}, status=200)
     else:
         raise Http404

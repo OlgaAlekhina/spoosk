@@ -82,8 +82,10 @@ function byteToSize(bytes) {
     return Math.round(bytes / Math.pow(1024, i)) + ' ' + sizes[i];
 }
 
-// global variable used in AJAX for review submit
+// global variable used in AJAX to submit and edit review
 let file_list = [];
+// global variable used in AJAX to edit review
+let file_deleted = [];
 
 // uploading photos to preview in the review form
 function upload(selector, options = {}) {
@@ -157,10 +159,13 @@ function upload(selector, options = {}) {
             return
         }
 
-        const {name} = event.target.dataset
+        const {name} = event.target.dataset;
+        const {id} = event.target.dataset;
         files = files.filter(file => file.name !== name)
         // remove file from files list
         file_list = file_list.filter(file => file.name !== name)
+        // add file id in file_deleted list
+        if (id != null) {file_deleted.push(id);};
 
         const block = fotoContainer.querySelector(`[data-name="${name}"]`).closest('.preview-image')
 

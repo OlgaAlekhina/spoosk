@@ -86,9 +86,12 @@ function editReview(id) {
     var form_data = new FormData();
     form_data.append('text', $('#id_text').val());
     form_data.append('rating', $('#rating_value').val());
-    for (var key of form_data.entries()) {
-        console.log(key[0] + ', ' + key[1]);
-    }
+    for(var i = 0; i < file_list.length; i++){
+        var file = file_list[i];
+        form_data.append('images', file);}
+    for(var i = 0; i < file_deleted.length; i++){
+        var file_del = file_deleted[i];
+        form_data.append('images_del', file_del);}
     $.ajax({
         headers: {'X-CSRFToken': csrftoken},
         url : origin + "/edit_review/" + id + "/", // the endpoint
