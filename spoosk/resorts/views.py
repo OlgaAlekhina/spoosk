@@ -115,7 +115,7 @@ class SkiResortList(Region, ListView):
         context['ski_pass_one'] = SkiResort.ski_pass_one
         context['count'] = SkiResort.count
         context['type_name_price'] = SkiResort.type_name_price
-        context['reviews'] = SkiReview.objects.all().order_by('-add_at')[:10]
+        context['reviews'] = SkiReview.objects.filter(approved=True).order_by('-add_at')[:10]
 
         # context['where'] = 'Все регионы'
         # context['when'] = 'Не важно'
@@ -127,7 +127,7 @@ class SkiResortDetailView(View):
 
     def get(self, request, slug):
         resort = SkiResort.objects.get(name=slug)
-        reviews_list = SkiReview.objects.filter(resort=resort).order_by('-add_at')
+        reviews_list = SkiReview.objects.filter(resort=resort, approved=True).order_by('-add_at')
         reviews = reviews_list
 
         initial_data = {'resort': resort.id_resort}
