@@ -162,6 +162,16 @@
   
     color: #005FF9;
   }
+  .review-resort-name1 {
+    text-align: start;
+    margin-right: 32px;
+
+    font-size: 22px;
+    line-height: 32px;
+    font-weight: 700;
+
+    color: #005FF9;
+  }
 
   .resort-name__adding_review {
     font-size: 37px;
@@ -174,7 +184,15 @@
     font-size: 14px;
     line-height: 16px;
     font-weight: 400;
-  
+
+    color: #696969;
+  }
+  .review-resort-region1 {
+    text-align: start;
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 400;
+
     color: #696969;
   }
   
@@ -219,6 +237,19 @@
   }
   
   .review-text p {
+    text-align: justify;
+    word-wrap: break-word;
+  }
+
+  .review-text1 {
+    min-height: 96px;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+    min-width: 456px;
+  }
+
+  .review-text1 p {
     text-align: justify;
     word-wrap: break-word;
   }
@@ -687,7 +718,11 @@
     font-size: 16px;
     font-weight: 400;
     line-height: 20px;
-
+}
+.form__button:hover {
+    background-color: #005FF9;
+    color: #fff;
+    cursor: pointer;
 }
 
 .stars {
