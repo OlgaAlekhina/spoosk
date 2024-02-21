@@ -36,8 +36,8 @@
                                         <div class="review-row review-row__start">
                         
                                             <div class="info-resort">
-                                                <a href="{{ review.resort.get_absolute_url }}"><h3 class="review-resort-name">{{ review.resort.name }}</h3></a>
-                                                <span class="review-resort-region">{{ review.resort.region }}</span>
+                                                <a href="{{ review.resort.get_absolute_url }}"><h3 class="review-resort-name1">{{ review.resort.name }}</h3></a>
+                                                <span class="review-resort-region1">{{ review.resort.region }}</span>
                                             </div>
 
                                             <ul class="stars-list">
@@ -58,8 +58,8 @@
 
                                         
                                         <div class="review-row">
-                                            <div class="review-text">
-                                                <p>{{ review.text|truncatechars:200 }}</p>
+                                            <div class="review-text1">
+                                                {{ review.text|truncatechars:200 }}
                                             </div>
                                         </div>
                                         <div class="review-row review-row__btn">
@@ -147,7 +147,7 @@
                                     
                                     <div class="review-row">
                                         <div class="review-text">
-                                            <p></p>
+
                                         </div>
                                     </div>
                                   

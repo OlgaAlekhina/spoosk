@@ -190,7 +190,7 @@ function getReviewModalContent(response) {
     const data_at = modal.querySelector('.review-author-date');
     data_at.textContent = response.review_data_at;
 
-    const textElement = modal.querySelector('.review-text').querySelector('p');
+    const textElement = modal.querySelector('.review-text');
     textElement.textContent = response.review_text;
 
     const authorElement = modal.querySelector('.review-author');
