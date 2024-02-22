@@ -110,7 +110,6 @@ function upload(selector, options = {}) {
         console.log(event.target.files.length)
         // get number of current preview images
         let preview_images = document.getElementsByClassName('preview-image').length;
-        console.log(preview_images);
         currentImages = preview_images;
         if (!event.target.files.length || currentImages > maxImages) {
             return

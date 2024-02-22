@@ -54,11 +54,11 @@ function loadFavorites() {
 
         // handle a successful response
         success : function(response) {
-            $('.menu__item-reviews').removeClass("active")
-            $('.menu__link-reviews').removeClass("active")
+            $('.menu__item-reviews').removeClass("active");
+            $('.menu__link-reviews').removeClass("active");
             $(".editing_profile-container").html(response);
-            $('.menu__item-favorites').addClass("active")
-            $('.menu__link-favorites').addClass("active")
+            $('.menu__item-favorites').addClass("active");
+            $('.menu__link-favorites').addClass("active");
         },
     });
 };
