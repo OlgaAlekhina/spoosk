@@ -355,6 +355,8 @@ function getReview(id) {
 }
 
 function getEditReview(id) {
+    file_list = [];
+    file_deleted = [];
     clearModalContent();
     var modal = document.getElementById('modal-edit-review');
     openModal(modal);
