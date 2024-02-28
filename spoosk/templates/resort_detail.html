@@ -142,12 +142,12 @@
                                     <div class="card-body">
                                         <div class="timer">
                                             <div class="timer__line">
-                                                <svg class="pie" width="260" viewBox="0 0 40 40">
+                                                <svg class="pie" width="260" viewBox="0 0 40 40" stroke-dasharray="100">
                                                     <g>
                                                       <circle r="15.9155" cx="50%" cy="50%"></circle>
-                                                      <circle r="15.9155" cx="50%" cy="50%"></circle>
-                                                      <circle r="15.9155" cx="50%" cy="50%"></circle>
-                                                      <circle r="15.9155" cx="50%" cy="50%"></circle>
+                                                      <circle r="15.9155" cx="50%" cy="50%" stroke-dashoffset="{{ resort.green_trails_circle }}"></circle>
+                                                      <circle r="15.9155" cx="50%" cy="50%" stroke-dashoffset="{{ resort.blue_trails_circle }}"></circle>
+                                                      <circle r="15.9155" cx="50%" cy="50%" stroke-dashoffset="{{ resort.black_trails_circle }}"></circle>
                                                     </g>
                                                 </svg>
                                             </div>
@@ -162,7 +162,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="additional-info-column">
                                 <div>
                                     <h3 class="nav-lift-title">Количество и виды подъемников:</h3>

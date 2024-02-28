@@ -323,23 +323,23 @@
   }
 
   .pie circle:nth-of-type(1) {
-    stroke: #7B7B7B;
-    stroke-dasharray: 15 100;
+    stroke: #ABE991;
+    /*stroke-dasharray: 15 100;*/
   }
 
   .pie circle:nth-of-type(2) {
-    stroke: #EC818F;
-    stroke-dasharray: 0 15 30 100;
+    stroke: #99DCED;
+    /*stroke-dasharray: 0 15 30 100;*/
   }
 
   .pie circle:nth-of-type(3) {
-    stroke: #ABE991;
-    stroke-dasharray: 0 45 37 100;
+    stroke: #EC818F;
+    /*stroke-dasharray: 0 45 37 100;*/
   }
 
   .pie circle:nth-of-type(4) {
-    stroke:  #99DCED;
-    stroke-dasharray: 0 82 18 100;
+    stroke:  #7B7B7B;
+    /*stroke-dasharray: 0 82 18 100;*/
   }
 
   
