@@ -133,6 +133,40 @@ class SkiResort(models.Model):
         all_trail = self.skipass_set.all().values('type', 'name', 'price')
         return all_trail
 
+    def trails_length(self):
+        g_length = self.skytrail_set.all().filter(complexity="green").aggregate(green=Sum('extent', default=0))
+        b_length = self.skytrail_set.all().filter(complexity="blue").aggregate(blue=Sum('extent', default=0))
+        r_length = self.skytrail_set.all().filter(complexity="red").aggregate(red=Sum('extent', default=0))
+        bl_length = self.skytrail_set.all().filter(complexity="black").aggregate(black=Sum('extent', default=0))
+        total_length = self.skytrail_set.all().aggregate(total=Sum('extent'))
+        trails_length = {}
+        green = g_length['green'] * 100 / total_length['total']
+        blue = b_length['blue'] * 100 / total_length['total']
+        black = bl_length['black'] * 100 / total_length['total']
+        trails_length['green'] = green
+        trails_length['blue'] = blue
+        trails_length['black'] = black
+        return trails_length
+
+    def green_trails_circle(self):
+        g_length = self.skytrail_set.all().filter(complexity="green").aggregate(green=Sum('extent', default=0))
+        total_length = self.skytrail_set.all().aggregate(total=Sum('extent'))
+        green = g_length['green'] * 100 / total_length['total']
+        return int(green)
+
+    def blue_trails_circle(self):
+        green = self.green_trails_circle()
+        b_length = self.skytrail_set.all().filter(complexity="blue").aggregate(blue=Sum('extent', default=0))
+        total_length = self.skytrail_set.all().aggregate(total=Sum('extent'))
+        blue = b_length['blue'] * 100 / total_length['total'] + green
+        return int(blue)
+
+    def black_trails_circle(self):
+        b_length = self.skytrail_set.all().filter(complexity="black").aggregate(black=Sum('extent', default=0))
+        total_length = self.skytrail_set.all().aggregate(total=Sum('extent'))
+        black = b_length['black'] * 100 / total_length['total']
+        return int(100 - black)
+
 
 class SkyTrail(models.Model):
     id = models.CharField(db_column='ID', primary_key=True, max_length=20)  # Field name made lowercase.
