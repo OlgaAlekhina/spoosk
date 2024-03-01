@@ -150,22 +150,32 @@ class SkiResort(models.Model):
 
     def green_trails_circle(self):
         g_length = self.skytrail_set.all().filter(complexity="green").aggregate(green=Sum('extent', default=0))
-        total_length = self.skytrail_set.all().aggregate(total=Sum('extent'))
-        green = g_length['green'] * 100 / total_length['total']
-        return int(green)
+        # total_length = self.skytrail_set.all().aggregate(total=Sum('extent'))
+        # green = g_length['green'] * 100 / total_length['total']
+        # return int(green)
+        return round(int(g_length['green'])/1000)
 
     def blue_trails_circle(self):
-        green = self.green_trails_circle()
+        # green = self.green_trails_circle()
         b_length = self.skytrail_set.all().filter(complexity="blue").aggregate(blue=Sum('extent', default=0))
-        total_length = self.skytrail_set.all().aggregate(total=Sum('extent'))
-        blue = b_length['blue'] * 100 / total_length['total'] + green
-        return int(blue)
+        # total_length = self.skytrail_set.all().aggregate(total=Sum('extent'))
+        # blue = b_length['blue'] * 100 / total_length['total'] + green
+        # return int(blue)
+        return round(int(b_length['blue'])/1000)
 
     def black_trails_circle(self):
         b_length = self.skytrail_set.all().filter(complexity="black").aggregate(black=Sum('extent', default=0))
-        total_length = self.skytrail_set.all().aggregate(total=Sum('extent'))
-        black = b_length['black'] * 100 / total_length['total']
-        return int(100 - black)
+        # total_length = self.skytrail_set.all().aggregate(total=Sum('extent'))
+        # black = b_length['black'] * 100 / total_length['total']
+        # return int(100 - black)
+        return round(int(b_length['black'])/1000)
+
+    def red_trails_circle(self):
+        r_length = self.skytrail_set.all().filter(complexity="red").aggregate(red=Sum('extent', default=0))
+        # total_length = self.skytrail_set.all().aggregate(total=Sum('extent'))
+        # black = b_length['black'] * 100 / total_length['total']
+        # return int(100 - black)
+        return round(int(r_length['red'])/1000)
 
 
 class SkyTrail(models.Model):
