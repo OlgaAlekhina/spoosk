@@ -247,7 +247,23 @@
     display: inline-block;
     vertical-align: middle;
 }
+.length {
+    opacity: 0;
+    display: none;
+}
+.donut-container {
+    margin: 0 auto;
+    max-width: 380px;
+}
 
+#donut-chart {
+    width: 350px;
+    height: 350px;
+    margin: 0 auto;
+}
+.anychart-credits {
+   display: none;
+}
 .card-body {
     max-width: 350px;
     display: block;
@@ -261,15 +277,14 @@
     width: 100%;
     height: 260px;
     border-radius: 50%;
-    display: flex;  
+    display: flex;
     justify-content: center;
-    align-items: center;  
+    align-items: center;
     overflow: hidden;
     position: relative;
 }
 
 .timer-text {
-    margin-top: 28px;
     font-size: 24px;
     line-height: 28px;
     font-weight: 700;

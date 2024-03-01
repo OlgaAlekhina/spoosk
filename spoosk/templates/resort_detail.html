@@ -138,29 +138,17 @@
                             </div>
 
                             <div class="additional-info-column">
-                                <div>
-                                    <div class="card-body">
-                                        <div class="timer">
-                                            <div class="timer__line">
-                                                <svg class="pie" width="260" viewBox="0 0 40 40" stroke-dasharray="100">
-                                                    <g>
-                                                      <circle r="15.9155" cx="50%" cy="50%"></circle>
-                                                      <circle r="15.9155" cx="50%" cy="50%" stroke-dashoffset="{{ resort.green_trails_circle }}"></circle>
-                                                      <circle r="15.9155" cx="50%" cy="50%" stroke-dashoffset="{{ resort.blue_trails_circle }}"></circle>
-                                                      <circle r="15.9155" cx="50%" cy="50%" stroke-dashoffset="{{ resort.black_trails_circle }}"></circle>
-                                                    </g>
-                                                </svg>
-                                            </div>
-                                            <div class="timer__body">
-                                                <div class="timer__counter">
-                                                    <span>{{ resort.total_length_calculation }} км</span>
-                                                </div>
-                                            </div>
+                                <div class="donut-container">
+                                    <div class="length total-length">{{ resort.total_length_calculation }}</div>
+                                    <div class="length green-length">{{ resort.green_trails_circle }}</div>
+                                    <div class="length blue-length">{{ resort.blue_trails_circle }}</div>
+                                    <div class="length black-length">{{ resort.black_trails_circle }}</div>
+                                    <div class="length red-length">{{ resort.red_trails_circle }}</div>
 
-                                        </div>
-                                        <div class="timer-text">Общая протяжённость и сложность трасс</div>
-                                    </div>
+                                    <div id="donut-chart"></div>
+                                    <div class="timer-text">Общая протяжённость и сложность трасс</div>
                                 </div>
+
                             </div>
                             <div class="additional-info-column">
                                 <div>
