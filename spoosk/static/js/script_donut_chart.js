@@ -25,10 +25,10 @@ totalL = Number(document.querySelector('.total-length').textContent);
 anychart.onDocumentReady(function () {
     // добавляем данные
     let data = anychart.data.set([
-        ["black", blackL],
-        ["red", redL],
-        ["blue", blueL],
-        ["green", greenL]
+        ["Очень сложная трасса", blackL],
+        ["Сложная трасса", redL],
+        ["Трасса средней сложности", blueL],
+        ["Лёгкая трасса", greenL]
     ]);
     drawChart(data, totalL);
 });
@@ -64,13 +64,16 @@ function drawChart(data, totalL) {
     // устанавливаем идентификатор контейнера для диаграммы
     chart.container("donut-chart");
 
-
-    chart.labels().format("{%y}").fontSize(20).fontWeight(500).fontFamily('Raleway');
+    chart.labels().format(function() {
+        let value = this.value/1000
+        return Math.round(value)
+    });
+    chart.labels().fontSize(20).fontWeight(500).fontFamily('Raleway');
     chart.legend(false);
 
 
     // создание отдельной метки
-    var label = anychart.standalones.label();
+    let label = anychart.standalones.label();
     label
         .useHtml(true)
         .text(
@@ -89,7 +92,7 @@ function drawChart(data, totalL) {
     // улучшение всплывающей подсказки
     chart.tooltip(true);
 //    chart.tooltip().background().fill("#663399");
-    chart.tooltip().format("");
+    chart.tooltip().format("Общая протяженность: {%y} м");
 
     // установить заливку при выборе
     // chart.selected().fill("#007247");
