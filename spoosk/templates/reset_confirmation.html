@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<title>Reset password confirmation letter</title>
+</head>
+
+<body>
+
+<h2>Здравствуйте!</h2>
+
+<p>Мы получили запрос на восстановление пароля на сайте Spoosk.</p>
+
+<p>Чтобы изменить свой пароль, пожалуйста, пройдите по ссылке, расположенной ниже.</p>
+
+<p><a href="{{ protocol }}://{{ domain }}/resorts?uidb64={{ uid }}&token={{ token }}">{{ protocol }}://{{ domain }}/resorts?uidb64={{ uid }}&token={{ token }}</a></p>
+
+<p>Если вы не делали этот запрос, можете просто проигнорировать это письмо.</p>
+
+</body>
+</html>

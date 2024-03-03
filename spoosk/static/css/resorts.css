@@ -1,4 +1,4 @@
-.content {
+.content-center {
     text-align: center;
 }
 /* --------PAGE-------------------------------------------------- */
@@ -12,12 +12,12 @@
 }
 
 .page-additional-info {
-    padding-top: 200px;
-    padding-bottom: 200px;
+    padding-top: 120px;
+    padding-bottom: 120px;
 }
 
 .page-price-skipass {
-    padding-bottom: 200px;
+    padding-bottom: 50px;
 }
 
 
@@ -126,6 +126,7 @@
 
 .resort-button-box {
     text-align: center;
+    max-width: 122px;
 }
 
 .left {
@@ -135,26 +136,57 @@
 .resort-btn {
     border-radius: 8px;
     user-select: none;
-    cursor: pointer;
     padding: 17px 43px;
     border: 2px solid #FAA800;
+    background: #fff;
 
-    cursor: default;
-    opacity: 0.3;
-}
-
-.resort-btn-favorites {
-    background: #FAA800;
+    cursor: pointer;
 }
 
 .resort-btn-comparison {
+    opacity: 0.3;
+    cursor: default;
+}
+
+.resort-btn:hover {
+    background: #FAA800;
+}
+.resort-btn:hover svg path {
+    stroke-opacity: 1;
+    fill-rule: nonzero;
+    clip-rule: inherit;
+    fill-opacity: 1;
+    fill: #fff;
+    stroke: #fff; 
+}
+
+.resort-btn-favorites {
+    border-radius: 8px;
+    user-select: none;
+    padding: 17px 43px;
+    border: 2px solid #FAA800;
+    background: #FAA800;
+    cursor: pointer;
+}
+.resort-btn-favorites svg path {
+    stroke-opacity: 1;
+    fill-rule: nonzero;
+    clip-rule: inherit;
+    fill-opacity: 1;
+    fill: #fff;
+    stroke: #fff;
+}
+
+.resort-btn-comparison:hover {
     background: #fff;
 }
-/*
-.resort-btn:hover {
-    opacity: 0.7;
+
+.resort-btn-comparison:hover svg path {
+    stroke-opacity: 1;
+    fill: #FAA800; /* Изменение цвета заливки на белый */
+    stroke: #FAA800; /* Изменение цвета обводки на белый */
 }
-*/
+
 .resort-btn-text {
     margin-top: 12px;
 
@@ -215,7 +247,23 @@
     display: inline-block;
     vertical-align: middle;
 }
+.length {
+    opacity: 0;
+    display: none;
+}
+.donut-container {
+    margin: 0 auto;
+    max-width: 380px;
+}
 
+#donut-chart {
+    width: 350px;
+    height: 350px;
+    margin: 0 auto;
+}
+.anychart-credits {
+   display: none;
+}
 .card-body {
     max-width: 350px;
     display: block;
@@ -229,15 +277,14 @@
     width: 100%;
     height: 260px;
     border-radius: 50%;
-    display: flex;  
+    display: flex;
     justify-content: center;
-    align-items: center;  
+    align-items: center;
     overflow: hidden;
     position: relative;
 }
 
 .timer-text {
-    margin-top: 28px;
     font-size: 24px;
     line-height: 28px;
     font-weight: 700;
@@ -291,23 +338,23 @@
   }
 
   .pie circle:nth-of-type(1) {
-    stroke: #7B7B7B;
-    stroke-dasharray: 15 100;
+    stroke: #ABE991;
+    /*stroke-dasharray: 15 100;*/
   }
 
   .pie circle:nth-of-type(2) {
-    stroke: #EC818F;
-    stroke-dasharray: 0 15 30 100;
+    stroke: #99DCED;
+    /*stroke-dasharray: 0 15 30 100;*/
   }
 
   .pie circle:nth-of-type(3) {
-    stroke: #ABE991;
-    stroke-dasharray: 0 45 37 100;
+    stroke: #EC818F;
+    /*stroke-dasharray: 0 45 37 100;*/
   }
 
   .pie circle:nth-of-type(4) {
-    stroke:  #99DCED;
-    stroke-dasharray: 0 82 18 100;
+    stroke:  #7B7B7B;
+    /*stroke-dasharray: 0 82 18 100;*/
   }
 
   
@@ -491,8 +538,6 @@
 }
 
 
-/*-------------Reviews-------------*/
-
 .section-title-reviews {
     text-align: center;
 }
@@ -502,7 +547,7 @@
 }
 
 .resort-add-review {
-    margin-top: 28px;
+    margin-top: 80px;
     padding: 14px 40px;
     background-color: #005FF9;
 
@@ -526,134 +571,3 @@
     outline: none;
 }
 */
-.form__group {
-    margin-bottom: 24px;
-}
-
-.form__input {
-    margin-top: 8px;
-    padding: 10px 160px 10px 20px;
-    border-radius: 12px;
-    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 20px;
-    font-family: 'Raleway', 'Helvetica', 'Arial', sans-serif;
-    color: #B1B2B7;
-}
-
-.form__label {
-    margin-top: 8px;
-
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 19px;
-    color: #000000;
-}
-
-.form__text {
-    margin-top: 8px;
-    padding: 10px 20px 10px 20px;
-    border-radius: 12px;
-    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 20px;
-    font-family: 'Raleway', 'Helvetica', 'Arial', sans-serif;
-    color: #B1B2B7;
-}
-
-.form__category {
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  font-size: 16px;
-  color: #333;
-}
-
-.form__button {
-    padding: 12px 48px 12px 48px;
-    background-color: #B1B2B7;
-    border-radius: 8px;
-
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 20px;
-
-}
-
-
-
-
-/* свойства модального окна по умолчанию */
-
-.modal-add-review {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 9998;
-    background-color: rgba(0, 0, 0, .3);
-    display: grid;
-    align-items: center;
-    justify-content: center;
-    overflow-y: auto;
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility .4s, opacity .4s;
-
-}
-
-.modal-add-review__box {
-    position: relative;
-    max-width: 900px;
-    padding: 15px;
-    margin: 30px 15px;
-    z-index: 1;
-    background-color: white;
-    border-radius: 11px;
-}
-
-.modal-add-review.open {
-    visibility: visible;
-    opacity: 1;
-}
-
-.resort-name-review {
-    font-size: 37px;
-    line-height: 42px;
-    font-weight: 700;
-
-    color: #005FF9;
-}
-
-.resort-region-review {
-    margin-bottom: 24px;
-    font-size: 14px;
-    line-height: 16px;
-    font-weight: 500;
-
-    color: #B1B2B7;
-}
-
-.modal-add-review__close {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    border: none;
-    background-color: transparent;
-    padding: 5px;
-    z-index: 5;
-    cursor: pointer;
-}
-
-.modal-add-review__close svg path {
-    transition: fill 4.s;
-}
-.modal-add-review__close:hover svg path {
-    fill: blue;
-}

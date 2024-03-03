@@ -3,7 +3,7 @@ from datetime import datetime
 import locale
 import django_filters
 from django.db.models import Q
-from django_filters import FilterSet, CharFilter
+from django_filters import FilterSet, CharFilter, Filter
 from .models import SkiResort
 from django_filters import rest_framework as filters
 from django_filters.constants import EMPTY_VALUES

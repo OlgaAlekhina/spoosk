@@ -1,20 +1,20 @@
-{% extends 'flatpages/base_searching_results.html' %}
 {% load static %}
-{% block title %}
-Результаты поиска
-{% endblock title %}
-
 {% block content %}
 
-    {% if resorts %}
+<div class="favorites-account-container">
+    <div class="favorites-account-box">
+        <h1 class="section-title-accounts">Избранные курорты</h1>
 
-        {% for resort in resorts %}
-<!--        {% for resort in filter.qs %-->
-                            <div class="card-column">
+        <div class="cards-wrapper cards-wrapper-favorites">
+            {% if resorts %}
+            <div class="cards-content cards-content-favorites">
+                    {% for resort in resorts %}
+
+                     <div class="card-column">
                                 <div class="card-item">
 
                                     <div class="card-image">
-                                        <a href="#">
+                                        <a href="{{ resort.get_absolute_url }}">
                                             <img src={{ resort.image.url }} alt="Роза Хутор" class="image" width="348" height="240">
                                             <div class="card-title">
                                                 <div class="card-title-name"><span>{{ resort.name }}</span></div>
@@ -47,12 +47,8 @@
                                         <div class="count-trails">
                                             <ul class="count-trails-list">
                                                 {% for i in resort.count_trail.items %}
-                                                    <li class="{{ i.0 }}">{{ i.1 }}</li>
+                                                    <li class="color-bar {{ i.0 }}">{{ i.1 }}</li>
                                                 {% endfor %}
-<!--                                                <li class="green">{{ resort.count_trail }}</li>-->
-<!--                                                <li class="blue">{{ resort.count_trail }}</li>-->
-<!--                                                <li class="red">{{ resort.count_trail }}</li>-->
-<!--                                                <li class="black">{{ resort.count_trail }}</li>-->
                                             </ul>
                                         </div>
 
@@ -62,7 +58,7 @@
                                         </div>
 
                                         <div class="form-button">
-                                            <button class="cards-btn btn-white">
+                                            <button class="cards-btn btn-white compr-btn">
                                                 <svg viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M18 20.5V10.5" stroke="#D9D9D9" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                                     <path d="M12 20.5V4.5" stroke="#D9D9D9" stroke-opacity="1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -70,7 +66,7 @@
                                                 </svg>
                                             </button>
 
-                                            <button class="cards-btn btn-white">
+                                            <button class="cards-btn favorites-btn" onclick="removefromFavorites('{{ resort.id_resort }}')">
                                                 <svg viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M12.0119 6.07196L10.9249 4.98496C10.4155 4.46862 9.80891 4.05816
                                                     9.14015 3.7772C8.4714 3.49625 7.75368 3.35036 7.02831 3.34793C6.30295 3.3455 5.58426 3.48658 4.91364 3.76304C4.24302
@@ -89,15 +85,26 @@
                                             </button>
 
                                             <!-- <button class="cards-btn cards-btn-blue"><a href="pages/resorts.html">Подробнее</a></button> -->
-                                            <a href="{% static 'pages/resorts.html' %}"><button class="cards-btn cards-btn-blue">Подробнее</button></a>
+                                            <a href="{{ resort.get_absolute_url }}"><button class="cards-btn cards-btn-blue">Подробнее</button></a>
                                         </div>
                                     </div>
 
                                 </div>
                             </div>
-        {% endfor %}
 
-    {% else %}
-        <h2>Курорты не найдены</h2>
-    {% endif %}
-{% endblock content %}
+                    {% endfor %}
+            </div>
+            {% else %}
+            <div class="no-cards">
+                <p>Упс! Похоже здесь еще ничего нет.</p>
+                <p>Добавляйте понравившиеся курорты с помощью кнопки</p>
+                <a href="{% url 'resorts' %}"><button class="cards-btn cards-btn-blue">Перейти к курортам</button></a>
+            </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

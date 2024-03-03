@@ -7,6 +7,9 @@ from django.views.generic import ListView
 from .filters import ResortFilter, MainFilter
 from rest_framework import status
 from .models import SkiResort, Month, RidingLevel, SkiPass, SkiReview, SkyTrail, ReviewImage
+from .filters import ResortFilter, MainFilter
+from .forms import SkiReviewForm, ReviewImageForm
+from .models import SkiResort, Month, RidingLevel, SkiReview, ReviewImage
 from django.http import JsonResponse
 from .serializers import SkiResortSerializer, ResortSerializer, SkireviewSerializer, SkireviewUpdateSerializer
 from rest_framework import viewsets
@@ -303,6 +306,52 @@ class Region:
     #     return b + list(q)
 
 
+# endpoint for advanced filter request
+def advanced_filter(request):
+    data = request.GET
+    easy = True if 'have_green_skitrails' in data else False
+    medium = True if 'have_blue_skitrails' in data else False
+    complex = True if 'have_red_skitrails' in data else False
+    difficult = True if 'have_black_skitrails' in data else False
+    freeride = True if 'have_freeride' in data else False
+    snowpark = True if 'have_snowpark' in data else False
+    bugel = True if 'have_bugelny' in data else False
+    chair = True if 'have_armchair' in data else False
+    gondola = True if 'have_gondola' in data else False
+    travelator = True if 'have_travelators' in data else False
+    adult = True if 'have_adult_school' in data else False
+    if 'airport_distance' in data:
+        distance = 0 if data.get('airport_distance') == '50' else 100
+    else:
+        distance = 200
+    child = True if 'have_children_school' in data else False
+    rental = True if 'have_rental' in data else False
+    evening = True if 'have_evening_skiing' in data else False
+    filter_results = MainFilter(data).qs
+    html = render_to_string('base_searching_results2.html', context={'easy': easy, 'medium': medium, 'complex': complex, 'difficult': difficult, 'freeride': freeride,
+                                                                     'snowpark': snowpark, 'bugel': bugel, 'chair': chair, 'gondola': gondola, 'travelator': travelator,
+                                                                     'adult': adult, 'child': child, 'rental': rental, 'evening': evening, 'distance': distance,
+                                                                     'resorts': filter_results, 'resorts_length': len(filter_results)}, request=request)
+    return JsonResponse(html, safe=False)
+
+
+# endpoint for review form submit
+def review_submit(request):
+    if request.method == 'POST':
+        id_resort = request.POST.get('id_resort')
+        resort = SkiResort.objects.get(id_resort=id_resort)
+        author = request.user
+        rating = request.POST.get('rating')
+        text = request.POST.get('text')
+        images = request.FILES.getlist('images')
+        review = SkiReview.objects.create(resort=resort, author=author, rating=rating, text=text)
+        for image in images:
+            ReviewImage.objects.create(image=image, review=review)
+        return JsonResponse({"success": "Add new review"}, status=200)
+    else:
+        raise Http404
+
+
 class SkiResortList(Region, ListView):
     model = SkiResort
     template_name = 'resorts.html'
@@ -320,7 +369,7 @@ class SkiResortList(Region, ListView):
         context['ski_pass_one'] = SkiResort.ski_pass_one
         context['count'] = SkiResort.count
         context['type_name_price'] = SkiResort.type_name_price
-        # context['reviews'] = Review.objects.all().order_by('-id')[:10]
+        context['reviews'] = SkiReview.objects.filter(approved=True).order_by('-add_at')[:10]
 
         # context['where'] = 'Все регионы'
         # context['when'] = 'Не важно'
@@ -329,110 +378,117 @@ class SkiResortList(Region, ListView):
 
 
 class SkiResortDetailView(View):
-    # model = SkiResort
-    # template_name = 'resort_detail.html'
-    # context_object_name = 'resort'
-    # slug_field = "name"
 
     def get(self, request, slug):
         resort = SkiResort.objects.get(name=slug)
-        return render(request, 'resort_detail.html', {"resort": resort})
-        # reviews_list = Review.objects.filter(resort=resort).order_by('-id')
-        # reviews = reviews_list
-        #
-        # form = ReviewForm()
-        # return render(request, 'resort_detail.html', {"resort": resort, "reviews": reviews, "form": form})
+        reviews_list = SkiReview.objects.filter(resort=resort, approved=True).order_by('-add_at')
+        reviews = reviews_list
 
-    # def post(self, request, slug):
-    #     resort = SkiResort.objects.get(name=slug)
-    #     form = Review(request.POST)
-    #     if form.is_valid():
-    #         review = form.save(commit=False)
-    #         review.resort = resort
-    #         review.save()
-    #         return redirect('resort_detail', slug=slug)
-    #     else:
-    #         reviews = Review.objects.filter(resort=resort)
-    #         return render(request, 'resort_detail.html', {"resort": resort, "reviews": reviews, "form": form})
+        initial_data = {'resort': resort.id_resort}
+        review_form = SkiReviewForm(initial=initial_data, request=request)
+        image_form = ReviewImageForm()
+        return render(request, 'resort_detail.html', {"resort": resort, "reviews": reviews, "review_form": review_form, 'image_form': image_form})
 
+    def post(self, request, slug):
+        resort = SkiResort.objects.get(name=slug)
+        review_form = SkiReviewForm(request.POST, request=request)
+        image_form = ReviewImageForm(request.POST, request.FILES)
 
-class FilterResortsView(Region, ListView):
-    queryset = SkiResort.objects.all()
-    template_name = 'base_searching_results.html'
-    context_object_name = 'resorts'
+        if review_form.is_valid() and image_form.is_valid():
+            review_instance = review_form.save(commit=False)
+            review_instance.author = request.user
+            review_instance.save()
 
-    @staticmethod
-    def get_queryset_complexity(level):
-        if level == 'Ученик':
-            q = SkiResort.objects.filter(skytrail__complexity='green').distinct('name')
-        elif level == 'Новичок':
-            q = SkiResort.objects.filter(skytrail__complexity='blue').distinct('name')
-        elif level == 'Опытный':
-            q = SkiResort.objects.filter(skytrail__complexity='red').distinct('name')
-        elif level == 'Экстремал':
-            q = SkiResort.objects.filter(skytrail__complexity='black').distinct('name')
+            image_instances = []
+            for image in request.FILES.getlist('photo'):
+                image_instance = ReviewImage.objects.create(photo=image, review=review_instance)
+                image_instances.append(image_instance)
+
+            return redirect('resort_detail', slug=review_instance.resort.name)
         else:
-            q = SkiResort.objects.all()
-
-        return q
-
-    def get_queryset(self):
-        # queryset = super().queryset
-        where = self.request.GET.get('where')
-        when = self.request.GET.get('when')
-        riding_level = self.request.GET.get('riding_level')
-
-        qs1 = SkiResort.objects.filter(region__icontains=where).distinct('name')
-        # self.filterset = ResortFilter({'region': f1}, queryset=queryset).qs
-        qs2 = SkiResort.objects.filter(list_month__icontains=when).distinct('name')
-        qs3 = self.get_queryset_complexity(riding_level)
+            reviews = SkiReview.objects.filter(resort=resort)
+            review_form = SkiReviewForm(initial={'resort': resort.id_resort}, request=request)
+            image_form = ReviewImageForm()
+            return render(request, 'resort_detail.html', {"resort": resort, "reviews": reviews, 'review_form': review_form, 'image_form': image_form})
 
 
-        if where == '':
-            where = 'Все регионы'
-        if when == '':
-            when = 'Не важно'
-        if riding_level == '':
-            riding_level = 'Не важно'
-
-        if where == 'Все регионы':
-            if when == 'Не важно' and riding_level == 'Не важно':
-                self.filterset = SkiResort.objects.all()
-            elif when != 'Не важно' and riding_level == 'Не важно':
-                self.filterset = qs2
-            elif when == 'Не важно' and riding_level != 'Не важно':
-                self.filterset = qs3
-            elif when != 'Не важно' and riding_level != 'Не важно':
-                self.filterset = qs2 & qs3
-
-        else:
-            if when == 'Не важно' and riding_level == 'Не важно':
-                self.filterset = qs1
-            elif when != 'Не важно' and riding_level == 'Не важно':
-                self.filterset = qs1 & qs2
-            elif when == 'Не важно' and riding_level != 'Не важно':
-                self.filterset = qs1 & qs3
-            elif when != 'Не важно' and riding_level != 'Не важно':
-                self.filterset = qs2 & qs3 & qs1
-
-        return self.filterset
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        where = self.request.GET.get('where')
-        context['where'] = where
-
-        when = self.request.GET.get('when')
-        context['when'] = when
-
-        riding_level = self.request.GET.get('riding_level')
-        context['riding_level'] = riding_level
-
-        # context['filter'] = self.filterset.qs
-
-        context['resorts_length'] = len(self.filterset)
-        return context
+# class FilterResortsView(Region, ListView):
+#     queryset = SkiResort.objects.all()
+#     template_name = 'base_searching_results.html'
+#     context_object_name = 'resorts'
+#
+#     @staticmethod
+#     def get_queryset_complexity(level):
+#         if level == 'Ученик':
+#             q = SkiResort.objects.filter(skytrail__complexity='green').distinct('name')
+#         elif level == 'Новичок':
+#             q = SkiResort.objects.filter(skytrail__complexity='blue').distinct('name')
+#         elif level == 'Опытный':
+#             q = SkiResort.objects.filter(skytrail__complexity='red').distinct('name')
+#         elif level == 'Экстремал':
+#             q = SkiResort.objects.filter(skytrail__complexity='black').distinct('name')
+#         else:
+#             q = SkiResort.objects.all()
+#
+#         return q
+#
+#     def get_queryset(self):
+#         # queryset = super().queryset
+#         where = self.request.GET.get('where')
+#         when = self.request.GET.get('when')
+#         riding_level = self.request.GET.get('riding_level')
+#
+#         qs1 = SkiResort.objects.filter(region__icontains=where).distinct('name')
+#         # self.filterset = ResortFilter({'region': f1}, queryset=queryset).qs
+#         qs2 = SkiResort.objects.filter(list_month__icontains=when).distinct('name')
+#         qs3 = self.get_queryset_complexity(riding_level)
+#
+#
+#         if where == '':
+#             where = 'Все регионы'
+#         if when == '':
+#             when = 'Не важно'
+#         if riding_level == '':
+#             riding_level = 'Не важно'
+#
+#         if where == 'Все регионы':
+#             if when == 'Не важно' and riding_level == 'Не важно':
+#                 self.filterset = SkiResort.objects.all()
+#             elif when != 'Не важно' and riding_level == 'Не важно':
+#                 self.filterset = qs2
+#             elif when == 'Не важно' and riding_level != 'Не важно':
+#                 self.filterset = qs3
+#             elif when != 'Не важно' and riding_level != 'Не важно':
+#                 self.filterset = qs2 & qs3
+#
+#         else:
+#             if when == 'Не важно' and riding_level == 'Не важно':
+#                 self.filterset = qs1
+#             elif when != 'Не важно' and riding_level == 'Не важно':
+#                 self.filterset = qs1 & qs2
+#             elif when == 'Не важно' and riding_level != 'Не важно':
+#                 self.filterset = qs1 & qs3
+#             elif when != 'Не важно' and riding_level != 'Не важно':
+#                 self.filterset = qs2 & qs3 & qs1
+#
+#         return self.filterset
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#
+#         where = self.request.GET.get('where')
+#         context['where'] = where
+#
+#         when = self.request.GET.get('when')
+#         context['when'] = when
+#
+#         riding_level = self.request.GET.get('riding_level')
+#         context['riding_level'] = riding_level
+#
+#         # context['filter'] = self.filterset.qs
+#
+#         context['resorts_length'] = len(self.filterset)
+#         return context
 
 
 # def autocomplete(request):
@@ -540,3 +596,69 @@ class Search(ListView):
     # def get(self, request, slug):
     #     resort = SkiResort.objects.get(name=slug)
     #     return render(request, 'resort_detail.html', {"resort": resort})
+
+
+# add resort to user's favorites
+@login_required
+def add_resort(request, pk):
+    resort = SkiResort.objects.get(id_resort=pk)
+    user = request.user
+    if resort in SkiResort.objects.filter(users=user):
+        resort.users.remove(user)
+        response_data = {}
+        response_data['result'] = 'Successfully delete resort from favorites!'
+        response_data['action'] = 'delete'
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type='application/json'
+        )
+    else:
+        resort.users.add(user)
+        response_data = {}
+        response_data['result'] = 'Successfully add resort to favorites!'
+        response_data['action'] = 'add'
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type='application/json'
+        )
+
+
+# get review data in modal
+def get_review(request, pk):
+    review = SkiReview.objects.get(id=pk)
+    images_list = ReviewImage.objects.filter(review=review)
+    images = []
+    for im in images_list:
+        img = {}
+        img['id'] = im.id
+        img['url'] = im.image.url
+        images.append(img)
+    author = review.author
+    review_date = review.add_at.strftime("%d.%m.%Y")
+    try:
+        author_avatar = author.userprofile.avatar.url
+    except:
+        author_avatar = ''
+    if author.first_name == '':
+        author_name = author.userprofile.name
+    else:
+        if author.last_name != '':
+            last_name = author.last_name[:1] + '.'
+            author_name = author.first_name + ' ' + last_name
+        else:
+            author_name = author.first_name
+    response_data = {}
+    response_data['resort_name'] = review.resort.name
+    response_data['review_id'] = pk
+    response_data['resort_region'] = review.resort.region
+    response_data['resort_url'] = review.resort.get_absolute_url()
+    response_data['author_name'] = author_name
+    response_data['author_avatar'] = author_avatar
+    response_data['review_text'] = review.text
+    response_data['review_rating'] = review.rating
+    response_data['review_images'] = images
+    response_data['review_data_at'] = review_date
+    return HttpResponse(
+        json.dumps(response_data),
+        content_type='application/json'
+    )

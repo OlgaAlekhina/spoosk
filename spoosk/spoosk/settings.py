@@ -150,6 +150,12 @@ AWS_S3_REGION_NAME = 'ru-central1'
 # custom storage for media files
 DEFAULT_FILE_STORAGE = 'yandex_s3_storage.ImagesStorage'
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+LOGIN_URL = '/resorts'
+LOGOUT_REDIRECT_URL = '/resorts'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -197,6 +203,17 @@ EMAIL_USE_TLS = True
 
 # allow post requests on prod
 # CSRF_TRUSTED_ORIGINS = ['https://spoosk.pnpl.tech']
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_FROM = 'spoosk.info@gmail.com'
+EMAIL_HOST_USER = 'spoosk.info@gmail.com'
+EMAIL_HOST_PASSWORD = 'qpqhkyiaqcdfldrv'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+# access to Google Auth API
+GP_CLIENT_ID = "632070971106-bmjtdd1kksfo5tohm0kjvd4r3ghfkjie.apps.googleusercontent.com"
+GP_CLIENT_SECRET = "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"
 
 # try:
 #     from .local_settings import *
