@@ -267,7 +267,7 @@ def add_missing_profiles(request):
 
 # выводит избранные курорты на страницу личного кабинета
 @login_required
-def favorites(request):
+def user_favorites(request):
     user = request.user
     resorts = user.user.all()
     html = render_to_string('accounts/favorites_resorts.html', context={'resorts': resorts})
