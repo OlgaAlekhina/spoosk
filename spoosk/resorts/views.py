@@ -1,35 +1,29 @@
 import json
 from django.shortcuts import render, redirect
-from django.urls import reverse
 from django.views import View
-from django.views.decorators.http import require_POST
 from django.views.generic import ListView
-from .filters import ResortFilter, MainFilter
 from rest_framework import status
-from .models import SkiResort, Month, RidingLevel, SkiPass, SkiReview, SkyTrail, ReviewImage
-from .filters import ResortFilter, MainFilter
+from .filters import MainFilter
 from .forms import SkiReviewForm, ReviewImageForm
-from .models import SkiResort, Month, RidingLevel, SkiReview, ReviewImage
-from django.http import JsonResponse
+from .models import SkiResort, Month, RidingLevel, SkiReview, ReviewImage, SkiPass, SkyTrail
 from .serializers import SkiResortSerializer, ResortSerializer, SkireviewSerializer, SkireviewUpdateSerializer
 from rest_framework import viewsets
-from rest_framework.response import Response
 from rest_framework import generics
 from django.db.models import Prefetch
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from django.db.models import Count, Sum, Avg
+from django.db.models import Sum, Avg
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import OuterRef, Subquery, IntegerField, Exists, FloatField
-from rest_framework import pagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
-from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import action
 from django.db.models.functions import Coalesce
 from spoosk.permissions import AuthorEditOrReadOnly, APIkey
-from django.db.models import Value
+from django.template.loader import render_to_string
+from django.http import JsonResponse, HttpResponse, Http404
+from django.contrib.auth.decorators import login_required
 
 
 # endpoints for resorts

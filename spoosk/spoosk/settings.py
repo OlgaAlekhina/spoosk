@@ -150,9 +150,6 @@ AWS_S3_REGION_NAME = 'ru-central1'
 # custom storage for media files
 DEFAULT_FILE_STORAGE = 'yandex_s3_storage.ImagesStorage'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 LOGIN_URL = '/resorts'
 LOGOUT_REDIRECT_URL = '/resorts'
 
@@ -193,16 +190,6 @@ SWAGGER_SETTINGS = {
 }
 
 # Google SMTP mail server settings
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_FROM = 'spoosk.info@gmail.com'
-EMAIL_HOST_USER = 'spoosk.info@gmail.com'
-EMAIL_HOST_PASSWORD = 'qpqhkyiaqcdfldrv'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-
-# allow post requests on prod
-# CSRF_TRUSTED_ORIGINS = ['https://spoosk.pnpl.tech']
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_FROM = 'spoosk.info@gmail.com'

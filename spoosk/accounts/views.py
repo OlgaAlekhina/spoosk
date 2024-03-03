@@ -1,41 +1,32 @@
-from django.contrib.auth.models import User
 from .models import UserProfile, SignupCode
-from django.http import JsonResponse, HttpResponse, Http404
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets, mixins, status
 from .serializers import UserSerializer, UserprofileSerializer, LoginSerializer, CodeSerializer, ResetpasswordSerializer, ChangepasswordSerializer, EmptySerializer
 from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
-from resorts.models import SkiResort
+from resorts.models import SkiResort, SkiReview, ReviewImage
 from rest_framework.authtoken.models import Token
 from resorts.serializers import SkireviewSerializer, ResortSerializer
-from rest_framework import status
 from rest_framework.response import Response
 from spoosk.permissions import APIkey, UserPermission
 from datetime import timedelta
 from django.utils import timezone
 from rest_framework.decorators import action
-from django.core.mail import EmailMultiAlternatives
-from django.template.loader import render_to_string
 from random import randint
 from django.shortcuts import get_object_or_404
 from django.db.models import OuterRef, Exists
-
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse, Http404
 from django.contrib.auth.models import User
 from django.contrib.auth import login
-import random
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from .tokens import user_token
 import json
-from .models import UserProfile
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.conf import settings
 import requests
-from resorts.models import SkiReview, ReviewImage
 
 
 # аутентификация пользователя по мейлу
