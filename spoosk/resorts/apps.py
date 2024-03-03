@@ -7,4 +7,3 @@ class ResortsConfig(AppConfig):
 
     def ready(self):
         import resorts.signals
-

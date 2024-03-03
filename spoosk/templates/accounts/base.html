@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap&subset=cyrillic-ext" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'css/accounts.css' %}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+        <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/reviews.css' %}">
+
+        <title>Иван Иванов - spoosk</title>
+    </head>
+    <body>
+        <div class="container">
+            <header class="header header-white">
+                <div class="header-wrapper wrapper">
+                    <div class="logo">
+                        <a href="{% url 'resorts' %}">
+                            <img src="{% static 'image/header/logo_blue.png' %}" alt="Logo" width="190" height="57">
+                        </a>
+                    </div>
+                    <nav class="header-menu">
+
+                        <ul class="menu-list">
+                            <li class="menu-item search-box">
+                            <div class="search-input-cancel">
+                                <form class="search-active ui-widget" method="get" action="{% url 'search' %}">
+                                    <input type="text" name="search" id="tags" class="search-input search-input-blue" autocomplete="off" placeholder="Название курорта">
+                                </form>
+                                <div class="cancel-btn">
+                                    <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M6.8775 5.97616C6.69076 5.794 6.44065 5.69321 6.18104 5.69549C5.92143 5.69777 5.67309 5.80294 5.48951 5.98834C5.30593 6.17375 5.2018 6.42456 5.19954 6.68676C5.19729 6.94896 5.29709 7.20156 5.47745 7.39016L10.7183 12.6832L5.47745 17.9762C5.38288 18.0684 5.30745 18.1788 5.25556 18.3008C5.20366 18.4228 5.17635 18.554 5.17521 18.6868C5.17407 18.8195 5.19912 18.9512 5.2489 19.0741C5.29869 19.197 5.37221 19.3087 5.46518 19.4026C5.55814 19.4964 5.66869 19.5707 5.79038 19.621C5.91206 19.6713 6.04244 19.6966 6.17391 19.6954C6.30538 19.6943 6.43531 19.6667 6.55611 19.6143C6.67691 19.5619 6.78617 19.4857 6.8775 19.3902L12.1183 14.0972L17.3591 19.3902C17.5459 19.5723 17.796 19.6731 18.0556 19.6708C18.3152 19.6686 18.5635 19.5634 18.7471 19.378C18.9307 19.1926 19.0348 18.9418 19.0371 18.6796C19.0393 18.4174 18.9395 18.1648 18.7592 17.9762L13.5184 12.6832L18.7592 7.39016C18.9395 7.20156 19.0393 6.94896 19.0371 6.68676C19.0348 6.42456 18.9307 6.17375 18.7471 5.98834C18.5635 5.80294 18.3152 5.69777 18.0556 5.69549C17.796 5.69321 17.5459 5.794 17.3591 5.97616L12.1183 11.2692L6.8775 5.97616Z" fill="#005ff9" fill-opacity="0.5"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <a href="#" class="menu-link menu-link-blue search-btn">
+                                <img src="{% static 'image/header/header_search_icon_blue.svg' %}" alt="Поиск" width="28" height="28">
+                                <!-- <div class="icon control-btn_comparison"></div> -->
+                                <div class="name">Поиск</div>
+                            </a>
+
+                        </li>
+                            <li class="menu-item comparison-box">
+                                <a href="#" class="menu-link menu-link-blue" id="open-modal-comparison-btn">
+                                    <img src="{% static 'image/header/header_comparison_icon_blue.svg' %}" alt="Поиск" width="28" height="28">
+                                    <div class="name">Сравнить</div>
+                                </a>
+                            </li>
+                                <div class="modal-comparison" id="my-modal-comparison">
+                                    <div class="modal-comparison_box">
+                                        <div class="modal-comparison-block">
+                                            <a href="#" class="modal-comparison-text">Пожалуйста, выберите курорты для сравнения</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            <li class="menu-item profile-box">
+                                <a href="#" class="menu-link menu-link-blue" id="open-modal-profile-btn">
+                                    <img src="{% static 'image/header/header_account_icon_blue.svg' %}" alt="Поиск" width="28" height="28">
+                                    <div class="name">Профиль</div>
+                                </a>
+                                  {% if request.user.is_authenticated %}
+                            <div class="profile-popup">
+
+                               <div class="popup-authorized-user">
+
+                                   <div class="info-user">
+                                       <div class="info-user__foto-container">
+                                           <img {% if request.user.userprofile.avatar %} src="{{ request.user.userprofile.avatar.url }}" {% endif %} alt="" class="info-user__foto">
+                                       </div>
+                                       <div class="info-user__name"><span>{% if request.user.first_name %}{{ request.user.first_name }}</span> <span>{{ request.user.last_name }}{% endif %}</span></div>
+                                       <div class="info-user__nickname">{% if request.user.userprofile.name %}@{{ request.user.userprofile.name }}{% endif %}</div>
+                                   </div>
+
+                                   <nav class="nav-user">
+                                       <ul class="menu__list">
+                                           <li class="menu__item">
+                                               <a href="{% url 'userprofile_page' %}" class="menu__link menu__link-profile">Профиль</a>
+                                           </li>
+                                           <li class="menu__item">
+                                               <a href="#" class="menu__link menu__link-help">Помощь</a>
+                                           </li>
+                                           <li class="menu__item">
+                                               <a href="{% url 'logout' %}" class="menu__link menu__link-logout">Выйти</a>
+                                           </li>
+                                       </ul>
+                                   </nav>
+
+                                </div>
+                            </div>
+                            {% endif %}
+                            </li>
+
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+
+            <main class="page">
+                <section class="page-banner page_filters-banner">
+                    <div class="banner-image _img">
+                        <img src="{% static 'image/header/_sport_.png' %}" alt="Горы" class="img-filters-banner">
+                    </div>
+                </section>
+
+                <div class="wrapper">
+                    <div class="main-container">
+
+
+                        <aside class="info-user-accounts">
+
+                            <div class="info-user-container">
+                                <div class="info-user-box">
+
+                                    <div class="info-user">
+                                        <div class="info-user__foto-container">
+                                            <img {% if request.user.userprofile.avatar %} src="{{ request.user.userprofile.avatar.url }}" {% endif %} alt="" class="info-user__foto">
+                                        </div>
+                                        <div class="info-user__name"><span>{% if request.user.first_name %}{{ first_name }}</span> <span>{{ last_name }}{% endif %}</span></div>
+                                        <div class="info-user__nickname">{% if niсkname %} @{{ niсkname }} {% endif %}</div>
+                                    </div>
+
+                                    <ul class="menu__list info-list">
+                                        {% if country or city %}
+                                        <li class="info-list__item">
+                                            {% if city and country %}
+                                                <p><span>{{ city }}</span>, <span>{{ country }}</span></p>
+                                            {% else %}
+                                                <p><span>{{ city }}</span> <span>{{ country }}</span></p>
+                                            {% endif %}
+                                        </li>
+                                        {% endif %}
+                                        <li class="info-list__item info-list__item-calendar">
+                                            <p>Дата регистрации: <span>{{ reg_date|date:"d"}}</span> <span>{{ reg_date|date:"b"}}</span> <span>{{ reg_date|date:"o"}}</span></p>
+                                        </li>
+                                    </ul>
+
+                                    <a class="btn btn-editing-profile" href="{% url 'userprofile_page' %}">Редактировать профиль</a>
+
+                                </div>
+                            </div>
+
+                        </aside>
+
+                        
+                        <div class="main-accounts">
+
+                            <nav class="nav__accounts">
+                                <ul class="menu__list-accounts">
+                                    <li class="menu__item-accounts menu__item-favorites" onclick="loadFavorites()" >
+                                        <a href="#" class="menu__link-accounts menu__link-favorites">Избранное</a>
+                                    </li>
+                                    <li class="menu__item-accounts menu__item-reviews" onclick="loadReviews()">
+                                        <a href="#" class="menu__link-accounts menu__link-reviews">Отзывы</a>
+                                    </li>
+                                </ul>
+                            </nav>
+
+                            <section class="content">
+                                {% block content %}
+                                {% endblock %}
+                            </section>
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="modal" id="modal-edit-review">
+                    <div class="modal-review__box">
+                        <button class="modal__close-btn">
+                          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M2.70659 0.292919C2.51799 0.110761 2.26539 0.00996641
+                                2.00319 0.0122448C1.74099 0.0145233 1.49018 0.119692 1.30477 0.305101C1.11937 0.490509 1.0142 0.741321
+                                1.01192 1.00352C1.00964 1.26571 1.11044 1.51832 1.29259 1.70692L6.58559 6.99992L1.29259 12.2929C1.19708
+                                12.3852 1.1209 12.4955 1.06849 12.6175C1.01608 12.7395 0.988496 12.8707 0.987342 13.0035C0.986189 13.1363
+                                1.01149 13.268 1.06177 13.3909C1.11205 13.5138 1.18631 13.6254 1.2802 13.7193C1.37409 13.8132 1.48574 13.8875
+                                1.60864 13.9377C1.73154 13.988 1.86321 14.0133 1.99599 14.0122C2.12877 14.011 2.25999 13.9834 2.382 13.931C2.504
+                                13.8786 2.61435 13.8024 2.70659 13.7069L7.99959 8.41392L13.2926 13.7069C13.4812 13.8891 13.7338 13.9899 13.996
+                                13.9876C14.2582 13.9853 14.509 13.8801 14.6944 13.6947C14.8798 13.5093 14.985 13.2585 14.9873 12.9963C14.9895
+                                12.7341 14.8888 12.4815 14.7066 12.2929L9.41359 6.99992L14.7066 1.70692C14.8888 1.51832 14.9895 1.26571 14.9873
+                                1.00352C14.985 0.741321 14.8798 0.490509 14.6944 0.305101C14.509 0.119692 14.2582 0.0145233 13.996 0.0122448C13.7338
+                                0.00996641 13.4812 0.110761 13.2926 0.292919L7.99959 5.58592L2.70659 0.292919Z" fill="#2C2D2E"/>
+                            </svg>
+                        </button>
+
+                        <form onsubmit="return false;" method="POST" class="form__editing_review" enctype="multipart/form-data" id="editing_review">
+                            {% csrf_token %}
+                            <div class="review-resort-name resort-name__adding_review"></div>
+                            <div class="review-resort-region"></div>
+
+                            <div class="label__adding_review">Как бы вы оценили курорт?</div>
+                            <div class="stars"></div>
+
+                            {{ review_form.resort }}
+                            <div class="label__adding_review">Ваш отзыв:</div>
+                            <textarea name="text" cols="114" rows="8" class="form__text" autocomplete="off" placeholder="Напишите свой отзыв здесь" maxlength="2000" id="id_text"></textarea>
+                            {{ review_form.text }}
+                            {{ review_form.author }}
+
+                            <div class="label__adding_review">Дополни свой отзыв фотографиями</div>
+
+                            <div class="foto-container">
+                                <label for="foto_review" class="foto-field" style="cursor: pointer;">
+                                    <div class="">
+                                        <img id="preview" class="user_foto" height="32px">
+                                    </div>
+                                </label>
+                                <input type="file" name="photo" id="foto_review" multiple="true" accept=".png,.jpg,.jpeg">
+                            </div>
+
+                            <div class="review-row review-row__btn">
+                                <button class="form__button" type="submit" id="" onclick="editReview(this.id)">Сохранить отзыв</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+
+            </main>
+
+            <footer class="footer">
+                <div class="logo">
+                    <a href="{% url 'resorts' %}">
+                        <img src="{% static 'image/footer/logo_footer.svg' %}" alt="Logo">
+                    </a>
+                </div>
+            </footer>
+
+        </div>
+
+
+        <script src="{% static 'js/script.js' %}"></script>
+        <script src="{% static 'js/script_overlay.js' %}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="{% static 'js/profile.js' %}"></script>
+
+
+
+
+
+<!-- Initialize Swiper -->
+<script>
+  var swiper1 = new Swiper(".accountReviewsSwiper", {
+    slidesPerView: 1,
+    grid: {
+      rows: 2,
+    },
+    navigation: {
+          nextEl: ".swiper-button-n",
+          prevEl: ".swiper-button-p",
+      },
+  });
+</script>
+
+
+
+    </body>
+</html>
