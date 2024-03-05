@@ -9,7 +9,7 @@ Resorts
 
     {% if resorts %}
 
-        {% for resort in resorts %} <!-- Для каждого товара будете генерироваться новая строчка, т.е. новый html код. При этом сам цикл работает точно так же, как и в python. product — переменная цикла, т.е. наш товар, взятый из общего списка -->
+        {% for resort in resorts %}
                             <div class="card-column">
                                 <div class="card-item">
 
@@ -26,7 +26,7 @@ Resorts
                                             <div class="card-rating">
                                                 <div class="rating-content">
                                                     <img src="{% static 'image/card/rating_icon.svg' %}" alt="Рейтинг">
-                                                    <div class="rating-value">4.9</div>
+                                                    <div class="rating-value">{{ resort.rating }}</div>
                                                 </div>
                                             </div>
                                         </a>
