@@ -43,20 +43,6 @@ class SkiResortViewset(viewsets.ReadOnlyModelViewSet):
     permission_classes = [APIkey]
     filter_backends = [filters.SearchFilter]
     search_fields = ['name']
-    # ratings = SkiReview.objects.filter(resort=OuterRef("pk"), approved=True).order_by().values('resort').annotate(
-    #     resort_rating=Avg('rating', output_field=FloatField())).values('resort_rating')[:1]
-    # queryset = SkiResort.objects.prefetch_related(
-    #         Prefetch(
-    #             # get skipass objects which have mobile type
-    #             'resorts', queryset=SkiPass.objects.exclude(mob_type__isnull=True)
-    #         )
-    #     ).prefetch_related(
-    #         Prefetch(
-    #             # get skireview objects which have been approved
-    #             'resort_reviews', queryset=SkiReview.objects.filter(approved=True)
-    #         )
-    #     ).annotate(rating=Coalesce(Subquery(ratings), 0, output_field=FloatField())).order_by('-rating')
-    # pagination_class = None
 
     def get_queryset(self):
         user = self.request.user
