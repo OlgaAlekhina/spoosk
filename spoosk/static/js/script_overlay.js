@@ -151,6 +151,7 @@ function clearModalContent() {
     const authorElement = document.querySelector('.review-author');
     const starsList = document.querySelector('.stars-list-modal');
     const caruselModal = document.querySelector('.carusel-modal');
+    const fotoContainerReview = document.querySelector('.foto-container-review-modal').querySelector('img');
 
     if (nameElement) nameElement.textContent = '';
     if (regionElement) regionElement.textContent = '';
@@ -158,6 +159,8 @@ function clearModalContent() {
     if (authorElement) authorElement.textContent = '';
     if (starsList) starsList.innerHTML = '';
     if (caruselModal) caruselModal.innerHTML = '';
+    if (fotoContainerReview) fotoContainerReview.remove();
+
 
     if (document.querySelector('.stars')) document.querySelector('.stars').innerHTML = '';
 
@@ -200,7 +203,7 @@ function getReviewModalContent(response) {
     const avatar = document.createElement('img');
     avatar.classList.add('info-user__foto')
     avatar.src = String(response.author_avatar);
-    avatar.alt = 'Аватар';
+//    avatar.alt = 'Аватар';
     authorFoto.appendChild(avatar);
 
     const rating = response.review_rating;
