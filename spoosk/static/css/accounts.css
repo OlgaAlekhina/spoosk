@@ -264,29 +264,12 @@
   width: 100%;
 }
 
-.user_foto_container {
-    position: relative;
+.label-user__foto-container {
     width: 151px;
     height: 151px;
-    border-radius: 50%;
-    overflow: hidden;
-    background: #D9D9D9;
 }
 
-.user_foto {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 0;
-    height: 0;
-    min-width: 100%;
-    min-height: 100%;
-    object-fit: cover;
-}
-
-.user_foto_container::before {
+.label-user__foto-container::before {
     content: '';
     position: absolute;
     height: 32px;

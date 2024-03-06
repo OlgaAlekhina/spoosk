@@ -9,8 +9,8 @@
             <div class="block1-2-3-4">
                 <div class="block1">
                     <label for="avatar" style="cursor: pointer;">
-                        <div class="user_foto_container">
-                            <img id="user_ava" {% if avatar %} src="{{ avatar.url }}" {% endif %} alt="" class="user_foto">
+                        <div class="foto-container label-user__foto-container">
+                            <img id="user_ava" {% if avatar %} src="{{ avatar.url }}" {% endif %} alt="" class="info-user__foto">
                         </div>
                     </label>
                     <input type="file" id="avatar" name="avatar" style="opacity: 0; height: 0;" onchange="loadFile(event)">
