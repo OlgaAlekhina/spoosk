@@ -202,10 +202,12 @@ class SkiResort(models.Model):
             return 0
 
     @property
-    def rating(self):
+    def web_rating(self):
         if self.resort_reviews.exists():
             resort_rating = self.resort_reviews.filter(approved=True).aggregate(Avg('rating'))
             return round(resort_rating['rating__avg'], 1)
+        else:
+            return 0
 
     @property
     def reviews_count(self):
