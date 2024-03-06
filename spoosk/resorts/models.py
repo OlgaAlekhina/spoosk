@@ -202,25 +202,17 @@ class SkiResort(models.Model):
             return 0
 
     @property
+    def rating(self):
+        if self.resort_reviews.exists():
+            resort_rating = self.resort_reviews.filter(approved=True).aggregate(Avg('rating'))
+            return round(resort_rating['rating__avg'], 1)
+
+    @property
     def reviews_count(self):
         number_reviews = self.resort_reviews.filter(approved=True)
         return len(number_reviews)
 
-    def trails_length(self):
-        g_length = self.skytrail_set.all().filter(complexity="green").aggregate(green=Sum('extent', default=0))
-        b_length = self.skytrail_set.all().filter(complexity="blue").aggregate(blue=Sum('extent', default=0))
-        r_length = self.skytrail_set.all().filter(complexity="red").aggregate(red=Sum('extent', default=0))
-        bl_length = self.skytrail_set.all().filter(complexity="black").aggregate(black=Sum('extent', default=0))
-        total_length = self.skytrail_set.all().aggregate(total=Sum('extent'))
-        trails_length = {}
-        green = g_length['green'] * 100 / total_length['total']
-        blue = b_length['blue'] * 100 / total_length['total']
-        black = bl_length['black'] * 100 / total_length['total']
-        trails_length['green'] = green
-        trails_length['blue'] = blue
-        trails_length['black'] = black
-        return trails_length
-
+    @property
     def green_trails_circle(self):
         g_length = self.skytrail_set.all().filter(complexity="green").aggregate(green=Sum('extent', default=0))
         # total_length = self.skytrail_set.all().aggregate(total=Sum('extent'))
@@ -228,6 +220,7 @@ class SkiResort(models.Model):
         # return int(green)
         return int(g_length['green'])
 
+    @property
     def blue_trails_circle(self):
         # green = self.green_trails_circle()
         b_length = self.skytrail_set.all().filter(complexity="blue").aggregate(blue=Sum('extent', default=0))
@@ -236,6 +229,7 @@ class SkiResort(models.Model):
         # return int(blue)
         return int(b_length['blue'])
 
+    @property
     def black_trails_circle(self):
         b_length = self.skytrail_set.all().filter(complexity="black").aggregate(black=Sum('extent', default=0))
         # total_length = self.skytrail_set.all().aggregate(total=Sum('extent'))
@@ -243,6 +237,7 @@ class SkiResort(models.Model):
         # return int(100 - black)
         return int(b_length['black'])
 
+    @property
     def red_trails_circle(self):
         r_length = self.skytrail_set.all().filter(complexity="red").aggregate(red=Sum('extent', default=0))
         # total_length = self.skytrail_set.all().aggregate(total=Sum('extent'))
