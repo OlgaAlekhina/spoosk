@@ -118,7 +118,7 @@ function upload(selector, options = {}) {
     }
 
     const label = document.querySelector('.foto-field');
-    const fotoContainer = document.querySelector('.foto-container')
+    const fileContainer = document.querySelector('.file-container')
 
     const changeHandler = event => {
         console.log(event.target.files.length)
@@ -146,7 +146,7 @@ function upload(selector, options = {}) {
 
             reader.onload = ev => {
                 const src = ev.target.result
-                fotoContainer.insertAdjacentHTML('beforeend', `
+                fileContainer.insertAdjacentHTML('beforeend', `
                     <div class="preview-image">
                         <div class="preview-remove" data-name=${file.name}>&times;</div>
                         <img src="${src}" alt="${file.name}">
@@ -184,7 +184,7 @@ function upload(selector, options = {}) {
         // add file id in file_deleted list
         if (id != null) {file_deleted.push(id);};
 
-        const block = fotoContainer.querySelector(`[data-name="${name}"]`).closest('.preview-image')
+        const block = fileContainer.querySelector(`[data-name="${name}"]`).closest('.preview-image')
 
         block.classList.add('removing')
         setTimeout(() => block.remove(), 300)
@@ -197,7 +197,7 @@ function upload(selector, options = {}) {
     }
 
     input.addEventListener('change', changeHandler)
-    fotoContainer.addEventListener('click', removeHandler)
+    fileContainer.addEventListener('click', removeHandler)
 }
 
 upload('foto_review', {

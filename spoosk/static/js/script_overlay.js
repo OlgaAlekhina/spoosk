@@ -10,6 +10,7 @@ function resetForms() {
     const signupResponse = document.getElementById('signup-response');
     const results = document.getElementById('results');
     const resetResults = document.getElementById('reset_results');
+    const loginResults = document.getElementById('login_results');
     const addingReview = document.getElementById('adding_review');
     const preview = document.querySelector('.preview');
 
@@ -20,6 +21,7 @@ function resetForms() {
     if (signupResponse) signupResponse.innerHTML = "";
     if (results) results.innerHTML = "";
     if (resetResults) resetResults.innerHTML = "";
+    if (loginResults) loginResults.innerHTML = "";
     if (addingReview) addingReview.reset();
     if (preview) preview.innerHTML = "";
 
@@ -144,6 +146,11 @@ document.addEventListener("keydown", function (event) {
     }
 });
 
+function clearFotoContainerReview() {
+    const fotoContainerReview = document.querySelector('.foto-container-review-modal').querySelector('img');
+    if (fotoContainerReview) fotoContainerReview.remove();
+}
+
 function clearModalContent() {
     const nameElement = document.querySelector('.review-resort-name');
     const regionElement = document.querySelector('.review-resort-region');
@@ -151,7 +158,7 @@ function clearModalContent() {
     const authorElement = document.querySelector('.review-author');
     const starsList = document.querySelector('.stars-list-modal');
     const caruselModal = document.querySelector('.carusel-modal');
-    const fotoContainerReview = document.querySelector('.foto-container-review-modal').querySelector('img');
+
 
     if (nameElement) nameElement.textContent = '';
     if (regionElement) regionElement.textContent = '';
@@ -159,7 +166,6 @@ function clearModalContent() {
     if (authorElement) authorElement.textContent = '';
     if (starsList) starsList.innerHTML = '';
     if (caruselModal) caruselModal.innerHTML = '';
-    if (fotoContainerReview) fotoContainerReview.remove();
 
 
     if (document.querySelector('.stars')) document.querySelector('.stars').innerHTML = '';
@@ -282,7 +288,7 @@ function getReviewEditModalContent(response) {
         starsList.appendChild(starsItem);
     }
 
-    const fotoContainer = modal.querySelector('.foto-container');
+    const fotoContainer = modal.querySelector('.file-container');
     const images = response.review_images;
     console.log(images);
 
@@ -342,6 +348,7 @@ function getFileName(url) {
 
 function getReview(id) {
     clearModalContent();
+    clearFotoContainerReview();
     var modal = document.getElementById('modal-review-full');
     openModal(modal);
     origin = location.origin;

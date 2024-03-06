@@ -97,7 +97,7 @@
                                <div class="popup-authorized-user">
 
                                    <div class="info-user">
-                                       <div class="info-user__foto-container">
+                                       <div class="foto-container info-user__foto-container">
                                            <img {% if request.user.userprofile.avatar %} src="{{ request.user.userprofile.avatar.url }}" {% endif %} alt="" class="info-user__foto">
                                        </div>
                                        <div class="info-user__name"><span>{% if request.user.first_name %}{{ request.user.first_name }}</span> <span>{{ request.user.last_name }}{% endif %}</span></div>
