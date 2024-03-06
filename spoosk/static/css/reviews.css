@@ -234,6 +234,9 @@
     line-height: 24px;
     font-weight: 400;
     min-width: 456px;
+
+    text-align: justify;
+    word-wrap: break-word;
   }
   
   .review-text p {
@@ -247,6 +250,9 @@
     line-height: 24px;
     font-weight: 400;
     min-width: 456px;
+
+    text-align: justify;
+    word-wrap: break-word;
   }
 
   .review-text1 p {
