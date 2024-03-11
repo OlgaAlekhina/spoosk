@@ -145,6 +145,10 @@ function get_filter(jsonData) {
                 $("#modal-advanced-filters").html("");
                 $("body").removeClass('no-scroll');
                 $("body").removeAttr("style");
+                document.querySelector(".search-slider").oninput = function() {
+                    var value = (this.value-this.min)/(this.max-this.min)*100;
+                    this.style.background = 'linear-gradient(to right, #005FF9 0%, #005FF9 ' + value + '%, #7CB8FF ' + value + '%, #7CB8FF 100%)';
+               };
             },
         });
 };
