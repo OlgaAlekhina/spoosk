@@ -38,20 +38,3 @@ document.querySelectorAll('.form-group-content').forEach( function (dropDonwWrap
         }
     });
 });
-
-let range_inputs = document.getElementsByClassName("slider");
-console.log(range_inputs);
-
-for(var i = 0; i < range_inputs.length; i++) {
-    range_inputs[i].addEventListener('input', function() {
-    var value = (this.value-this.min)/(this.max-this.min)*100;
-    this.style.background = 'linear-gradient(to right, #005FF9 0%, #005FF9 ' + value + '%, #7CB8FF ' + value + '%, #7CB8FF 100%)';
-});
-};
-
-//console.log(document.querySelector(".search-slider"));
-
-//document.querySelector(".search-slider").oninput = function() {
-//  var value = (this.value-this.min)/(this.max-this.min)*100;
-//  this.style.background = 'linear-gradient(to right, #005FF9 0%, #005FF9 ' + value + '%, #7CB8FF ' + value + '%, #7CB8FF 100%)';
-//};

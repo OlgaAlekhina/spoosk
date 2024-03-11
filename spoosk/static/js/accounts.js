@@ -74,6 +74,15 @@ function review_submit() {
     });
 };
 
+// функция для изменения цвета range input в зависимости от текущего значения
+$.fn.rangeColor = function(){
+    value = ($(this).val()-$(this).prop('min'))/($(this).prop('max')-$(this).prop('min'))*100;
+    $(this).css('background', 'linear-gradient(to right, #005FF9 0%, #005FF9 ' + value + '%, #7CB8FF ' + value + '%, #7CB8FF 100%)');
+}
+
+// меняет цвет range input во всплывающем фильтре на главной странице
+$(".slider").on('input', $.fn.rangeColor);
+
 // call AJAX to pass parameters to advanced filter
 $('.filter-submit').on('click', function(event){
     event.preventDefault();
@@ -145,10 +154,8 @@ function get_filter(jsonData) {
                 $("#modal-advanced-filters").html("");
                 $("body").removeClass('no-scroll');
                 $("body").removeAttr("style");
-                document.querySelector(".search-slider").oninput = function() {
-                    var value = (this.value-this.min)/(this.max-this.min)*100;
-                    this.style.background = 'linear-gradient(to right, #005FF9 0%, #005FF9 ' + value + '%, #7CB8FF ' + value + '%, #7CB8FF 100%)';
-               };
+                $(".search-slider").rangeColor();
+                $(".search-slider").on('input', $.fn.rangeColor);
             },
         });
 };
