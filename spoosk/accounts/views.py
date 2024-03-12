@@ -12,7 +12,7 @@ from django.utils import timezone
 from rest_framework.decorators import action
 from random import randint
 from django.shortcuts import get_object_or_404
-from django.db.models import OuterRef, Exists
+from django.db.models import OuterRef, Exists, Subquery, FloatField, Avg
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse, Http404
 from django.contrib.auth.models import User
@@ -27,6 +27,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.conf import settings
 import requests
+from django.db.models.functions import Coalesce
 
 
 # аутентификация пользователя по мейлу
@@ -571,7 +572,9 @@ def add_missing_profiles(request):
 @login_required
 def user_favorites(request):
     user = request.user
-    resorts = user.user.all()
+    ratings = SkiReview.objects.filter(resort=OuterRef("pk"), approved=True).order_by().values('resort').annotate(
+        resort_rating=Avg('rating', output_field=FloatField())).values('resort_rating')[:1]
+    resorts = user.user.all().annotate(rating=Coalesce(Subquery(ratings), 0, output_field=FloatField())).order_by('-rating')[:6]
     html = render_to_string('accounts/favorites_resorts.html', context={'resorts': resorts})
     return JsonResponse(html, safe=False)
 

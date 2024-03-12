@@ -7,15 +7,12 @@ from .filters import MainFilter
 from .forms import SkiReviewForm, ReviewImageForm
 from .models import SkiResort, Month, RidingLevel, SkiReview, ReviewImage, SkiPass, SkyTrail
 from .serializers import SkiResortSerializer, ResortSerializer, SkireviewSerializer, SkireviewUpdateSerializer
-from rest_framework import viewsets
-from rest_framework import generics
-from django.db.models import Prefetch
+from rest_framework import viewsets, generics
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from django.db.models import Sum, Avg
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
-from django.db.models import OuterRef, Subquery, IntegerField, Exists, FloatField
+from django.db.models import OuterRef, Subquery, IntegerField, Exists, FloatField, Prefetch, Sum, Avg
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
 from rest_framework.decorators import action
@@ -307,7 +304,9 @@ def advanced_filter(request):
     child = True if 'have_children_school' in data else False
     rental = True if 'have_rental' in data else False
     evening = True if 'have_evening_skiing' in data else False
-    filter_results = MainFilter(data).qs
+    ratings = SkiReview.objects.filter(resort=OuterRef("pk"), approved=True).order_by().values('resort').annotate(
+        resort_rating=Avg('rating', output_field=FloatField())).values('resort_rating')[:1]
+    filter_results = MainFilter(data).qs.annotate(rating=Coalesce(Subquery(ratings), 0, output_field=FloatField())).order_by('-rating')
     html = render_to_string('base_searching_results2.html', context={'easy': easy, 'medium': medium, 'complex': complex, 'difficult': difficult, 'freeride': freeride,
                                                                      'snowpark': snowpark, 'bugel': bugel, 'chair': chair, 'gondola': gondola, 'travelator': travelator,
                                                                      'adult': adult, 'child': child, 'rental': rental, 'evening': evening, 'distance': distance,
@@ -338,8 +337,9 @@ class SkiResortList(Region, ListView):
     context_object_name = 'resorts'
 
     def get_queryset(self):
-        # return SkiResort.objects.order_by('name')
-        return SkiResort.objects.order_by('name')[:6]
+        ratings = SkiReview.objects.filter(resort=OuterRef("pk"), approved=True).order_by().values('resort').annotate(
+            resort_rating=Avg('rating', output_field=FloatField())).values('resort_rating')[:1]
+        return SkiResort.objects.annotate(rating=Coalesce(Subquery(ratings), 0, output_field=FloatField())).order_by('-rating')[:6]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
