@@ -201,8 +201,12 @@ function validateEmail(email) {
 
 // password validator
 function validatePassword(password) {
+    const password_pattern = /^[a-zA-Z0-9!#.$%&+=?^_`{|}~-]{2,}$/;
     if (password.length < 8) {
-        return false;
+        throw 'Пароль должен содержать не менее 8 символов';
+    }
+    else if (!password_pattern.test(password)) {
+        throw 'Пароль содержит недопустимые символы';
     }
     else {
         return true;
@@ -221,13 +225,13 @@ $('#signup-form').on('submit', function(event){
     else {
         document.getElementById('results').innerHTML="";
         }
-    var validate_password = validatePassword(password);
-    if (validate_password === false) {
-        document.getElementById('signup-response').innerHTML="<strong>Пароль должен содержать не менее 8 символов</strong>";
+    try {
+        validatePassword(password);
+    } catch (e) {
+        document.getElementById('signup-response').innerHTML="<strong>" + e + "</strong>";
     }
-    else {
-        document.getElementById('signup-response').innerHTML="";
-        }
+    var validate_password = validatePassword(password);
+    document.getElementById('signup-response').innerHTML="";
     if (validate_email === true && validate_password === true) {
         user_signup();
     }
