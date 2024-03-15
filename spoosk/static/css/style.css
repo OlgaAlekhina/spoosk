@@ -2162,3 +2162,8 @@ input[type="radio"]{
     float: right;
     width: 800px;
 }
+
+.search-slider::-webkit-slider-thumb {
+    width: 18px;
+    height: 18px;
+}
