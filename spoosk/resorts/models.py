@@ -5,7 +5,6 @@ from django.db.models import Sum, Max, Count, Avg
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
-# from spoosk.yandex_s3_storage import ImagesStorage
 
 
 class SkiLifts(models.Model):
