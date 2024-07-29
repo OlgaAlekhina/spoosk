@@ -86,7 +86,7 @@ class SkiResort(models.Model):
     @property
     def max_height_difference(self):
         max_height = self.skytrail_set.all().aggregate(Max('height_difference', default=0))
-        result = max_height['height_difference__max']
+        result = round(max_height['height_difference__max'])
         return result
 
     @property
@@ -98,7 +98,7 @@ class SkiResort(models.Model):
         else:
             result = [{'price': Decimal('0')}]
 
-        return result[0]
+        return round(result[0])
 
     # get skipass for resort's card in mob app (where unified=1 & has minimal price)
     @property
