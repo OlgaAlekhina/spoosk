@@ -358,13 +358,10 @@ class SkiResortList(Region, ListView):
         context['total_length_calculation'] = SkiResort.total_length_calculation
         context['max_height_difference'] = SkiResort.max_height_difference
         context['count_trail'] = SkiResort.count_trail
-        context['ski_pass_one'] = SkiResort.ski_pass_one
+        context['skipass_min'] = SkiResort.skipass_min
         context['count'] = SkiResort.count
         context['type_name_price'] = SkiResort.type_name_price
         context['reviews'] = SkiReview.objects.filter(approved=True).order_by('-add_at')[:10]
-
-        # context['where'] = 'Все регионы'
-        # context['when'] = 'Не важно'
 
         return context
 
