@@ -35,7 +35,7 @@
 
                                     <div class="card-image">
                                         <a href="{{ resort.get_absolute_url }}">
-                                            <img src={{ resort.image.url }} alt="Роза Хутор" class="image" width="348" height="240">
+                                            <img {% if resort.image %} src='{{ resort.image.url }}' {% else %} src='/static/image/card/common_image.jpg' {% endif %} alt="{{ resort.name }}" class="image" width="348" height="240">
                                             <div class="card-title">
                                                 <div class="card-title-name"><span>{{ resort.name }}</span></div>
                                                 <div class="card-title-additionally">
@@ -75,7 +75,7 @@
 
                                         <div class="property">
                                             <div class="property-name">Однодневный ски-пасс:</div>
-                                            <div class="property-value">{{ resort.ski_pass_one.price }} ₽</div>
+                                            <div class="property-value">{{ resort.skipass_min }} ₽</div>
                                         </div>
 
                                         <div class="form-button">

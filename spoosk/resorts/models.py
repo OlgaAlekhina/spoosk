@@ -89,16 +89,8 @@ class SkiResort(models.Model):
         result = round(max_height['height_difference__max'])
         return result
 
-    @property
-    def ski_pass_one(self):
-        skipass = self.resorts.filter(unified=1).order_by('price').first()
-        if skipass:
-            skipass_min = skipass.price
-        else:
-            skipass_min = 0
-        return skipass_min
 
-    # get skipass for resort's card in mob app (where unified=1 & has minimal price)
+    # get skipass for resort's card (where unified=1 & has minimal price)
     @property
     def skipass_min(self):
         skipass = self.resorts.filter(unified=1).order_by('price').first()
@@ -106,7 +98,7 @@ class SkiResort(models.Model):
             skipass_min = skipass.price
         else:
             skipass_min = 0
-        return skipass_min
+        return round(skipass_min)
 
     @property
     def count_trail_calculation(self):
