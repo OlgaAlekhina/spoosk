@@ -27,7 +27,7 @@
                                         <div class="resort-region">{{ resort.region }}</div>
                                         <a class="resort-link-site" href="{{ resort.link_ofsite }}" target="_blank">{{ resort.link_ofsite }}</a>
                                         <div class="resort-sezon">
-                                            <span>Сезон катания 2022/2023:</span><br>
+                                            <span>Сезон катания 2024/2025:</span><br>
                                             <span>{{ resort.begin_season }} - {{ resort.end_season }}</span>
                                         </div>
                                     </div>
@@ -139,7 +139,7 @@
 
                             <div class="additional-info-column">
                                 <div class="donut-container">
-                                    <div class="length total-length">{{ resort.total_length_calculation }}</div>
+                                    <div class="length total-length">{% if resort.total_length_calculation %}{{ resort.total_length_calculation }}{% else %}{{ resort.trail_length2 }}{% endif %}</div>
                                     <div class="length green-length">{{ resort.green_trails_circle }}</div>
                                     <div class="length blue-length">{{ resort.blue_trails_circle }}</div>
                                     <div class="length black-length">{{ resort.black_trails_circle }}</div>

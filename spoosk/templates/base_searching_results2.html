@@ -132,7 +132,7 @@
                             <div class="card-body">
                                 <div class="property">
                                     <div class="property-name">Протяженность трасс:</div>
-                                    <div class="property-value">{{ resort.total_length_calculation }} км</div>
+                                    <div class="property-value">{% if resort.total_length_calculation %}{{ resort.total_length_calculation }}{% else %}{{ resort.trail_length2 }}{% endif %} км</div>
                                 </div>
                                 <div class="property">
                                     <div class="property-name">Перепад высот:</div>
