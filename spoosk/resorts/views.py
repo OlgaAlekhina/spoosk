@@ -351,7 +351,7 @@ class SkiResortList(Region, ListView):
     def get_queryset(self):
         ratings = SkiReview.objects.filter(resort=OuterRef("pk"), approved=True).order_by().values('resort').annotate(
             resort_rating=Avg('rating', output_field=FloatField())).values('resort_rating')[:1]
-        return SkiResort.objects.annotate(rating=Coalesce(Subquery(ratings), 0, output_field=FloatField())).order_by('-rating')[:6]
+        return SkiResort.objects.annotate(rating=Coalesce(Subquery(ratings), 0, output_field=FloatField())).order_by('-rating').order_by('name')[:6]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

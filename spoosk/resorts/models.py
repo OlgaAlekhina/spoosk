@@ -42,7 +42,9 @@ class SkiPass(models.Model):
 
 
 class SkiResort(models.Model):
-    id_resort = models.CharField(db_column='ID_resort', primary_key=True, max_length=20, help_text="avalable: 'Sheregesh', 'Roza_hutor', 'Gazprom', 'Elbrus', 'Dombay', 'Big_wood', 'Arkhyz'")  # Field name made lowercase.
+    id_resort = models.CharField(db_column='ID_resort', primary_key=True, max_length=20, help_text="avalable: 'Sheregesh', 'Roza_hutor', 'Gazprom', "
+                                           "'Elbrus', 'Dombay', 'Big_wood', 'Arkhyz', 'Mangerok', 'Gubaha', 'Abzakovo', 'Zavyaliha', 'Mratkino', 'Chorr', 'Igora',"
+                                           "'Blagodat', 'Dolina'")
     name = models.CharField(max_length=200, blank=True, null=True)
     region = models.CharField(max_length=100, blank=True, null=True)
     begin_season = models.CharField(max_length=50, blank=True, null=True, help_text="start of the ski season month")
@@ -65,6 +67,7 @@ class SkiResort(models.Model):
     resort_map = models.ImageField(null=True, upload_to="resorts/maps", blank=True, help_text="url of image for resort's map")
     main_resort_img = models.ImageField(upload_to="resorts/maxi", null=True, blank=True, help_text="url of large image for resort's page header")
     max_height = models.IntegerField(blank=True, null=True, help_text="maximum height of resort")
+    trail_length2 = models.IntegerField(blank=True, null=True, help_text="additional value of resort's trails length")
     users = models.ManyToManyField(User, blank=True, related_name='user')
 
     class Meta:
