@@ -584,7 +584,7 @@ def user_favorites(request):
     user = request.user
     ratings = SkiReview.objects.filter(resort=OuterRef("pk"), approved=True).order_by().values('resort').annotate(
         resort_rating=Avg('rating', output_field=FloatField())).values('resort_rating')[:1]
-    resorts = user.user.all().annotate(rating=Coalesce(Subquery(ratings), 0, output_field=FloatField())).order_by('-rating')[:6]
+    resorts = user.user.all().annotate(rating=Coalesce(Subquery(ratings), 0, output_field=FloatField())).order_by('-rating', 'name')[:6]
     html = render_to_string('accounts/favorites_resorts.html', context={'resorts': resorts})
     return JsonResponse(html, safe=False)
 
