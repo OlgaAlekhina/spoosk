@@ -181,8 +181,8 @@ class SkiResort(models.Model):
     # count resort's rating from reviews table
     @property
     def resort_rating(self):
-        if self.resort_reviews.exists():
-            resort_rating = self.resort_reviews.filter(approved=True).aggregate(Avg('rating'))
+        resort_rating = self.resort_reviews.filter(approved=True).aggregate(Avg('rating'))
+        if resort_rating['rating__avg'] is not None:
             average_rating = resort_rating['rating__avg']
             if average_rating == 4.5:
                 return 5
@@ -195,8 +195,8 @@ class SkiResort(models.Model):
 
     @property
     def web_rating(self):
-        if self.resort_reviews.exists():
-            resort_rating = self.resort_reviews.filter(approved=True).aggregate(Avg('rating'))
+        resort_rating = self.resort_reviews.filter(approved=True).aggregate(Avg('rating'))
+        if resort_rating['rating__avg'] is not None:
             return round(resort_rating['rating__avg'], 1)
         else:
             return 0
