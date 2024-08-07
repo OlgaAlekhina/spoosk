@@ -33,4 +33,4 @@ jobs:
           END
       - name: Run deploy
         run: |
-          ssh target "echo connection established"
+          ssh target "cd ~/spoosk/spoosk && git pull"
