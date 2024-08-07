@@ -33,4 +33,4 @@ jobs:
           END
       - name: Run deploy
         run: |
-          ssh target "supervisorctl && stop spoosk_gunicorn"
+          ssh target "echo connection established"
