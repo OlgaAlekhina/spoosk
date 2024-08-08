@@ -69,6 +69,7 @@ class SkiResort(models.Model):
     max_height = models.IntegerField(blank=True, null=True, help_text="maximum height of resort")
     trail_length2 = models.IntegerField(blank=True, null=True, help_text="additional value of resort's trails length")
     users = models.ManyToManyField(User, blank=True, related_name='user')
+    test_field = models.CharField(blank=True, null=True, help_text="test field")
 
     class Meta:
         managed = True
