@@ -70,19 +70,6 @@ class MainFilter(filters.FilterSet):
         return qs
 
 
-# def filter_by_month(month_name):
-#     _, value = calendar.month_name.index(month_name), calendar.month_name.index(month_name)
-#     # Конвертируем название месяца в его номер, используя модуль calendar
-#
-#     begin_queryset = Q(begin_season__month__lte=value) & Q(end_season__month__gte=value)
-#     end_before_queryset = Q(end_season__month__lt=value) & Q(end_season__year__gte=datetime.now().year)
-#     begin_after_queryset = Q(begin_season__month__gt=value) & Q(begin_season__year__lte=datetime.now().year)
-#
-#     # Формируем диапазоны начала и конца сезона в виде заданных запросов
-#
-#     return SkiResort.objects.filter(begin_queryset | end_before_queryset | begin_after_queryset)
-
-
 class ResortFilter(FilterSet):
     # region = CharFilter(field_name='region', lookup_expr='icontains')
     # begin_season = CharFilter(field_name='begin_season', lookup_expr='icontains')
