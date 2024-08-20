@@ -33,4 +33,4 @@ jobs:
           END
       - name: Run deploy
         run: |
-          ssh target "cd ~/spoosk/spoosk && git pull && sudo supervisorctl restart spoosk_gunicorn"
+          ssh target "cd ~/spoosk/spoosk && git pull && supervisorctl restart spoosk_gunicorn"
