@@ -33,4 +33,4 @@ jobs:
           END
       - name: Run deploy
         run: |
-          ssh target "cd ~/spoosk && source venv/bin/activate && cd spoosk && git pull && python3 manage.py makemigrations && python3 manage.py migrate && supervisorctl restart spoosk_gunicorn"
+          ssh target "cd ~/spoosk && source venv/bin/activate && cd spoosk && git pull && pip install -r requirements.txt && python3 manage.py makemigrations && python3 manage.py migrate && supervisorctl restart spoosk_gunicorn"
