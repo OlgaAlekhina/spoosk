@@ -108,6 +108,6 @@ class ResortSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SkiResort
-        fields = ['id_resort', 'name', 'region', 'rating', 'number_reviews', 'image', 'trail_length', 'height_difference', 'skipass', 'trail_number', 'in_favorites']
+        fields = ['id_resort', 'name', 'region', 'rating', 'number_reviews', 'image', 'trail_length', 'trail_length2', 'height_difference', 'skipass', 'trail_number', 'in_favorites']
 
 

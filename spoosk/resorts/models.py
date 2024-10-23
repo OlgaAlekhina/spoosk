@@ -42,7 +42,9 @@ class SkiPass(models.Model):
 
 
 class SkiResort(models.Model):
-    id_resort = models.CharField(db_column='ID_resort', primary_key=True, max_length=20, help_text="avalable: 'Sheregesh', 'Roza_hutor', 'Gazprom', 'Elbrus', 'Dombay', 'Big_wood', 'Arkhyz'")  # Field name made lowercase.
+    id_resort = models.CharField(db_column='ID_resort', primary_key=True, max_length=20, help_text="avalable: 'Sheregesh', 'Roza_hutor', 'Gazprom', "
+                                           "'Elbrus', 'Dombay', 'Big_wood', 'Arkhyz', 'Mangerok', 'Gubaha', 'Abzakovo', 'Zavyaliha', 'Mratkino', 'Chorr', 'Igora',"
+                                           "'Blagodat', 'Dolina'")
     name = models.CharField(max_length=200, blank=True, null=True)
     region = models.CharField(max_length=100, blank=True, null=True)
     begin_season = models.CharField(max_length=50, blank=True, null=True, help_text="start of the ski season month")
@@ -65,7 +67,9 @@ class SkiResort(models.Model):
     resort_map = models.ImageField(null=True, upload_to="resorts/maps", blank=True, help_text="url of image for resort's map")
     main_resort_img = models.ImageField(upload_to="resorts/maxi", null=True, blank=True, help_text="url of large image for resort's page header")
     max_height = models.IntegerField(blank=True, null=True, help_text="maximum height of resort")
+    trail_length2 = models.IntegerField(blank=True, null=True, help_text="additional value of resort's trails length")
     users = models.ManyToManyField(User, blank=True, related_name='user')
+    test_field = models.CharField(blank=True, null=True, help_text="test field")
 
     class Meta:
         managed = True
@@ -86,21 +90,11 @@ class SkiResort(models.Model):
     @property
     def max_height_difference(self):
         max_height = self.skytrail_set.all().aggregate(Max('height_difference', default=0))
-        result = max_height['height_difference__max']
+        result = round(max_height['height_difference__max'])
         return result
 
-    @property
-    def ski_pass_one(self):
-        price_skipass = self.resorts.all().filter(unified=1).values('price')
-        price_skipass_list = list(price_skipass)
-        if len(price_skipass_list):
-            result = price_skipass_list
-        else:
-            result = [{'price': Decimal('0')}]
 
-        return result[0]
-
-    # get skipass for resort's card in mob app (where unified=1 & has minimal price)
+    # get skipass for resort's card (where unified=1 & has minimal price)
     @property
     def skipass_min(self):
         skipass = self.resorts.filter(unified=1).order_by('price').first()
@@ -108,7 +102,7 @@ class SkiResort(models.Model):
             skipass_min = skipass.price
         else:
             skipass_min = 0
-        return skipass_min
+        return round(skipass_min)
 
     @property
     def count_trail_calculation(self):
@@ -188,8 +182,8 @@ class SkiResort(models.Model):
     # count resort's rating from reviews table
     @property
     def resort_rating(self):
-        if self.resort_reviews.exists():
-            resort_rating = self.resort_reviews.filter(approved=True).aggregate(Avg('rating'))
+        resort_rating = self.resort_reviews.filter(approved=True).aggregate(Avg('rating'))
+        if resort_rating['rating__avg'] is not None:
             average_rating = resort_rating['rating__avg']
             if average_rating == 4.5:
                 return 5
@@ -202,8 +196,8 @@ class SkiResort(models.Model):
 
     @property
     def web_rating(self):
-        if self.resort_reviews.exists():
-            resort_rating = self.resort_reviews.filter(approved=True).aggregate(Avg('rating'))
+        resort_rating = self.resort_reviews.filter(approved=True).aggregate(Avg('rating'))
+        if resort_rating['rating__avg'] is not None:
             return round(resort_rating['rating__avg'], 1)
         else:
             return 0

@@ -318,7 +318,7 @@ def advanced_filter(request):
     evening = True if 'have_evening_skiing' in data else False
     ratings = SkiReview.objects.filter(resort=OuterRef("pk"), approved=True).order_by().values('resort').annotate(
         resort_rating=Avg('rating', output_field=FloatField())).values('resort_rating')[:1]
-    filter_results = MainFilter(data).qs.annotate(rating=Coalesce(Subquery(ratings), 0, output_field=FloatField())).order_by('-rating')
+    filter_results = MainFilter(data).qs.annotate(rating=Coalesce(Subquery(ratings), 0, output_field=FloatField())).order_by('-rating', 'name')
     html = render_to_string('base_searching_results2.html', context={'easy': easy, 'medium': medium, 'complex': complex, 'difficult': difficult, 'freeride': freeride,
                                                                      'snowpark': snowpark, 'bugel': bugel, 'chair': chair, 'gondola': gondola, 'travelator': travelator,
                                                                      'adult': adult, 'child': child, 'rental': rental, 'evening': evening, 'distance': distance,
@@ -351,20 +351,17 @@ class SkiResortList(Region, ListView):
     def get_queryset(self):
         ratings = SkiReview.objects.filter(resort=OuterRef("pk"), approved=True).order_by().values('resort').annotate(
             resort_rating=Avg('rating', output_field=FloatField())).values('resort_rating')[:1]
-        return SkiResort.objects.annotate(rating=Coalesce(Subquery(ratings), 0, output_field=FloatField())).order_by('-rating')[:6]
+        return SkiResort.objects.annotate(rating=Coalesce(Subquery(ratings), 0, output_field=FloatField())).order_by('-rating', 'name')[:6]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['total_length_calculation'] = SkiResort.total_length_calculation
         context['max_height_difference'] = SkiResort.max_height_difference
         context['count_trail'] = SkiResort.count_trail
-        context['ski_pass_one'] = SkiResort.ski_pass_one
+        context['skipass_min'] = SkiResort.skipass_min
         context['count'] = SkiResort.count
         context['type_name_price'] = SkiResort.type_name_price
         context['reviews'] = SkiReview.objects.filter(approved=True).order_by('-add_at')[:10]
-
-        # context['where'] = 'Все регионы'
-        # context['when'] = 'Не важно'
 
         return context
 
