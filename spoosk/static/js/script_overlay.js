@@ -73,13 +73,23 @@ closeModalBtns.forEach((btn, i) => {
     });
 });
 
-modals.forEach((modal) => {
-    modal.addEventListener("click", function (event) {
-        if (!event._isClickWithInModal) {
-            closeModal(modal);
-        }
+//modals.forEach((modal) => {
+//    modal.addEventListener("click", function (event) {
+//        if (!event._isClickWithInModal) {
+//            closeModal(modal);
+//        }
+//    });
+//});
+
+// Для закрытия модальных окон по щелчку вне их
+modals.forEach(modal => {
+    window.addEventListener("click", function (event) {
+        if (event.target == modal) {
+             closeModal(modal);
+          }
     });
 });
+
 
 // Привязка обработчика события "click" для кнопки "Профиль", открытия модального окна авторизации/регистрации
 document.getElementById("open-modal-profile-btn").addEventListener("click", function() {
@@ -106,35 +116,37 @@ if (document.getElementById("btn-delete-account")) {
     });
 }
 
-if (document.querySelector(".modal .modal-review__box")) {
-    document.querySelector(".modal-review__box").addEventListener('click', function (event) {
-      event._isClickWithInModal = true;
-    });
-}
-
-if (document.querySelector(".modal .modal_box")) {
-  document.querySelector(".modal_box").addEventListener('click', function (event) {
-    event._isClickWithInModal = true;
-  });
-}
-
-if (document.querySelector(".modal .form-register__box")) {
-  document.querySelector(".modal .form-register__box").addEventListener('click', function (event) {
-    event._isClickWithInModal = true;
-  });
-}
-
-if (document.querySelector(".modal .form-register__box-rec")) {
-  document.querySelector(".modal .form-register__box-rec").addEventListener('click', function (event) {
-    event._isClickWithInModal = true;
-  });
-}
-
-if (document.querySelector(".modal .modal-add-review__box")) {
-  document.querySelector(".modal .modal-add-review__box").addEventListener('click', function (event) {
-    event._isClickWithInModal = true;
-  });
-}
+//if (document.querySelector(".modal .modal-review__box")) {
+//    document.querySelector(".modal-review__box").addEventListener('click', function (event) {
+//      event._isClickWithInModal = true;
+//    });
+//}
+//
+//if (document.querySelector(".modal .modal_box")) {
+//  document.querySelector(".modal_box").addEventListener('click', function (event) {
+//    event._isClickWithInModal = true;
+//  });
+//}
+//
+//if (document.querySelector(".modal .form-register__box")) {
+//  console.log('123');
+//  document.querySelector(".modal .form-register__box").addEventListener('click', function (event) {
+//    event._isClickWithInModal = true;
+//  });
+//}
+//
+//if (document.querySelector(".modal .form-register__box-rec")) {
+//  console.log('345');
+//  document.querySelector(".modal .form-register__box-rec").addEventListener('click', function (event) {
+//    event._isClickWithInModal = true;
+//  });
+//}
+//
+//if (document.querySelector(".modal .modal-add-review__box")) {
+//  document.querySelector(".modal .modal-add-review__box").addEventListener('click', function (event) {
+//    event._isClickWithInModal = true;
+//  });
+//}
 
 // Обработчик события "keydown" для закрытия модального окна при нажатии на клавишу Esc
 document.addEventListener("keydown", function (event) {
