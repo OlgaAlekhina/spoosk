@@ -181,13 +181,17 @@ function reset_confirmation(uidb64, token) {
             data : { uidb64 : uidb64, token : token },
 
             success : function(data) {
-                $('#modal-new-password').addClass("open");
-                $('#user_name').val(data.user);
-                console.log(data.user);
+                if (!data.user) {
+                    $('#modal-account-recovery').addClass("open");
+                    document.getElementById('link_expired').innerHTML="<strong>Ваша ссылка не работает. Попробуйте еще раз.</strong>";
+                }
+                else {
+                    $('#modal-new-password').addClass("open");
+                    $('#user_name').val(data.user);
+                }
             },
-        });
-};
-
+    });
+}
 // email validator
 function validateEmail(email) {
     const emailRegex = /^([a-zA-Z0-9!#.$%&+=?^_`{|}~-]+@[a-zA-Z0-9.-]+[a-zA-Z0-9]+\.[a-zA-Z]{2,})$/;

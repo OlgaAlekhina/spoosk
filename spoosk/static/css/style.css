@@ -1640,6 +1640,14 @@ body {
   margin-top: 32px;
 }
 
+.link_expired {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 20px;
+    color: red;
+    font-size: 20px;
+}
+
 /*------------Modal signup/signin--------------------------------------------*/
 
 /*.modal-signup-signin {
