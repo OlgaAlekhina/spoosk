@@ -437,13 +437,13 @@ def reset_request(request):
 def reset_confirmation(request):
     uidb64 = request.GET.get('uidb64')
     token = request.GET.get('token')
+    response_data = {}
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
     except:
         user = None
     if user is not None and user_token.check_token(user, token):
-        response_data = {}
         response_data['result'] = 'Its a success!'
         response_data['user'] = user.username
         return HttpResponse(
@@ -451,7 +451,12 @@ def reset_confirmation(request):
             content_type='application/json'
         )
     else:
-        return render(request, 'link_expired.html', {})
+        response_data['result'] = 'Link is expired!'
+        response_data['user'] = None
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type='application/json'
+        )
 
 
 # устанавливает новый пароль для пользователя
