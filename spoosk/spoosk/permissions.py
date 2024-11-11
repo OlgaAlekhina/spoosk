@@ -9,7 +9,6 @@ class APIkey(permissions.BasePermission):
         try:
             api_key = request.META['HTTP_API_KEY']
             if api_key == API_KEY:
-                print(API_KEY)
                 return True
         except:
             return False
