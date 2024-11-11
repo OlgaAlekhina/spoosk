@@ -1,4 +1,5 @@
 from rest_framework import permissions
+from .settings import API_KEY
 
 
 # get permission to API by api key
@@ -7,7 +8,8 @@ class APIkey(permissions.BasePermission):
     def has_permission(self, request, view):
         try:
             api_key = request.META['HTTP_API_KEY']
-            if api_key == '6351f035a4db9598952a6705330b29a30ff5fb35':
+            if api_key == API_KEY:
+                print(API_KEY)
                 return True
         except:
             return False
