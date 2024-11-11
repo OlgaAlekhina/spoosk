@@ -16,6 +16,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+API_KEY = os.getenv('API_KEY')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -126,11 +127,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static"
-]
+# STATICFILES_DIRS = [
+#     BASE_DIR / "static"
+# ]
 
-# STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static')]
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
@@ -187,16 +187,13 @@ SWAGGER_SETTINGS = {
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_FROM = 'spoosk.info@gmail.com'
-EMAIL_HOST_USER = 'spoosk.info@gmail.com'
-EMAIL_HOST_PASSWORD = 'qpqhkyiaqcdfldrv'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 # access to Google Auth API
-GP_CLIENT_ID = "632070971106-bmjtdd1kksfo5tohm0kjvd4r3ghfkjie.apps.googleusercontent.com"
-GP_CLIENT_SECRET = "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"
+GP_CLIENT_ID = os.getenv('GP_CLIENT_ID')
+GP_CLIENT_SECRET = os.getenv('GP_CLIENT_SECRET')
 
-# try:
-#     from .local_settings import *
-# except ImportError:
-#     from .prod_settings import *
+
