@@ -20,12 +20,9 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from resorts.views import SkiResortViewset, SkiReviewViewset, ResortMainFilter, get_regions, favorites
-from accounts.views import UserViewset
-from rest_framework_swagger.views import get_swagger_view
+from accounts.api_views import UserViewset
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-from rest_framework import permissions
-from django.views.generic.base import RedirectView
 
 
 schema_view = get_schema_view(
@@ -56,4 +53,3 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_IMAGE_URL, document_root=settings.STATIC_IMAGE_ROOT)
-    # urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
