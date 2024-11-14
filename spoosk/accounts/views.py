@@ -1,18 +1,6 @@
-from .models import UserProfile, SignupCode
-from rest_framework import viewsets, mixins, status
-from .serializers import UserSerializer, UserprofileSerializer, LoginSerializer, CodeSerializer, ResetpasswordSerializer, ChangepasswordSerializer, EmptySerializer
-from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
+from .models import UserProfile
 from resorts.models import SkiResort, SkiReview, ReviewImage
-from rest_framework.authtoken.models import Token
-from resorts.serializers import SkireviewSerializer, ResortSerializer
-from rest_framework.response import Response
-from spoosk.permissions import APIkey, UserPermission
-from datetime import timedelta
-from django.utils import timezone
-from rest_framework.decorators import action
-from random import randint
-from django.shortcuts import get_object_or_404
-from django.db.models import OuterRef, Exists, Subquery, FloatField, Avg
+from django.db.models import OuterRef, Subquery, FloatField, Avg
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse, Http404
 from django.contrib.auth.models import User
@@ -28,6 +16,18 @@ from django.urls import reverse
 from django.conf import settings
 import requests
 from django.db.models.functions import Coalesce
+
+
+# аутентификация пользователя по мейлу
+def authenticate_user(email, password):
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        return None
+    else:
+        if user.check_password(password) and user.is_active:
+            return user
+    return None
 
 
 # обработка запроса на регистрацию
@@ -268,7 +268,6 @@ def add_missing_profiles(request):
         print(user.username, ' : ', created)
     print("all done")
     return HttpResponse("It's done.")
-
 
 
 # выводит избранные курорты на страницу личного кабинета
