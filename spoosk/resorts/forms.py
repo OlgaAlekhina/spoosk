@@ -1,6 +1,7 @@
 from .models import SkiReview, ReviewImage, User
 from django import forms
 
+
 class SkiReviewForm(forms.ModelForm):
     resort = forms.IntegerField(widget=forms.HiddenInput)
     author = forms.ModelChoiceField(queryset=User.objects.all(), widget=forms.HiddenInput)
