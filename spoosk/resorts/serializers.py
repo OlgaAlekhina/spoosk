@@ -96,6 +96,7 @@ class SkiResortSerializer(serializers.ModelSerializer):
         model = SkiResort
         exclude = ['users']
 
+
 # serializer for SkiResort model for list method
 class ResortSerializer(serializers.ModelSerializer):
     trail_length = serializers.ReadOnlyField(source='total_length_calculation', help_text="summarized length of all resort's trails [km]")

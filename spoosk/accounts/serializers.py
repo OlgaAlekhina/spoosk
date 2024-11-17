@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import UserProfile, SignupCode
-from rest_framework.validators import UniqueValidator
 from random import randint
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
@@ -108,23 +107,3 @@ class UserprofileSerializer(serializers.ModelSerializer):
             'email': {'read_only': True}
         }
 
-    # def update(self, instance, validated_data):
-    #     print(validated_data)
-    #     instance.first_name = validated_data.get('first_name', instance.first_name)
-    #     instance.last_name = validated_data.get('last_name', instance.last_name)
-    #     instance.save()
-    #     profile = instance.userprofile
-    #     profile_data = validated_data.pop('userprofile')
-    #     profile.name = profile_data.get('name', profile.name)
-    #     profile.city = profile_data.get('city', profile.city)
-    #     profile.country = profile_data.get('country', profile.country)
-    #     profile.save()
-    #     request = self.context.get("request")
-    #     try:
-    #         avatar = request.FILES.getlist("avatar")[0]
-    #         profile.avatar = avatar
-    #         profile.save()
-    #     except:
-    #         print('no files')
-    #
-    #     return instance

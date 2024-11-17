@@ -1,4 +1,3 @@
-from decimal import Decimal
 from itertools import product
 from django.db import models
 from django.db.models import Sum, Max, Count, Avg
@@ -8,8 +7,8 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class SkiLifts(models.Model):
-    id = models.CharField(db_column='ID', primary_key=True, max_length=20)  # Field name made lowercase.
-    id_resort = models.ForeignKey('SkiResort', models.DO_NOTHING, db_column='ID_resort')  # Field name made lowercase.
+    id = models.CharField(db_column='ID', primary_key=True, max_length=20)
+    id_resort = models.ForeignKey('SkiResort', models.DO_NOTHING, db_column='ID_resort')
     name = models.CharField(max_length=200, blank=True, null=True)
     extent = models.IntegerField(blank=True, null=True)
     armchair = models.IntegerField(blank=True, null=True)
@@ -23,8 +22,8 @@ class SkiLifts(models.Model):
 
 
 class SkiPass(models.Model):
-    id = models.CharField(db_column='ID', primary_key=True, max_length=20)  # Field name made lowercase.
-    id_resort = models.ForeignKey('SkiResort', models.DO_NOTHING, db_column='ID_resort', related_name='resorts')  # Field name made lowercase.
+    id = models.CharField(db_column='ID', primary_key=True, max_length=20)
+    id_resort = models.ForeignKey('SkiResort', models.DO_NOTHING, db_column='ID_resort', related_name='resorts')
     type = models.CharField(max_length=200, blank=True, null=True)
     mob_type = models.CharField(max_length=20, blank=True, null=True)
     name = models.CharField(max_length=200, blank=True, null=True)
@@ -92,7 +91,6 @@ class SkiResort(models.Model):
         max_height = self.skytrail_set.all().aggregate(Max('height_difference', default=0))
         result = round(max_height['height_difference__max'])
         return result
-
 
     # get skipass for resort's card (where unified=1 & has minimal price)
     @property
@@ -210,40 +208,27 @@ class SkiResort(models.Model):
     @property
     def green_trails_circle(self):
         g_length = self.skytrail_set.all().filter(complexity="green").aggregate(green=Sum('extent', default=0))
-        # total_length = self.skytrail_set.all().aggregate(total=Sum('extent'))
-        # green = g_length['green'] * 100 / total_length['total']
-        # return int(green)
         return int(g_length['green'])
 
     @property
     def blue_trails_circle(self):
-        # green = self.green_trails_circle()
         b_length = self.skytrail_set.all().filter(complexity="blue").aggregate(blue=Sum('extent', default=0))
-        # total_length = self.skytrail_set.all().aggregate(total=Sum('extent'))
-        # blue = b_length['blue'] * 100 / total_length['total'] + green
-        # return int(blue)
         return int(b_length['blue'])
 
     @property
     def black_trails_circle(self):
         b_length = self.skytrail_set.all().filter(complexity="black").aggregate(black=Sum('extent', default=0))
-        # total_length = self.skytrail_set.all().aggregate(total=Sum('extent'))
-        # black = b_length['black'] * 100 / total_length['total']
-        # return int(100 - black)
         return int(b_length['black'])
 
     @property
     def red_trails_circle(self):
         r_length = self.skytrail_set.all().filter(complexity="red").aggregate(red=Sum('extent', default=0))
-        # total_length = self.skytrail_set.all().aggregate(total=Sum('extent'))
-        # black = b_length['black'] * 100 / total_length['total']
-        # return int(100 - black)
         return int(r_length['red'])
 
 
 class SkyTrail(models.Model):
-    id = models.CharField(db_column='ID', primary_key=True, max_length=20)  # Field name made lowercase.
-    id_resort = models.ForeignKey(SkiResort, models.DO_NOTHING, db_column='ID_resort')  # Field name made lowercase.
+    id = models.CharField(db_column='ID', primary_key=True, max_length=20)
+    id_resort = models.ForeignKey(SkiResort, models.DO_NOTHING, db_column='ID_resort')
     name = models.CharField(max_length=200, blank=True, null=True)
     complexity = models.CharField(max_length=5, blank=True, null=True)
     extent = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
@@ -313,53 +298,3 @@ class ReviewImage(models.Model):
     def __str__(self):
         return f'{self.review} : photo # {self.id}'
 
-
-# python manage.py shell_plus --print-sql
-#  from django.db.models import *
-
-# q = SkyTrail.objects.filter(id_resort='Elbrus')
-# q = SkyTrail.objects.filter(id_resort='Elbrus').aggregate(Sum('extent'))
-# g = SkiResort.objects.annotate(tot=Sum('skytrail__extent'))
-# g=SkyTrail.objects.all()
-# vars(g[0])
-# h = SkiResort.objects.all()
-# vars(h[0])
-# h[0].totalmax1
-# h[0].total
-
-
-# h = SkyTrail.objects.all()
-# vars(h[0])
-# h[0].totalmax1
-# h[0].total
-
-# h = SkiLifts.objects.filter(id_resort='Elbrus').aggregate(armchair=Sum('armchair'), bugelny=Sum('bugelny'), gondola=Sum('gondola'), travelators=Sum('travelators'))
-# .annotate(s1=Sum('started'),s2=Sum('finished'))
-# SkiPass.objects.filter(id_resort='Elbrus').values('type', 'name', 'price')
-
-
-# q = SkyTrail.objects.filter(id_resort='Elbrus').aggregate(Count('complexity'))
-# m = SkyTrail.objects.filter(id_resort='Elbrus').aggregate(Max('height_difference'))
-# max_height = SkiResort.skytrail_set.all().(max('height_difference'))
-
-
-#  Blog.objects.values("entry__authors").annotate(entries=Count("entry"))
-#  all_trail = self.skytrail_set.all().values_list('complexity').annotate(total=Count('complexity'))
-#  SkyTrail.objects.aggregate(total=Count('complexity'))
-#  SkyTrail.objects.values('complexity').annotate(total=Count('complexity'))
-#  SkyTrail.objects.filter(id_resort='Elbrus').values('complexity').annotate(total=Count('complexity'))
-#  SkyTrail.objects.all().values('id_resort__name').annotate(Count('complexity'))
-#  SkyTrail.objects.all().values('id_resort__name', 'complexity').annotate(Count('complexity'))
-
-# qs = SkiResort.objects.values('name').annotate(Count('complexity'))
-# # 	.skytrail_set.all().values('id_resort__name', 'complexity').annotate(Count('complexity'))
-
-# .skytrail_set.all().filter(id_resort='id_resort.name').values('complexity').annotate(total=Count('complexity'))
-
-# h = SkiResort.objects.all()
-
-# m = SkiPass.objects.filter(unified=1).values('price')
-
-# SkiResort.objects.filter(skytrail__complexity='green')
-# SkiResort.objects.filter(skytrail__complexity='green').distinct('name')
-# SkiResort.objects.distinct().filter(skytrail__complexity='green')
